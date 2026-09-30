@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+﻿# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
@@ -225,8 +225,6 @@ A053 数学建模各大竞赛优秀论文合集.zip
 # MkDocs 构建产物
 YanYu-MathModeling/site/
 
-# 旧Git备份（重建仓库时临时保留，确认后删除）
-.git.backup/
 
 # 独立协同模板仓库（有自己的远程）
 HelloMathModeling/
