@@ -1,0 +1,75 @@
+(MATLAB 超时未结束)[日志] 本局自记录日志: D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\MATLAB_Framework\logs\robot_TESTTEAM_20260912_201519.jsonl
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2041 ms: Could not connect to server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2034 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2033 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[SimulatorClient] 接口尚未开放，2 s 后重试 /enter（复用同一 request_id）...
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2040 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2044 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2036 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[SimulatorClient] 接口尚未开放，2 s 后重试 /enter（复用同一 request_id）...
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2037 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2044 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2037 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[SimulatorClient] 接口尚未开放，2 s 后重试 /enter（复用同一 request_id）...
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2042 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2035 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2026 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[SimulatorClient] 接口尚未开放，2 s 后重试 /enter（复用同一 request_id）...
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2033 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2036 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2028 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[SimulatorClient] 接口尚未开放，2 s 后重试 /enter（复用同一 request_id）...
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2031 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 连接到 http://127.0.0.1:20270/enter 时出错: Failed to connect to 127.0.0.1 port 20270 after 2037 ms: Could not connect to
+server] 
+[> 位置：SimulatorClient/send_request (第 246 行)
+位置: SimulatorClient/enter (第 89 行)] 
+[SimulatorClient] /enter 等待 54.0 s 后成功
+EW_OK waited=56.2 remaining=1200

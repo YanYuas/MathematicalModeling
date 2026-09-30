@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="874.998425pt" height="749.140157pt" viewBox="0 0 874.998425 749.140157" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-05-25T01:41:14.909700</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 749.140157 
+L 874.998425 749.140157 
+L 874.998425 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #1a1a2e" x="437.499213" y="27.493685" transform="rotate(-0 437.499213 27.493685)">问题二: 服务站选址与规模优化 — 算法流程图</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="text_2">
+    <g id="patch_2">
+     <path d="M 314.184369 103.018345 
+L 560.814056 103.018345 
+Q 588.814056 103.018345 588.814056 75.018345 
+L 588.814056 67.682563 
+Q 588.814056 39.682563 560.814056 39.682563 
+L 314.184369 39.682563 
+Q 286.184369 39.682563 286.184369 67.682563 
+L 286.184369 75.018345 
+Q 286.184369 103.018345 314.184369 103.018345 
+z
+" style="fill: #f0f0f5"/>
+    </g>
+    <text style="font-size: 7px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #555555" x="437.499213" y="73.278188" transform="rotate(-0 437.499213 73.278188)">输入: 1.1预测 + 1.3消费约束日需求(8196次/日) + 距离矩阵 + 成本/满意度参数</text>
+   </g>
+   <g id="text_3">
+    <g id="patch_3">
+     <path d="M 317.884174 154.492079 
+L 557.114252 154.492079 
+Q 594.614252 154.492079 594.614252 116.992079 
+L 594.614252 99.050907 
+Q 594.614252 61.550907 557.114252 61.550907 
+L 317.884174 61.550907 
+Q 280.384174 61.550907 280.384174 99.050907 
+L 280.384174 116.992079 
+Q 280.384174 154.492079 317.884174 154.492079 
+z
+" style="fill: #1a1a2e"/>
+    </g>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(365.646869 105.418876)">s_i∈{0,1,2,3} | 预算≤120万 | 半径≤1000m</text>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(317.884174 115.127626)">max 覆盖率(至少一项服务/总人数) + max 满意度(0.2S1+0.3S2+0.5S3)</text>
+   </g>
+   <g id="text_4">
+    <g id="patch_4">
+     <path d="M 369.708119 145.208335 
+L 505.290306 145.208335 
+Q 517.290306 145.208335 517.290306 133.208335 
+L 517.290306 126.920523 
+Q 517.290306 114.920523 505.290306 114.920523 
+L 369.708119 114.920523 
+Q 357.708119 114.920523 357.708119 126.920523 
+L 357.708119 133.208335 
+Q 357.708119 145.208335 369.708119 145.208335 
+z
+" style="fill: #1a1a2e; stroke: #000000; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 6px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #cccccc" x="437.499213" y="131.716773" transform="rotate(-0 437.499213 131.716773)">统一评估引擎: 连续S2+阻尼迭代→唯一均衡→(C,S)</text>
+   </g>
+  </g>
+  <g id="axes_3">
+   <g id="text_5">
+    <g id="patch_5">
+     <path d="M 105.583719 347.042691 
+L 184.64911 347.042691 
+Q 204.14911 347.042691 204.14911 327.542691 
+L 204.14911 313.139707 
+Q 204.14911 293.639707 184.64911 293.639707 
+L 105.583719 293.639707 
+Q 86.083719 293.639707 86.083719 313.139707 
+L 86.083719 327.542691 
+Q 86.083719 347.042691 105.583719 347.042691 
+z
+" style="fill: #4a90d9"/>
+    </g>
+    <text style="font-weight: 700; font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(126.171453 318.335645)">方案A (主要)</text>
+    <text style="font-weight: 700; font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(105.583719 325.926832)">NSGA-II双目标Pareto GA</text>
+   </g>
+   <g id="text_6">
+    <g id="patch_6">
+     <path d="M 116.263727 235.816072 
+L 173.969102 235.816072 
+Q 192.169102 235.816072 192.169102 217.616072 
+L 192.169102 205.642097 
+Q 192.169102 187.442097 173.969102 187.442097 
+L 116.263727 187.442097 
+Q 98.063727 187.442097 98.063727 205.642097 
+L 98.063727 217.616072 
+Q 98.063727 235.816072 116.263727 235.816072 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(122.435883 209.76391)">① 初始化种群(200)</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(116.263727 216.288447)">   整数编码 s_i∈{0,1,2,3}</text>
+   </g>
+   <g id="text_7">
+    <g id="patch_7">
+     <path d="M 117.943977 283.503327 
+L 172.288852 283.503327 
+Q 190.488852 283.503327 190.488852 265.303327 
+L 190.488852 259.853889 
+Q 190.488852 241.653889 172.288852 241.653889 
+L 117.943977 241.653889 
+Q 99.743977 241.653889 99.743977 259.853889 
+L 99.743977 265.303327 
+Q 99.743977 283.503327 117.943977 283.503327 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="145.116414" y="264.010639" transform="rotate(-0 145.116414 264.010639)">② 均衡求解→评估(C,S)</text>
+   </g>
+   <g id="text_8">
+    <g id="patch_8">
+     <path d="M 116.418508 334.470319 
+L 173.814321 334.470319 
+Q 192.014321 334.470319 192.014321 316.270319 
+L 192.014321 310.820882 
+Q 192.014321 292.620882 173.814321 292.620882 
+L 116.418508 292.620882 
+Q 98.218508 292.620882 98.218508 310.820882 
+L 98.218508 316.270319 
+Q 98.218508 334.470319 116.418508 334.470319 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="145.116414" y="314.977632" transform="rotate(-0 145.116414 314.977632)">③ 非支配排序+拥挤距离</text>
+   </g>
+   <g id="text_9">
+    <g id="patch_9">
+     <path d="M 105.283196 388.696167 
+L 184.949633 388.696167 
+Q 203.149633 388.696167 203.149633 370.496167 
+L 203.149633 358.529017 
+Q 203.149633 340.329017 184.949633 340.329017 
+L 105.283196 340.329017 
+Q 87.083196 340.329017 87.083196 358.529017 
+L 87.083196 370.496167 
+Q 87.083196 388.696167 105.283196 388.696167 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(120.778789 362.685767)">④ Pareto锦标赛选择</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(105.283196 369.20348)">   +交叉(pc=0.8)+变异(pm=0.15)</text>
+   </g>
+   <g id="text_10">
+    <g id="patch_10">
+     <path d="M 113.671039 439.696716 
+L 176.561789 439.696716 
+Q 194.761789 439.696716 194.761789 421.496716 
+L 194.761789 409.492516 
+Q 194.761789 391.292516 176.561789 391.292516 
+L 113.671039 391.292516 
+Q 95.471039 391.292516 95.471039 409.492516 
+L 95.471039 421.496716 
+Q 95.471039 439.696716 113.671039 439.696716 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(114.232071 413.619203)">⑤ 预算修复+精英保留(15)</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(113.671039 420.173966)">   循环150代 | 5次独立运行</text>
+   </g>
+   <g id="text_11">
+    <g id="patch_11">
+     <path d="M 102.913946 502.839844 
+L 187.318883 502.839844 
+Q 208.118883 502.839844 208.118883 482.039844 
+L 208.118883 464.444507 
+Q 208.118883 443.644507 187.318883 443.644507 
+L 102.913946 443.644507 
+Q 82.113946 443.644507 82.113946 464.444507 
+L 82.113946 482.039844 
+Q 82.113946 502.839844 102.913946 502.839844 
+z
+" style="fill: #4a90d9; stroke: #000000; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(124.821383 468.601257)">→ 14个Pareto解</text>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(102.913946 474.674207)">C:40.9%~85.7%  S:90.0%~98.6%</text>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(123.477102 480.747157)">8/14命中枚举前沿</text>
+   </g>
+   <g id="text_12">
+    <g id="patch_12">
+     <path d="M 131.602313 488.419688 
+L 158.630516 488.419688 
+Q 164.130516 488.419688 164.130516 482.919688 
+L 164.130516 477.15586 
+Q 164.130516 471.65586 158.630516 471.65586 
+L 131.602313 471.65586 
+Q 126.102313 471.65586 126.102313 477.15586 
+L 126.102313 482.919688 
+Q 126.102313 488.419688 131.602313 488.419688 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #888888" x="145.116414" y="481.552423" transform="rotate(-0 145.116414 481.552423)">耗时: ~68s</text>
+   </g>
+  </g>
+  <g id="axes_4">
+   <g id="text_13">
+    <g id="patch_13">
+     <path d="M 413.068353 347.042691 
+L 461.930072 347.042691 
+Q 481.430072 347.042691 481.430072 327.542691 
+L 481.430072 313.139707 
+Q 481.430072 293.639707 461.930072 293.639707 
+L 413.068353 293.639707 
+Q 393.568353 293.639707 393.568353 313.139707 
+L 393.568353 327.542691 
+Q 393.568353 347.042691 413.068353 347.042691 
+z
+" style="fill: #e8a838"/>
+    </g>
+    <text style="font-weight: 700; font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(415.526674 318.335645)">方案B (次主要)</text>
+    <text style="font-weight: 700; font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(413.068353 325.926832)">分层先后优化GA</text>
+   </g>
+   <g id="text_14">
+    <g id="patch_14">
+     <path d="M 406.390619 238.817122 
+L 468.607806 238.817122 
+Q 486.807806 238.817122 486.807806 220.617122 
+L 486.807806 202.60611 
+Q 486.807806 184.40611 468.607806 184.40611 
+L 406.390619 184.40611 
+Q 388.190619 184.40611 388.190619 202.60611 
+L 388.190619 220.617122 
+Q 388.190619 238.817122 406.390619 238.817122 
+z
+" style="fill: #fff3d0; stroke: #e8a838; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(406.390619 206.76286)">【第一层】最大化覆盖率 C</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(411.278213 213.043647)">→ GA(100个体×60代)</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(409.056838 219.324435)">→ C* = max C ≈ 85.7%</text>
+   </g>
+   <g id="text_15">
+    <g id="patch_15">
+     <path d="M 405.051619 323.762109 
+L 469.946806 323.762109 
+Q 488.146806 323.762109 488.146806 305.562109 
+L 488.146806 287.551097 
+Q 488.146806 269.351097 469.946806 269.351097 
+L 405.051619 269.351097 
+Q 386.851619 269.351097 386.851619 287.551097 
+L 386.851619 305.562109 
+Q 386.851619 323.762109 405.051619 323.762109 
+z
+" style="fill: #fff3d0; stroke: #e8a838; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(405.051619 291.707847)">【第二层】max(0.6C+0.4S)</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(420.702806 297.988634)">  C ≥ C*−0.01</text>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(411.713306 304.269422)">→ 热启动 + GA(60代)</text>
+   </g>
+   <g id="text_16">
+    <g id="patch_16">
+     <path d="M 408.604275 402.426308 
+L 466.39415 402.426308 
+Q 484.59415 402.426308 484.59415 384.226308 
+L 484.59415 378.776871 
+Q 484.59415 360.576871 466.39415 360.576871 
+L 408.604275 360.576871 
+Q 390.404275 360.576871 390.404275 378.776871 
+L 390.404275 384.226308 
+Q 390.404275 402.426308 408.604275 402.426308 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="437.499213" y="382.933621" transform="rotate(-0 437.499213 382.933621)">交叉变异+修复(同方案A)</text>
+   </g>
+   <g id="text_17">
+    <g id="patch_17">
+     <path d="M 401.578181 502.839844 
+L 473.420244 502.839844 
+Q 494.220244 502.839844 494.220244 482.039844 
+L 494.220244 464.444507 
+Q 494.220244 443.644507 473.420244 443.644507 
+L 401.578181 443.644507 
+Q 380.778181 443.644507 380.778181 464.444507 
+L 380.778181 482.039844 
+Q 380.778181 502.839844 401.578181 502.839844 
+z
+" style="fill: #e8a838; stroke: #000000; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(422.121431 468.601257)">→ 1个最优解</text>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(401.578181 474.674207)">Cmax=85.6%  Smax=94.7%</text>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(411.885963 480.747157)">F=0.882(三方案最高)</text>
+   </g>
+   <g id="text_18">
+    <g id="patch_18">
+     <path d="M 422.372494 488.419688 
+L 452.625931 488.419688 
+Q 458.125931 488.419688 458.125931 482.919688 
+L 458.125931 477.15586 
+Q 458.125931 471.65586 452.625931 471.65586 
+L 422.372494 471.65586 
+Q 416.872494 471.65586 416.872494 477.15586 
+L 416.872494 482.919688 
+Q 416.872494 488.419688 422.372494 488.419688 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #888888" x="437.499213" y="481.552423" transform="rotate(-0 437.499213 481.552423)">耗时: ~385s</text>
+   </g>
+  </g>
+  <g id="axes_5">
+   <g id="text_19">
+    <g id="patch_19">
+     <path d="M 706.881152 347.042691 
+L 752.88287 347.042691 
+Q 772.38287 347.042691 772.38287 327.542691 
+L 772.38287 313.139707 
+Q 772.38287 293.639707 752.88287 293.639707 
+L 706.881152 293.639707 
+Q 687.381152 293.639707 687.381152 313.139707 
+L 687.381152 327.542691 
+Q 687.381152 347.042691 706.881152 347.042691 
+z
+" style="fill: #5a9e6f"/>
+    </g>
+    <text style="font-weight: 700; font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(706.881152 318.335645)">枚举 (辅助验证)</text>
+    <text style="font-weight: 700; font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(720.132011 325.926832)">遍历法</text>
+   </g>
+   <g id="text_20">
+    <g id="patch_20">
+     <path d="M 694.75398 232.536335 
+L 765.010042 232.536335 
+Q 783.210042 232.536335 783.210042 214.336335 
+L 783.210042 208.886897 
+Q 783.210042 190.686897 765.010042 190.686897 
+L 694.75398 190.686897 
+Q 676.55398 190.686897 676.55398 208.886897 
+L 676.55398 214.336335 
+Q 676.55398 232.536335 694.75398 232.536335 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="729.882011" y="213.043647" transform="rotate(-0 729.882011 213.043647)">生成: ΣC(10,k)×3^k=235,011</text>
+   </g>
+   <g id="text_21">
+    <g id="patch_21">
+     <path d="M 700.832698 283.503327 
+L 758.931323 283.503327 
+Q 777.131323 283.503327 777.131323 265.303327 
+L 777.131323 259.853889 
+Q 777.131323 241.653889 758.931323 241.653889 
+L 700.832698 241.653889 
+Q 682.632698 241.653889 682.632698 259.853889 
+L 682.632698 265.303327 
+Q 682.632698 283.503327 700.832698 283.503327 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="729.882011" y="264.010639" transform="rotate(-0 729.882011 264.010639)">预算筛选→15,207可行解</text>
+   </g>
+   <g id="text_22">
+    <g id="patch_22">
+     <path d="M 704.744886 334.470319 
+L 755.019136 334.470319 
+Q 773.219136 334.470319 773.219136 316.270319 
+L 773.219136 310.820882 
+Q 773.219136 292.620882 755.019136 292.620882 
+L 704.744886 292.620882 
+Q 686.544886 292.620882 686.544886 310.820882 
+L 686.544886 316.270319 
+Q 686.544886 334.470319 704.744886 334.470319 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="729.882011" y="314.977632" transform="rotate(-0 729.882011 314.977632)">逐一评估(统一求解器)</text>
+   </g>
+   <g id="text_23">
+    <g id="patch_23">
+     <path d="M 701.113823 385.437311 
+L 758.650198 385.437311 
+Q 776.850198 385.437311 776.850198 367.237311 
+L 776.850198 361.787874 
+Q 776.850198 343.587874 758.650198 343.587874 
+L 701.113823 343.587874 
+Q 682.913823 343.587874 682.913823 361.787874 
+L 682.913823 367.237311 
+Q 682.913823 385.437311 701.113823 385.437311 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="729.882011" y="365.944624" transform="rotate(-0 729.882011 365.944624)">非支配排序→Pareto前沿</text>
+   </g>
+   <g id="text_24">
+    <g id="patch_24">
+     <path d="M 707.868136 436.404303 
+L 751.895886 436.404303 
+Q 770.095886 436.404303 770.095886 418.204303 
+L 770.095886 412.754866 
+Q 770.095886 394.554866 751.895886 394.554866 
+L 707.868136 394.554866 
+Q 689.668136 394.554866 689.668136 412.754866 
+L 689.668136 418.204303 
+Q 689.668136 436.404303 707.868136 436.404303 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #333333" x="729.882011" y="416.911616" transform="rotate(-0 729.882011 416.911616)">验证: GA解∈前沿?</text>
+   </g>
+   <g id="text_25">
+    <g id="patch_25">
+     <path d="M 687.679542 502.839844 
+L 772.08448 502.839844 
+Q 792.88448 502.839844 792.88448 482.039844 
+L 792.88448 464.444507 
+Q 792.88448 443.644507 772.08448 443.644507 
+L 687.679542 443.644507 
+Q 666.879542 443.644507 666.879542 464.444507 
+L 666.879542 482.039844 
+Q 666.879542 502.839844 687.679542 502.839844 
+z
+" style="fill: #5a9e6f; stroke: #000000; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(709.58698 468.601257)">→ 19个Pareto解</text>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(687.679542 474.674207)">C:40.9%~85.7%  S:90.0%~98.6%</text>
+    <text style="font-weight: 700; font-size: 5.2px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #ffffff" transform="translate(714.282011 480.747157)">全局最优保证</text>
+   </g>
+   <g id="text_26">
+    <g id="patch_26">
+     <path d="M 716.367909 488.419688 
+L 743.396112 488.419688 
+Q 748.896112 488.419688 748.896112 482.919688 
+L 748.896112 477.15586 
+Q 748.896112 471.65586 743.396112 471.65586 
+L 716.367909 471.65586 
+Q 710.867909 471.65586 710.867909 477.15586 
+L 710.867909 482.919688 
+Q 710.867909 488.419688 716.367909 488.419688 
+z
+" style="fill: #ffffff; stroke: #dddddd; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 5.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #888888" x="729.882011" y="481.552423" transform="rotate(-0 729.882011 481.552423)">耗时: ~89s</text>
+   </g>
+  </g>
+  <g id="axes_6">
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #d4a017" x="437.499213" y="515.085042" transform="rotate(-0 437.499213 515.085042)">▼</text>
+   </g>
+   <g id="text_28">
+    <g id="patch_27">
+     <path d="M 191.897728 645.574009 
+L 683.100697 645.574009 
+Q 722.100697 645.574009 722.100697 606.574009 
+L 722.100697 534.808119 
+Q 722.100697 495.808119 683.100697 495.808119 
+L 191.897728 495.808119 
+Q 152.897728 495.808119 152.897728 534.808119 
+L 152.897728 606.574009 
+Q 152.897728 645.574009 191.897728 645.574009 
+z
+" style="fill: #ffffff; stroke: #c0c0d0; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(291.708783 540.295541)">        指标              │     方案A (主要) NSGA-II     │     方案B (次主要) 分层GA    │     枚举 (辅助验证)</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(191.897728 549.576728)">    ──────────────────────┼───────────────────────────┼───────────────────────────┼──────────────────────────</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(305.5939 558.874978)">    最高覆盖率            │     85.7%                  │     85.6%                  │     85.7% (全局最优)</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(308.550892 568.173228)">    最高满意度            │     0.986                  │     0.947                  │     0.986 (全局最优)</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(322.38472 577.471478)">    0.6C+0.4S            │     0.874                  │     0.882 (最高)           │     0.878</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(311.393627 586.769728)">    Pareto解数            │     14个                   │     1个                    │     19个 (完整前沿)</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(311.69933 596.067978)">    耗时                  │     ~68s                   │     ~385s                  │     ~89s (全局保证)</text>
+    <text style="font-size: 6.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; fill: #333333" transform="translate(437.499213 604.95815)"/>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 5.5px; font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif; text-anchor: middle; fill: #888888" x="437.499213" y="724.427129" transform="rotate(-0 437.499213 724.427129)">注: 方案A TOPSIS推荐 D(中)E(小)F(小)G(小)J(中) 5站118万  C=84.9%  S=0.947</text>
+   </g>
+  </g>
+ </g>
+</svg>

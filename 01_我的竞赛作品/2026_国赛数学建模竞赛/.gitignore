@@ -1,0 +1,259 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#   Usually these files are written by a python script from a template
+#   before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+# Pipfile.lock
+
+# UV
+#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+# uv.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+# poetry.lock
+# poetry.toml
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
+#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
+# pdm.lock
+# pdm.toml
+.pdm-python
+.pdm-build/
+
+# pixi
+#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
+# pixi.lock
+#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
+#   in the .venv directory. It is recommended not to include this directory in version control.
+.pixi
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# Redis
+*.rdb
+*.aof
+*.pid
+
+# RabbitMQ
+mnesia/
+rabbitmq/
+rabbitmq-data/
+
+# ActiveMQ
+activemq-data/
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.envrc
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#   JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#   be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#   and can be added to the global gitignore or merged into this file.  For a more nuclear
+#   option (not recommended) you can uncomment the following to ignore the entire idea folder.
+# .idea/
+
+# Abstra
+#   Abstra is an AI-powered process automation framework.
+#   Ignore directories containing user credentials, local state, and settings.
+#   Learn more at https://abstra.io/docs
+.abstra/
+
+# Visual Studio Code
+#   Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#   that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+#   and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#   you could uncomment the following to ignore the entire vscode folder
+# .vscode/
+# Temporary file for partial code execution
+tempCodeRunnerFile.py
+
+# Ruff stuff:
+.ruff_cache/
+
+# PyPI configuration file
+.pypirc
+
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# 本仓库：docx 补丁脚本的本地回滚备份（旧版本可由 git 历史取得，故不入库）
+04_论文手/Q1/_word_build/*_backup.docx
+
+# Word 临时锁文件（打开 docx 时自动生成，非内容）
+~$*.docx
+
+# docx 补丁脚本的本地回滚备份（旧版可由 git 历史取得，故不入库）
+06_交付物/_build/*_backup.docx
+
+# 模拟器运行目录（698 MB，本地解压产物，不入库；2026-09-12 队员指示忽略）
+/Jammer-simulator/
+
+# 离线测试运行器的副产品（2026-09-12）
+# Q3 SimulatorClient 的 log_dir 默认 "./logs"（相对 cwd）⇒ 在 核验往来/ 下跑测试时
+# 日志会落到该目录。这是"相对 cwd"这一便携性问题的实际代价（见核验报告 §四.G）。
+# 此处定点忽略，**不写宽泛的 logs/**（真实交付日志不在这个路径）。
+# 注意：同目录的 _offline_tests_result.txt 是**证据，故意保持跟踪**，不加忽略规则。
+/03_编程手/核验往来/logs/
+/03_编程手/MATLAB_Framework/logs/
+# v2.0 是 MATLAB_Framework 的副本，跑 Q3/Q4 演练时会同样生成 logs/（2026-09-13）
+/03_编程手/MATLAB_Framework_v2.0/logs/
+
+# 浏览器类工具的缓存（2026-09-13）
+# 起因：Q3 窗口在 MATLAB_Framework/ 下跑了浏览器检查，落下 .playwright-mcp/ 与一张
+# runbook-top.png，污染了本该冻结在 q3-v1.0.0 的交付目录。目录类产物在此忽略 ——
+# 这类目录是**工具缓存**，任何情况下都不是交付物。全局忽略（不限路径）：工具在哪跑都会生成。
+# 注意**不忽略 .png**：截图可能是执行卡/论文的正式素材，一律忽略会把真东西一起吞掉。
+# 截图落到交付目录属流程问题（跑工具时别把 cwd 设在冻结目录），靠纪律不靠忽略规则。
+.playwright-mcp/
+playwright-report/
+test-results/
+
+# 一键自测/驱动的产物（每次跑都会重生，不入库）
+/03_编程手/核验往来/_selftest_result.txt
+
+/03_编程手/核验往来/_crossval_cases.json
+/03_编程手/核验往来/_crossval_matlab.json
+/03_编程手/核验往来/_crossval_python.json
+/03_编程手/核验往来/_crossval_console.txt
+/03_编程手/核验往来/_mini_sim_result.txt

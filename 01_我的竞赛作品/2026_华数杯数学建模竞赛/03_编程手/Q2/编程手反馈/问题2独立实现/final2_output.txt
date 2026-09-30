@@ -1,0 +1,7 @@
+n200 seed 4: wl=451,946 M=448 accept=428 用时=132s
+n200 seed 5: wl=430,628 M=449 accept=433 用时=147s
+n200 seed 6: wl=445,768 M=449 accept=412 用时=151s
+n200 第二轮 best=430,628
+n300 seed 4: wl=713,174 M=559 accept=431 用时=195s
+n300 seed 5: wl=672,474 M=558 accept=529 用时=197s
+n300 第二轮 best=672,474

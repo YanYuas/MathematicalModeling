@@ -1,0 +1,8 @@
+{
+  "enabledMcpjsonServers": [
+    "jsxgraph",
+    "math",
+    "math-learning",
+    "mathgraphs"
+  ]
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>AI 工具使用详情</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm; }
+  body { font-family: "SimSun","宋体",serif; font-size: 12pt; line-height: 1.7;
+         color: #000; max-width: 900px; margin: 0 auto; padding: 12mm 8mm; }
+  h1 { font-family: "SimHei","黑体",sans-serif; font-size: 18pt; text-align: center; margin: 0 0 6mm; }
+  h2 { font-family: "SimHei","黑体",sans-serif; font-size: 14pt; margin: 7mm 0 3mm; }
+  h3 { font-family: "SimHei","黑体",sans-serif; font-size: 12.5pt; margin: 5mm 0 2mm; }
+  table { border-collapse: collapse; width: 100%; margin: 3mm 0; font-size: 10.5pt; }
+  th, td { border: 1px solid #444; padding: 2mm 2.5mm; vertical-align: top; }
+  th { background: #ececec; font-family: "SimHei","黑体",sans-serif; }
+  blockquote { margin: 3mm 0; padding: 2mm 4mm; border-left: 3px solid #999; background: #f7f7f7; }
+  code { font-family: Consolas, monospace; font-size: 10pt; background: #f2f2f2; padding: 0 1px; }
+  hr { border: none; border-top: 1px solid #bbb; margin: 6mm 0; }
+  p { margin: 2mm 0; }
+  @media print { body { padding: 0; } }
+</style></head>
+<body>
+<p style="text-align:center;font-size:10pt;color:#555;">
+  —— 打印说明：Ctrl+P → 目标打印机选「另存为 PDF」→ 文件名填 <b>AI 工具使用详情.pdf</b> → 保存 ——
+</p>
+<h1>AI 工具使用详情</h1>
+<blockquote><strong>用途</strong>：本文件是<strong>支撑材料</strong>用件，须<strong>导出为 <code>AI 工具使用详情.pdf</code></strong>（文件名逐字一致，《人工智能工具使用规定（2026年试行）》第 4 条）。<br>出具：建模手/总控 | 日期：2026-09-12 | 状态：🔄 待导出 PDF + 待队员补齐真实队号/姓名<br>结构：按第 4(1)–(4) 四类内容分节。<strong>所有条目均据仓库内实际留痕填写，无留痕者标注为"未入库"而不虚构。</strong></blockquote>
+<hr>
+<h2>一、工具名称、版本／型号（第 4(1) 条）</h2>
+<table><thead><tr><th>#</th><th>工具</th><th>版本／型号</th><th>使用环节</th><th>留痕依据</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>Claude</strong>（Claude Code）</td><td>Claude Opus 5（1M 上下文）、Claude Sonnet 5、Claude Fable 5</td><td><strong>主要工具</strong>：数学推导与符号核验、算法实现、数值实验、论文撰写与校订、多轮独立复核</td><td>本仓库 23 个文件提及；git 提交历史（<code>git log</code>，全部提交）</td></tr>
+<tr><td>2</td><td><strong>DeepSeek</strong></td><td>DeepSeek-V4-Pro</td><td><strong>跨模型独立验证</strong>：图表选型建议、跨模型对照分析</td><td><code>03_编程手/Q1/Q1_多AI协作_最终方案.md</code>（"协作模型：Claude Opus 5 + DeepSeek-V4-Pro"）</td></tr>
+<tr><td>3</td><td><strong>OpenAI Codex</strong></td><td>未记录</td><td>曾用于 Q2 的<strong>数学与鲁棒性审核</strong></td><td>⚠️ <strong>其产出的 <code>reports/Q2_审核报告_数学与鲁棒性_Codex.md</code> 未入库</strong>（已被核验为悬空引用）⇒ <strong>其结论未作为任何论文内容的依据</strong></td></tr>
+<tr><td>4</td><td><strong>ChatGPT / Grok</strong></td><td>未记录</td><td>Q1 阶段的<strong>设计思路提问</strong>（外部意见参考）</td><td><code>03_编程手/Q1/设计思路_待审核.md:148</code>（"对 ChatGPT/Grok 的提问"）</td></tr>
+<tr><td>5</td><td>本队自研脚本（非 AI 工具）</td><td>Python 3.11.9 / NumPy 2.4.6 / Matplotlib 3.11.1；MATLAB R2025b</td><td>全部数值实验与出图</td><td><code>03_编程手/<strong>/*.py</code>、<code></strong>/*.m</code></td></tr>
+</tbody></table>
+<blockquote><strong>说明</strong>：上表第 3、4 项的工具<strong>已如实申报</strong>，但其产出<strong>未被采纳为论文依据</strong>（第 3 项的报告未入库；<br>第 4 项仅为设计阶段的意见参考，结论均由队员用解析推导与自研脚本重新验证后采用）。</blockquote>
+<h2>二、使用环节与目的（第 4(2) 条）</h2>
+<table><thead><tr><th>环节</th><th>使用目的</th><th>人工把关方式</th></tr></thead><tbody>
+<tr><td>文献与背景梳理</td><td>快速了解交会定位／最小包围圆／覆盖巡游的标准结果</td><td>队员核原件后引用（参考文献逐条核对）</td></tr>
+<tr><td>数学推导</td><td>辅助推导与<strong>符号核验</strong>（CAS 复核常数与恒等式）</td><td>队员独立推导 + CAS 复算；不一致以解析为准</td></tr>
+<tr><td>算法实现</td><td>编写 Q1–Q4 的几何管线、策略与实验脚本</td><td>队员审读代码、运行断言与自检</td></tr>
+<tr><td>数值实验</td><td>参数扫描、蒙特卡洛抽样、出图</td><td>队员设定实验设计、检查异常值</td></tr>
+<tr><td>论文撰写</td><td>文字组织、表格与图号编排</td><td>队员定稿；结论口径逐条复核</td></tr>
+<tr><td><strong>独立复核</strong></td><td>用<strong>不同工具／不同实现路径</strong>重复计算同一结论</td><td>见第四节</td></tr>
+</tbody></table>
+<h2>三、主要提示方式与过程（第 4(3) 条）</h2>
+<ol><li><strong>任务书式提示</strong>：先由队员写出含任务目标、约束、验收标准的任务书（如</li></ol>
+<p>   <code>03_编程手/Q2/00_Q2完整解重推任务书_L3.md</code>），再交 AI 执行；</p>
+<ol><li><strong>角色分工提示</strong>：以"建模手／编程手／论文手／审核者"四种角色分别提示，</li></ol>
+<p>   并<strong>刻意让编程实现与复核由不同轮次、不同实现路径完成</strong>；</p>
+<ol><li><strong>以文档为准</strong>：要求 AI 一律引用仓库内的权威文件（如 <code>00_任务总控/权威数字表.md</code>），</li></ol>
+<p>   禁止凭记忆作答；</p>
+<ol><li><strong>要求给依据</strong>：凡涉及数值与结论，要求给出<strong>公式编号或文件行号</strong>，否则不予采纳；</li><li><strong>对抗式复核</strong>：对已完成的结论提示 AI"找出它错在哪"，并<strong>要求给出可复现的反例或复算脚本</strong></li></ol>
+<p>   （例：<code>02_建模手/Q2/_可达上界全局复核_逐alpha.py</code>、<code>02_建模手/Q3Q4统筹-U5c挖洞实验.py</code>）。</p>
+<h2>四、采纳、人工修改与核验情况（第 4(4) 条）</h2>
+<table><thead><tr><th>环节</th><th>采纳情况</th><th>人工修改与核验</th><th>证据</th></tr></thead><tbody>
+<tr><td><strong>Q1</strong></td><td>采纳</td><td>队员审读并修正数值（CAS 抓出 3 处算术错：30.24→30.2300、20.16→20.1533、78.5398→78.5385）；三侧联合审计</td><td><code>02_建模手/Q1/Q1三侧联合审计.md</code>、<code>03_编程手/Q1/实验结果/Q1_参数扫描报告.md</code></td></tr>
+<tr><td><strong>Q2</strong></td><td><strong>部分采纳后修正</strong></td><td>交叉验证数值被查出<strong>循环论证</strong>（27.154 m / −31.4% ⇒ <strong>35.414 m / −10.57%</strong>）；D/E 断言被推翻；<strong>方向偏差 α 维被漏掉</strong> ⇒ 上限 41.63° 更正为 <strong>39.6161°</strong></td><td><code>02_建模手/Q2/建模手-联合校验报告.md</code>、<code>04_论文手/Q2/正稿.md</code>（新增定理 5.2-3）</td></tr>
+<tr><td><strong>Q3/Q4</strong></td><td>采纳并<strong>多处更正</strong></td><td>第三方 5-Agent 审核推翻 3 条结论（U2 假定理／d 双轨方向／"三方吻合"独立性）；建模手复算更正 L4 引理与外扩宽度</td><td><code>00_任务总控/Q3Q4方案审核报告_多AI协作.md</code>、<code>03_编程手/建模手核验-*.md</code></td></tr>
+<tr><td><strong>论文</strong></td><td>采纳</td><td>队员定稿；<strong>Q1 的 Word 交付件被发现仍是审计前的旧构建</strong>（含已判错内容）⇒ 重建</td><td><code>04_论文手/Q1/_word_build/_patch_docx_to_v11.py</code></td></tr>
+</tbody></table>
+<p><strong>核验总原则</strong>：<strong>凡"结果好看"的结论一律优先复核</strong>（本题两次最严重的错误都属于此类：</p>
+<p>Q2 的 −31.4% 与 U2 的"homing 永不启用"）。</p>
+<h2>五、留痕与可追溯性</h2>
+<ul><li><strong>提交历史</strong>：本仓库全部提交保留 <code>[角色] 说明</code> 格式的提交信息，AI 参与环节可逐条追溯（<code>git log</code>）；</li><li><strong>核验报告</strong>：<code>02_建模手/*/建模手-联合校验报告.md</code>、<code>03_编程手/编程手交付核验报告-2026-09-11.md</code>、</li></ul>
+<p>  <code>03_编程手/建模手核验-编程手回执-2026-09-11.md</code>、<code>03_编程手/建模手核验-编程手实跑验证-2026-09-11.md</code>、</p>
+<p>  <code>03_编程手/编程手交付核验报告-2026-09-11.md</code>；</p>
+<ul><li><strong>可复现脚本</strong>：<code>02_建模手/Q2/_联合校验独立复算.py</code>、<code>02_建模手/Q2/_可达上界全局复核_逐alpha.py</code>、</li></ul>
+<p>  <code>03_编程手/Q2/代码/Q2_independent_verification.py</code>、<code>02_建模手/Q3Q4统筹-U5c挖洞实验.py</code>；</p>
+<ul><li><strong>废弃留痕</strong>：所有被推翻的结论<strong>均保留原文并标注"已废弃/已更正"</strong>（如 <code>00_任务总控/权威数字表.md</code></li></ul>
+<p>  §七"已废弃数据"、各文档的"⚠️ 更正"块），未做删除。</p>
+<blockquote>⚠️ <strong>不存在的留痕不得声称</strong>：早期版本曾引用 <code>03_编程手/Q1/ai_generated/</code> 目录，<br>经核验<strong>该目录不存在</strong>，本详情<strong>不再引用</strong>。</blockquote>
+<hr>
+<h2>待队员补齐（<strong>导出 PDF 前必须完成</strong>）</h2>
+<ul><li>[ ] 真实<strong>参赛队号</strong>、<strong>队员姓名</strong>（本文件与声明节均需署名）</li><li>[ ] 第 4(1) 表中第 3、4 项的<strong>版本/型号</strong>（Codex、ChatGPT 的具体版本）</li><li>[ ] 对照规定 PDF，确认第 4(1)–(4) 的<strong>分类标题</strong>与规定原文一致</li><li>[ ] 由队员<strong>逐项确认</strong>上表内容属实并签字（电子签名或姓名）</li></ul>
+</body></html>

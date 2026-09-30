@@ -1,0 +1,182 @@
+
+===== SimulatorClient 离线自测：mode = ok =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_ok\robot_TESTTEAM_20260913_150005.jsonl
+[SimulatorClient] /enter 等待 1.6 s 后成功
+  server_count=1  日志 request 条数=1  err_id=
+
+  [PASS] enter() 成功且返回 struct
+  [PASS] remaining_real_duration_s = 1200
+  [PASS] 未重试（server_count == 1）
+  [PASS] 日志有 request 记录且 accepted=true
+  [PASS] 日志 http_status == 200
+  [PASS] 日志含 request_payload 与 response_payload
+  [PASS] 日志含 request_id 与 seq
+  ---- ok: 全部通过 ----
+
+===== SimulatorClient 离线自测：mode = accepted_false =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_accepted_false\robot_TESTTEAM_20260913_150009.jsonl
+  server_count=1  日志 request 条数=1  err_id=SimulatorClient:rejected
+
+  [PASS] accepted=false 不重试（server_count == 1）
+  [PASS] 抛 rejected 而非 transport
+  [PASS] 日志仍记录这次请求（accepted=false）
+  [PASS] 日志 virtual_time_s 记为 0
+  ---- accepted_false: 全部通过 ----
+
+===== SimulatorClient 离线自测：mode = http400 =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_http400\robot_TESTTEAM_20260913_150010.jsonl
+  server_count=1  日志 request 条数=1  err_id=SimulatorClient:rejected
+
+  [PASS] HTTP 400 不重试（server_count == 1）
+  [PASS] 抛 rejected 而非 transport
+  [PASS] 日志 http_status == 400
+  ---- http400: 全部通过 ----
+
+===== SimulatorClient 离线自测：mode = http409 =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_http409\robot_TESTTEAM_20260913_150011.jsonl
+  server_count=1  日志 request 条数=1  err_id=SimulatorClient:rejected
+
+  [PASS] HTTP 409 不重试（server_count == 1）
+  [PASS] 抛 rejected
+  [PASS] 日志 http_status == 409
+  ---- http409: 全部通过 ----
+
+===== SimulatorClient 离线自测：mode = hang =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_hang\robot_TESTTEAM_20260913_150012.jsonl
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 指向 URL 'http://127.0.0.1:20763/enter' 的连接在 2.000 秒后超时。原因是 "正在等待响应标头"。可能服务器没有响应，或者 weboptions.Timeout 需要设置为更高的
+值。] 
+[> 位置：SimulatorClient/send_request (第 235 行)
+位置: SimulatorClient/enter (第 79 行)
+位置: test_SimulatorClient_logging (第 43 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 指向 URL 'http://127.0.0.1:20763/enter' 的连接在 2.000 秒后超时。原因是 "正在等待响应标头"。可能服务器没有响应，或者 weboptions.Timeout
+需要设置为更高的值。] 
+[> 位置：SimulatorClient/send_request (第 235 行)
+位置: SimulatorClient/enter (第 79 行)
+位置: test_SimulatorClient_logging (第 43 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 指向 URL 'http://127.0.0.1:20763/enter' 的连接在 2.000 秒后超时。原因是 "正在等待响应标头"。可能服务器没有响应，或者 weboptions.Timeout
+需要设置为更高的值。] 
+[> 位置：SimulatorClient/send_request (第 235 行)
+位置: SimulatorClient/enter (第 79 行)
+位置: test_SimulatorClient_logging (第 43 行)] 
+  server_count=3  日志 request 条数=3  err_id=SimulatorClient:enterTimeout
+[警告: [SimulatorClient] 传输失败 (第 1/3 次): 指向 URL 'http://127.0.0.1:20763/measure' 的连接在 2.000 秒后超时。原因是 "正在等待响应标头"。可能服务器没有响应，或者 weboptions.Timeout
+需要设置为更高的值。] 
+[> 位置：SimulatorClient/send_request (第 235 行)
+位置: SimulatorClient/measure (第 138 行)
+位置: test_SimulatorClient_logging (第 142 行)] 
+[警告: [SimulatorClient] 传输失败 (第 2/3 次): 指向 URL 'http://127.0.0.1:20763/measure' 的连接在 2.000 秒后超时。原因是 "正在等待响应标头"。可能服务器没有响应，或者 weboptions.Timeout
+需要设置为更高的值。] 
+[> 位置：SimulatorClient/send_request (第 235 行)
+位置: SimulatorClient/measure (第 138 行)
+位置: test_SimulatorClient_logging (第 142 行)] 
+[警告: [SimulatorClient] 传输失败 (第 3/3 次): 指向 URL 'http://127.0.0.1:20763/measure' 的连接在 2.000 秒后超时。原因是 "正在等待响应标头"。可能服务器没有响应，或者 weboptions.Timeout
+需要设置为更高的值。] 
+[> 位置：SimulatorClient/send_request (第 235 行)
+位置: SimulatorClient/measure (第 138 行)
+位置: test_SimulatorClient_logging (第 142 行)] 
+
+  [PASS] enter 以 enterTimeout 收场（等待窗口生效）
+  [PASS] enter 重试次数 >= max_retries（重试确实发生了）
+  [PASS] 每次尝试都落日志
+  [PASS] 日志含 transport_error 文本
+  [PASS] measure() 传输层失败抛 transport
+  [PASS] measure() 恰好重试 max_retries 次（delta == 3）
+  ---- hang: 全部通过 ----
+
+===== clear_source homing 回归：mode = homing =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_clear_homing\robot_TESTTEAM_20260913_150035.jsonl
+[SimulatorClient] /enter 等待 1.1 s 后成功
+    [清除] Homing 逼近 频道 5
+    [清除] 直接清除 频道 5
+      [Homing] 第 2 步抵达（累计移动 566 m）
+  未抛异常=1  success=1  /measure=3  /clear=1
+
+  [PASS] 不抛异常（pdist 已替换）
+  [PASS] 发出了 homing 的起点 /measure
+  [PASS] 走到了 /clear 且成功
+  ---- clear_source/homing: 全部通过 ----
+
+===== clear_source homing 回归：mode = ok =====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_clear_ok\robot_TESTTEAM_20260913_150040.jsonl
+[SimulatorClient] /enter 等待 1.1 s 后成功
+    [清除] Homing 逼近 频道 5
+      [Homing] 起点 (200.0, 200.0) 无示向度（no_signal），放弃本频道本轮
+  未抛异常=1  success=0  /measure=1  /clear=0
+
+  [PASS] 不抛异常（svd_deg 守卫生效）
+  [PASS] 只试了一次 /measure 就放弃
+  [PASS] 未发出任何 /clear
+  [PASS] 如实返回 success=false
+  ---- clear_source/ok: 全部通过 ----
+
+===== homing 收敛回归（geo mock，真源 (300,400)）=====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_homingconv\robot_TESTTEAM_20260913_150043.jsonl
+[SimulatorClient] /enter 等待 1.1 s 后成功
+    [清除] Homing 逼近 频道 7
+    [清除] 直接清除 频道 7
+      [Homing] 第 8 步抵达（累计移动 1069 m）
+  未抛异常=1  success=1  /measure=9  /clear=1  总移动=1069 m  末点距真源=1.6 m
+
+  [PASS] 不抛异常
+  [PASS] 清除成功
+  [PASS] 检测次数有界（<= 15，旧版 10 次全废仍不成功）
+  [PASS] 总移动有界（<= 2500 m，旧版单频道可烧 15 km+）
+  [PASS] 收敛到真源 20 m 内（清除半径内）
+  ---- homing 收敛: 全部通过 ----
+
+===== sweep_clear 定向短走回归（geo mock，真源 (300,400)）=====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_sweep\robot_TESTTEAM_20260913_150055.jsonl
+[SimulatorClient] /enter 等待 1.1 s 后成功
+    [清除] 扫掠清除 频道 7, R_MEC=60.00 m（定向短走）
+  未抛异常=1  success=1  mode=sweep  /clear=2  /measure=1  总行程=20 m
+
+  [PASS] 不抛异常
+  [PASS] 分支确实派发到 sweep
+  [PASS] 清除成功
+  [PASS] /clear 次数 <= 4（旧实现螺旋外扩更多）
+  [PASS] 总行程 <= 400 m（含起点到 c* 那一段；旧实现螺旋可走数百米）
+  ---- sweep_clear 定向短走: 全部通过 ----
+
+===== 阶段 C 单方位 homing 回归（geo mock，真源 (300,400)）=====
+[日志] 本局自记录日志: C:\Users\21722\AppData\Local\Temp\sclog_phaseC\robot_TESTTEAM_20260913_150100.jsonl
+[SimulatorClient] /enter 等待 1.2 s 后成功
+    [清除] Homing 逼近 频道 7
+    [清除] 直接清除 频道 7
+      [Homing] 第 5 步抵达（累计移动 712 m）
+  未抛异常=1  success=1  mode=homing  /measure=0  总行程=0 m
+
+  [PASS] 不抛异常
+  [PASS] 分支派发到 homing（R_MEC=Inf）
+  [PASS] 沿单方位 homing 清除成功
+  [PASS] 检测次数有界（<= 15）
+  [PASS] 总行程有界（<= 1200 m；旧版重扫 13 格点可达数千米）
+  ---- 阶段 C 单方位 homing: 全部通过 ----
+
+===== 路径优化回归（真实演练几何）=====
+[网格] d=1000.0 m, 生成 13 个检测点
+  格点数 = 13
+  源点数 = 12，起点 = (0.0, 1732.1)
+  案例B 原发现顺序 = 13160 m = 2632 s ｜ 重排后 = 7588 m = 1518 s
+  案例C 递推取首站行程 = 12000 m = 2400 s（收紧邻域会退回 15464 m）
+
+  [PASS] 案例A 2-opt 后行程 ≤ 12100 m（改前贪心 15464 m）
+  [PASS] 案例A 是完整排列（每点恰访问一次）
+  [PASS] 案例B 重排后行程 ≤ 8900 m（改前 13160 m）
+  [PASS] 案例B 相对发现顺序确实更短
+  [PASS] 案例B 是完整排列
+  [PASS] 两处合计省 ≥ 1500 s 虚拟时间
+  [PASS] 案例C 递推取首站行程 ≤ 12100 m（锁 2-opt 邻域含 i=1）
+  ---- optimize_route: 全部通过 ----
+
+===== 圆域截断回归（退化交会事故）=====
+  L 顶点数 = 6 ｜ c* = (-1168.77, 1078.96) ｜ R_MEC = 268.0506 m
+  [对照] 正交观测：L 顶点 4 ｜ c* = (0.30, -0.30) ｜ R_MEC = 24.6927 m
+
+  [PASS] 交会不为空
+  [PASS] L 顶点数 ≥ 3（旧版退化成 2 ? R_MEC 假性偏小）
+  [PASS] 真源在 L 内（旧版 否）
+  [PASS] R_MEC(268.05) ≥ 真源到 c*(89.30)
+  [PASS] R_MEC > R_star=84.0369 ? 清除走 homing（旧版误走 sweep）
+  [PASS] 对照：正交观测下真源 (0,0) 仍在 L 内
+  ---- clip_to_domain: 全部通过 ----
+SELFTEST_SUMMARY [true true true true true true true true true true true true]

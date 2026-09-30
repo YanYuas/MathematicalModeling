@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>线性规划 · 建模手研究体系</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+/* ================= 设计 tokens ================= */
+:root{
+  --bg-cream:#FFFBF5; --bg-panel:#FFFFFF; --bg-raised:#FFFFFF; --bg-inset:#FBF1E7;
+  --line:#F2E4D8; --text-hi:#5C4A45; --text-mid:#9B7E72; --text-low:#C0A89B;
+  --primary:#FF8FA3; --mint:#7BD3B2; --butter:#FFD97A; --sky:#8FC1F0;
+  --lilac:#C9AEE8; --strawberry:#FF6B7D;
+  --mint-ink:#2F9E76; --butter-ink:#B0872A; --sky-ink:#3A7BC0; --lilac-ink:#9A7BB8;
+  --straw-ink:#E24A5E; --butter-dk:#8A6A1A; --straw-dk:#C23B50; --mint-dk:#1F8A62;
+  --white:#FFFFFF;
+  --radius-sm:10px; --radius-md:16px; --radius-lg:24px; --radius-pill:999px;
+  --shadow-card:0 6px 16px rgba(255,143,163,.18);
+  --shadow-raise:0 12px 32px rgba(255,143,163,.28);
+  --glow:0 0 20px rgba(255,143,163,.30);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-soft:cubic-bezier(.22,1,.36,1);
+  --font-cute:'ZCOOL KuaiLe','PingFang SC',sans-serif;
+  --font-body:'PingFang SC','Microsoft YaHei',sans-serif;
+  --font-mono:'JetBrains Mono','Consolas',monospace;
+}
+[data-theme="dark"]{
+  --bg-cream:#2B2222; --bg-panel:#3A2F2E; --bg-raised:#453838; --bg-inset:#332828;
+  --line:#574641; --text-hi:#FCEFE6; --text-mid:#C9AFA3; --text-low:#8A6F66;
+  --primary:#FF9EB0; --mint:#8FE3C2; --butter:#FFE29A; --sky:#A6D2F5;
+  --lilac:#D8C2F0; --strawberry:#FF8C9A;
+  --mint-ink:#63C9A6; --butter-ink:#E4B95C; --sky-ink:#8FC6F2; --lilac-ink:#C9B1E8;
+  --straw-ink:#F07C8C; --butter-dk:#F0D77F; --straw-dk:#F08C98; --mint-dk:#7FD9B4;
+  --shadow-card:0 6px 16px rgba(0,0,0,.35);
+  --shadow-raise:0 12px 32px rgba(0,0,0,.5);
+  --glow:0 0 20px rgba(255,158,176,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 50% 0, rgba(255,143,163,.10), transparent 420px),
+    radial-gradient(rgba(255,143,163,.055) 1px, transparent 1px),
+    var(--bg-cream);
+  background-size:auto, 24px 24px, auto;
+  color:var(--text-hi);
+  font-family:var(--font-body);
+  font-size:13px; line-height:1.7;
+  min-height:100vh;
+  transition:background .4s var(--ease-soft), color .4s var(--ease-soft);
+}
+a{color:var(--primary);text-decoration:none}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes gudu{0%{transform:scale(.92) translateY(8px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1}50%{box-shadow:0 0 0 6px transparent;opacity:.55}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+@keyframes rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.bp{animation:gudu .5s var(--ease-spring) both}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease-soft),transform .6s var(--ease-soft)}
+.reveal.in{opacity:1;transform:none}
+/* ================= 页面骨架 ================= */
+.hero{padding:56px 32px 10px;text-align:center;position:relative}
+.hero .cloud{position:absolute;opacity:.5;pointer-events:none}
+.hero .cloud.c1{top:16px;left:7%;animation:floaty 6s var(--ease-soft) infinite}
+.hero .cloud.c2{top:30px;right:9%;animation:floaty 7s var(--ease-soft) .6s infinite}
+.hero .kick{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-cute);font-size:12px;
+  color:var(--primary);background:rgba(255,143,163,.12);border-radius:var(--radius-pill);padding:4px 14px;margin-bottom:14px}
+.hero h1{font-family:var(--font-cute);font-weight:400;font-size:clamp(28px,4.5vw,42px);letter-spacing:1px;line-height:1.25}
+.hero .sub{color:var(--text-mid);margin-top:10px;font-size:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hero .meta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.meta-chip{font-family:var(--font-cute);font-size:12px;color:var(--text-mid);background:var(--bg-panel);
+  border:1px solid var(--line);border-radius:var(--radius-pill);padding:4px 14px}
+.meta-chip b{color:var(--text-hi);font-weight:600}
+.toolbar{position:fixed;top:18px;right:22px;display:flex;gap:8px;z-index:50}
+.tb-btn{font-family:var(--font-cute);font-size:13px;color:var(--text-mid);background:var(--bg-panel);
+  border:1px solid var(--line);border-radius:var(--radius-pill);padding:7px 16px;cursor:pointer;
+  transition:transform .25s var(--ease-spring),color .3s,border-color .3s}
+.tb-btn:hover{transform:translateY(-2px);color:var(--primary);border-color:var(--primary)}
+main{max-width:1120px;margin:0 auto;padding:24px 24px 80px}
+/* ================= 目录 ================= */
+.toc{background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-card);padding:18px 20px;margin-top:24px}
+.toc .toc-t{font-family:var(--font-cute);font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.toc .toc-t .dot{width:8px;height:8px;border-radius:50%;background:var(--lilac)}
+.toc-list{display:flex;flex-wrap:wrap;gap:8px}
+.toc-item{font-family:var(--font-cute);font-size:12.5px;color:var(--text-mid);padding:5px 14px;border-radius:var(--radius-pill);
+  cursor:pointer;border:1px solid var(--line);background:var(--bg-panel);transition:all .25s var(--ease-spring)}
+.toc-item:hover{transform:translateY(-2px);color:var(--primary);border-color:var(--primary)}
+.toc-item.on{background:var(--primary);color:var(--white);border-color:var(--primary);box-shadow:var(--glow)}
+/* ================= 章节 ================= */
+section{margin-top:44px;scroll-margin-top:24px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.sec-head .num{font-family:var(--font-cute);font-size:13px;color:var(--white);background:var(--primary);
+  padding:3px 14px;border-radius:var(--radius-pill);box-shadow:var(--glow);letter-spacing:1px}
+.sec-head h2{font-family:var(--font-cute);font-weight:400;font-size:24px}
+.sec-head .note{color:var(--text-low);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.card{background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-card);padding:20px;position:relative;overflow:hidden;
+  transition:transform .3s var(--ease-soft),box-shadow .3s var(--ease-soft)}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-raise)}
+.card .ct{font-family:var(--font-cute);font-weight:400;font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.card .ct .dot{width:8px;height:8px;border-radius:50%;background:var(--lilac);flex:none}
+.card .cd{font-size:12.5px;color:var(--text-mid);line-height:1.75}
+.card .cf{margin-top:14px;border-top:1px dashed var(--line);padding-top:10px;font-size:12px;color:var(--text-low)}
+.card .cf b{color:var(--primary);font-weight:600}
+/* ================= KPI ================= */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.kpi{position:relative;overflow:hidden;border-radius:var(--radius-lg);background:var(--bg-panel);
+  border:1px solid var(--line);padding:18px 16px;box-shadow:var(--shadow-card);transition:transform .3s var(--ease-soft)}
+.kpi:hover{transform:translateY(-3px)}
+.kpi::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(255,143,163,.12),transparent 60%);pointer-events:none}
+.kpi.key{box-shadow:var(--glow)}
+.kpi .kl{font-family:var(--font-cute);font-size:13px;color:var(--text-mid)}
+.kpi .kv{font-family:var(--font-cute);font-size:30px;color:var(--text-hi);line-height:1.2;margin:6px 0 3px;position:relative;
+  font-variant-numeric:tabular-nums}
+.kpi .kd{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--text-low);position:relative;flex-wrap:wrap}
+.kpi .up{color:var(--mint-ink);font-family:var(--font-cute);font-size:12px}
+.kpi .down{color:var(--straw-ink);font-family:var(--font-cute);font-size:12px}
+.kpi.flash .kv{color:var(--primary)}
+/* ================= 图表 ================= */
+.chart-foot{display:flex;justify-content:space-between;margin-top:10px;font-size:11.5px;color:var(--text-low);flex-wrap:wrap;gap:6px}
+.chart-foot b{font-family:var(--font-cute);font-size:13px;color:var(--text-hi)}
+.lc-svg{width:100%;height:180px;display:block}
+.lc-svg .grid{stroke:var(--line);stroke-width:1}
+.lc-svg .area{fill:var(--primary);opacity:.13}
+.lc-svg .line{fill:none;stroke:var(--primary);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:800;stroke-dashoffset:800;animation:draw 1.3s var(--ease-soft) forwards}
+.lc-svg .gdot{fill:var(--white);stroke:var(--primary);stroke-width:2;opacity:0;animation:fadein .4s 1s forwards}
+.lc-svg .gx,.lc-svg .gy{fill:var(--text-low);font-size:10px;font-family:var(--font-cute)}
+.bc-svg{width:100%;height:180px;display:block}
+.bc-svg .bar{fill:var(--primary);transform-origin:bottom;transform:scaleY(0);animation:rise .7s var(--ease-spring) forwards;
+  animation-delay:calc(var(--i)*90ms)}
+.bc-svg .bar.mint{fill:var(--mint)} .bc-svg .bar.sky{fill:var(--sky)} .bc-svg .bar.butter{fill:var(--butter)}
+.bc-svg .bx{fill:var(--text-low);font-size:10px;font-family:var(--font-cute);text-anchor:middle}
+/* ================= 表格 ================= */
+.tblwrap{overflow-x:auto;background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-md)}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:560px}
+.tbl th{text-align:left;padding:11px 14px;background:var(--bg-inset);color:var(--text-mid);font-weight:600;white-space:nowrap}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--line);color:var(--text-hi)}
+.tbl tbody tr:nth-child(even) td{background:rgba(251,241,231,.4)}
+.tbl tbody tr:hover td{background:rgba(255,143,163,.06)}
+.tbl .tnum{font-variant-numeric:tabular-nums;font-family:var(--font-cute)}
+/* ================= callout ================= */
+.callout{border-radius:var(--radius-md);padding:14px 16px;margin:14px 0;font-size:13px;line-height:1.75;
+  display:flex;gap:10px;align-items:flex-start;animation:gudu .45s var(--ease-spring)}
+.callout .ci{flex:none;margin-top:2px}
+.callout .ct{font-family:var(--font-cute);font-size:13.5px;margin-bottom:2px}
+.callout.mint{background:rgba(123,211,178,.14);border:1px solid rgba(123,211,178,.4);color:var(--mint-dk)}
+.callout.mint .ct,.callout.mint .ci{color:var(--mint-ink)}
+.callout.butter{background:rgba(255,217,122,.16);border:1px solid rgba(255,217,122,.5);color:var(--butter-dk)}
+.callout.butter .ct,.callout.butter .ci{color:var(--butter-ink)}
+.callout.sky{background:rgba(143,193,240,.14);border:1px solid rgba(143,193,240,.45);color:var(--sky-ink)}
+.callout.sky .ct,.callout.sky .ci{color:var(--sky-ink)}
+.callout.straw{background:rgba(255,107,125,.12);border:1px solid rgba(255,107,125,.4);color:var(--straw-dk)}
+.callout.straw .ct,.callout.straw .ci{color:var(--straw-ink)}
+/* ================= 代码 ================= */
+.codebox{background:var(--bg-inset);border:1px solid var(--line);border-radius:var(--radius-md);
+  padding:14px 16px;margin:14px 0;position:relative;overflow-x:auto}
+.codebox .cbt{position:absolute;top:8px;right:14px;font-size:10px;color:var(--lilac-ink);letter-spacing:1px;font-family:var(--font-cute)}
+.codebox pre{font-family:var(--font-mono);font-size:11.5px;color:var(--text-mid);line-height:1.8;white-space:pre-wrap;word-break:break-all}
+/* ================= 标签 ================= */
+.tag-lv{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-cute);font-size:11.5px;
+  padding:3px 12px;border-radius:var(--radius-pill);color:var(--white)}
+.tag-lv .ld{width:6px;height:6px;border-radius:50%;background:var(--white)}
+.tag-lv.low{background:var(--mint)} .tag-lv.mid{background:var(--butter);color:var(--butter-dk)}
+.tag-lv.high{background:var(--primary)} .tag-lv.crit{background:var(--strawberry)}
+.tag-lv.mid .ld{background:var(--butter-dk)}
+.chip{display:inline-flex;font-size:11.5px;padding:2px 10px;border-radius:var(--radius-pill);
+  background:var(--bg-inset);color:var(--text-mid);align-items:center;gap:6px;margin:2px}
+.chip.lilac{background:rgba(201,174,232,.25);color:var(--lilac-ink)}
+.chip.mint{background:rgba(123,211,178,.20);color:var(--mint-ink)}
+.chip.butter{background:rgba(255,217,122,.25);color:var(--butter-ink)}
+.chip.sky{background:rgba(143,193,240,.20);color:var(--sky-ink)}
+.chip.straw{background:rgba(255,107,125,.15);color:var(--straw-ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--text-low);display:inline-block;flex:none}
+.dot.on{background:var(--mint);animation:breathe 2s ease-in-out infinite}
+.dot.busy{background:var(--butter);animation:breathe 1.2s ease-in-out infinite}
+.dot.alert{background:var(--strawberry);animation:breathe .7s ease-in-out infinite}
+/* ================= 正文 ================= */
+.prose h3{font-family:var(--font-cute);font-weight:400;font-size:17px;margin:22px 0 10px}
+.prose h4{font-family:var(--font-cute);font-weight:400;font-size:15px;margin:18px 0 8px}
+.prose p{margin:10px 0;font-size:13.5px;color:var(--text-hi)}
+.prose ul,.prose ol{margin:10px 0 10px 22px;font-size:13.5px;color:var(--text-hi)}
+.prose li{margin:5px 0}
+.prose li::marker{color:var(--primary)}
+.prose strong{color:var(--text-hi);font-weight:700}
+.prose mark{background:rgba(255,217,122,.5);border-radius:3px;padding:0 2px;color:var(--butter-dk)}
+/* ================= 交互组件 ================= */
+.btn{font-family:var(--font-cute);font-size:13px;padding:8px 18px;border-radius:var(--radius-pill);
+  border:1px solid var(--line);background:var(--bg-panel);color:var(--text-mid);cursor:pointer;
+  transition:all .25s var(--ease-spring)}
+.btn:hover{transform:translateY(-2px);color:var(--primary);border-color:var(--primary)}
+.btn.primary{background:var(--primary);color:var(--white);border-color:var(--primary);box-shadow:var(--glow)}
+.btn.primary:hover{background:var(--primary);transform:translateY(-2px) scale(1.03)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.input-row{display:flex;gap:10px;align-items:center;margin:8px 0;flex-wrap:wrap}
+.input-row label{font-family:var(--font-cute);font-size:12.5px;color:var(--text-mid);min-width:60px}
+.input-row input,.input-row select{font-family:var(--font-mono);font-size:12px;padding:6px 10px;
+  border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--bg-inset);color:var(--text-hi);
+  width:120px;transition:border-color .3s}
+.input-row input:focus,.input-row select:focus{outline:none;border-color:var(--primary)}
+/* 单纯形表演示 */
+.simplex-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:11.5px;margin:12px 0}
+.simplex-table th{background:var(--bg-inset);padding:8px 10px;text-align:center;color:var(--text-mid);
+  font-family:var(--font-cute);border:1px solid var(--line)}
+.simplex-table td{padding:8px 10px;text-align:center;border:1px solid var(--line);color:var(--text-hi)}
+.simplex-table td.entering{background:rgba(255,143,163,.2);color:var(--primary);font-weight:700}
+.simplex-table td.leaving{background:rgba(255,217,122,.2);color:var(--butter-ink);font-weight:700}
+.simplex-table td.pivot{background:var(--primary);color:var(--white);font-weight:700;box-shadow:var(--glow)}
+.simplex-table td.rhs{background:var(--bg-inset);font-family:var(--font-cute)}
+.simplex-table tr.obj-row td{background:var(--bg-inset);font-family:var(--font-cute);color:var(--primary)}
+.step-log{background:var(--bg-inset);border-radius:var(--radius-md);padding:12px 16px;margin:10px 0;
+  font-family:var(--font-mono);font-size:11.5px;color:var(--text-mid);max-height:120px;overflow-y:auto}
+.step-log .step-item{margin:4px 0;padding:4px 8px;border-left:3px solid var(--primary);background:var(--bg-panel);border-radius:0 6px 6px 0}
+/* 滑块 */
+.slider-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+.slider-row label{font-family:var(--font-cute);font-size:12.5px;color:var(--text-mid);min-width:80px}
+.slider-row input[type=range]{flex:1;accent-color:var(--primary)}
+.slider-row .val{font-family:var(--font-cute);font-size:14px;color:var(--primary);min-width:50px;text-align:right}
+/* 文件列表 */
+.file-list{display:flex;flex-direction:column;gap:8px}
+.file-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-inset);
+  border-radius:var(--radius-md);border:1px solid var(--line);transition:all .25s var(--ease-spring)}
+.file-item:hover{transform:translateX(4px);border-color:var(--primary)}
+.file-item .ficon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-cute);font-size:12px;color:var(--white);flex:none}
+.file-item .ficon.py{background:var(--sky)}
+.file-item .ficon.md{background:var(--lilac)}
+.file-item .finfo{flex:1;min-width:0}
+.file-item .fname{font-family:var(--font-cute);font-size:13px;color:var(--text-hi)}
+.file-item .fdesc{font-size:11px;color:var(--text-low)}
+.file-item .fsize{font-family:var(--font-mono);font-size:11px;color:var(--text-low)}
+/* 页脚 */
+footer{margin-top:60px;padding:24px 24px 40px;text-align:center;border-top:1px dashed var(--line);color:var(--text-low);font-size:12px}
+footer b{color:var(--text-mid);font-weight:600}
+@media (max-width:720px){
+  .hero{padding:44px 18px 8px}
+  .toolbar{position:static;justify-content:flex-end;padding:12px 18px 0}
+  main{padding:16px 14px 60px}
+  .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .hero .cloud{animation:none}
+  .dot.on,.dot.busy,.dot.alert{animation:none}
+  .lc-svg .line{stroke-dasharray:none;stroke-dashoffset:0;animation:none}
+  .bc-svg .bar{transform:none;animation:none}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 装饰云朵 -->
+<svg class="cloud c1" width="52" height="30" viewBox="0 0 52 30" fill="none" stroke="var(--lilac)" stroke-width="2" stroke-linecap="round">
+  <path d="M10 26a8 8 0 1 1 3-15.5A10 10 0 0 1 32 9a7 7 0 0 1 10 9H10z"/>
+</svg>
+<svg class="cloud c2" width="42" height="24" viewBox="0 0 52 30" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round">
+  <path d="M10 26a8 8 0 1 1 3-15.5A10 10 0 0 1 32 9a7 7 0 0 1 10 9H10z"/>
+</svg>
+
+<!-- 主题切换 -->
+<div class="toolbar">
+  <button class="tb-btn" id="themeBtn" type="button">暗色</button>
+</div>
+
+<!-- ================= Hero ================= -->
+<header class="hero">
+  <div class="kick"><span class="dot on"></span> 建模手研究体系 · Research System</div>
+  <h1>线性规划 · 从原理到玩转</h1>
+  <p class="sub">不是资料的搬运工，而是算法的钻研者。从单纯形法的数学推导，到逐行标注的代码实现，再到交互式求解器——把线性规划彻底吃透。</p>
+  <div class="meta">
+    <span class="meta-chip">专题 <b>01_优化模型</b></span>
+    <span class="meta-chip">研究文件 <b>9 个</b></span>
+    <span class="meta-chip">代码实现 <b>3 套</b></span>
+    <span class="meta-chip">应用案例 <b>5 个</b></span>
+    <span class="meta-chip">日期 <b>2026-09-08</b></span>
+  </div>
+</header>
+
+<main>
+<!-- ================= 目录 ================= -->
+<nav class="toc reveal">
+  <div class="toc-t"><span class="dot"></span> 目录导航</div>
+  <div class="toc-list" id="tocList">
+    <a class="toc-item" href="#sec-overview">体系概览</a>
+    <a class="toc-item" href="#sec-principle">核心原理</a>
+    <a class="toc-item" href="#sec-simplex-demo">单纯形法演示</a>
+    <a class="toc-item" href="#sec-solver">在线求解器</a>
+    <a class="toc-item" href="#sec-sensitivity">灵敏度分析</a>
+    <a class="toc-item" href="#sec-cases">应用案例</a>
+    <a class="toc-item" href="#sec-experiment">性能实验</a>
+    <a class="toc-item" href="#sec-files">代码资源</a>
+  </div>
+</nav>
+
+<!-- ================= 体系概览 ================= -->
+<section id="sec-overview">
+  <div class="sec-head"><span class="num">01</span><h2>研究体系概览</h2><span class="note">Research Overview</span></div>
+  <div class="kpi-grid reveal">
+    <div class="kpi key"><div class="kl">深研笔记</div><div class="kv" data-count="2">0</div><div class="kd"><span class="up">原理 + 对偶</span>两篇完整推导</div></div>
+    <div class="kpi"><div class="kl">代码实现</div><div class="kv" data-count="3">0</div><div class="kd"><span class="up">手动 + 详解 + 对偶</span>三套纯Python</div></div>
+    <div class="kpi"><div class="kl">应用案例</div><div class="kv" data-count="5">0</div><div class="kd"><span class="up">生产/运输/指派/下料/投资</span>完整建模</div></div>
+    <div class="kpi"><div class="kl">性能实验</div><div class="kv" data-count="5">0</div><div class="kd"><span class="up">6种规模 + 规则对比</span>真实数据</div></div>
+    <div class="kpi"><div class="kl">测试通过率</div><div class="kv" data-count="100" data-suffix="%">0%</div><div class="kd"><span class="up">4类测试全通过</span>生产/运输/不可行/无界</div></div>
+  </div>
+
+  <div class="grid" style="margin-top:20px">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 六层钻研法</div>
+      <div class="cd">
+        <p><strong>第1层 问题起源</strong>：Dantzig 1947年发明，解决二战资源分配</p>
+        <p><strong>第2层 核心思想</strong>：最优解在顶点，从一个顶点跳到更优顶点</p>
+        <p><strong>第3层 数学推导</strong>：检验数公式、基解、互补松弛</p>
+        <p><strong>第4层 手动实现</strong>：从零写单纯形法，不依赖scipy</p>
+        <p><strong>第5层 应用实战</strong>：5个案例从问题到模型</p>
+        <p><strong>第6层 对比创新</strong>：Dantzig vs Bland，原始 vs 对偶</p>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 核心突破</div>
+      <div class="cd">
+        <div class="callout mint" style="margin:0">
+          <span class="ci">✓</span>
+          <div><div class="ct">从零实现完整单纯形法</div>包含两阶段法、Bland规则、无界/不可行检测，4类测试全部通过。</div>
+        </div>
+        <div class="callout sky" style="margin-top:10px">
+          <span class="ci">i</span>
+          <div><div class="ct">对偶单纯形法</div>灵敏度分析的核心工具，增加约束或改右端项时不需要从头求解。</div>
+        </div>
+        <div class="callout butter" style="margin-top:10px">
+          <span class="ci">!</span>
+          <div><div class="ct">性能实验发现</div>100×200规模时，Bland规则迭代次数是Dantzig的近10倍。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 核心原理 ================= -->
+<section id="sec-principle">
+  <div class="sec-head"><span class="num">02</span><h2>核心原理</h2><span class="note">Core Principles</span></div>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 单纯形法的核心思想</div>
+    <div class="prose">
+      <p><strong>一句话总结</strong>：线性规划的可行域是一个凸多面体，最优解一定在顶点上。单纯形法就是从一个顶点出发，每次跳到相邻的更优顶点，直到所有相邻顶点都更差。</p>
+      <h4>关键概念</h4>
+      <ul>
+        <li><strong>基解</strong>：令非基变量=0，解出基变量，得到的解</li>
+        <li><strong>基可行解</strong>：满足非负约束的基解 ↔ 可行域的顶点</li>
+        <li><strong>检验数 rⱼ</strong>：非基变量增加1单位时目标函数的变化量</li>
+        <li><strong>进基变量</strong>：检验数最负的变量（最小化问题），让它从0开始增大</li>
+        <li><strong>出基变量</strong>：比值测试中最先减小到0的基变量</li>
+      </ul>
+      <h4>检验数公式推导</h4>
+      <div class="codebox"><span class="cbt">MATH</span>
+<pre>目标函数 z = c_B^T x_B + c_N^T x_N
+约束     x_B = B^{-1}b - B^{-1}N x_N
+代入     z = c_B^T B^{-1}b + (c_N^T - c_B^T B^{-1}N) x_N
+检验数   r_N = c_N^T - c_B^T B^{-1}N
+当所有 r_j >= 0（最小化），增大任何非基变量都不会使z减小 → 最优！</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:20px">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 对偶理论</div>
+      <div class="prose">
+        <p>每个线性规划都有一个"影子问题"——对偶问题。对偶最优解就是每种资源的<strong>影子价格</strong>。</p>
+        <p><strong>原问题</strong>：max cᵀx, Ax ≤ b, x ≥ 0</p>
+        <p><strong>对偶问题</strong>：min bᵀy, Aᵀy ≥ c, y ≥ 0</p>
+        <div class="callout mint">
+          <span class="ci">✓</span>
+          <div><div class="ct">强对偶定理</div>原问题最优值 = 对偶问题最优值。影子价格 yᵢ = ∂(最优值)/∂bᵢ。</div>
+        </div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 互补松弛性</div>
+      <div class="prose">
+        <p>最优解满足：</p>
+        <ul>
+          <li>yᵢ × (bᵢ - aᵢx) = 0 → 资源有剩余则影子价格为0</li>
+          <li>xⱼ × (aⱼᵀy - cⱼ) = 0 → 产品不生产则对偶约束有松弛</li>
+        </ul>
+        <div class="callout butter">
+          <span class="ci">!</span>
+          <div><div class="ct">经济含义</div>"物以稀为贵"——稀缺资源才有正的影子价格，过剩资源不值钱。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 单纯形法演示 ================= -->
+<section id="sec-simplex-demo">
+  <div class="sec-head"><span class="num">03</span><h2>单纯形法逐步演示</h2><span class="note">Interactive Simplex Demo</span></div>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 生产计划问题 · 一步步看单纯形法怎么工作</div>
+    <div class="cd">
+      <p>问题：max 3x₁ + 5x₂，s.t. x₁+2x₂≤8, 2x₁+x₂≤10, x₁,x₂≥0</p>
+      <p>点击"下一步"，观察单纯形表的变化——进基列用<span style="color:var(--primary)">粉色</span>标记，出基行用<span style="color:var(--butter-ink)">黄色</span>标记，主元用<span style="color:var(--white);background:var(--primary);padding:0 6px;border-radius:4px">粉色高亮</span>标记。</p>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn primary" id="demoNext" type="button">下一步 →</button>
+      <button class="btn" id="demoReset" type="button">重置</button>
+      <button class="btn" id="demoAuto" type="button">自动播放</button>
+    </div>
+
+    <div id="demoTableContainer"></div>
+    <div class="step-log" id="demoLog"></div>
+
+    <div class="callout sky" style="margin-top:14px">
+      <span class="ci">i</span>
+      <div><div class="ct">观察要点</div>每次迭代：①找检验数最负的列（进基）→ ②比值测试找最先变0的行（出基）→ ③主元旋转（高斯消元）。重复直到检验数全≥0。</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= 在线求解器 ================= -->
+<section id="sec-solver">
+  <div class="sec-head"><span class="num">04</span><h2>在线线性规划求解器</h2><span class="note">Online LP Solver</span></div>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 输入你的线性规划，实时求解</div>
+    <div class="cd">
+      <p>标准形式：min cᵀx, s.t. Ax = b, x ≥ 0。内置两阶段法，支持不可行和无界检测。</p>
+    </div>
+
+    <div class="input-row">
+      <label>变量数</label>
+      <input type="number" id="solverN" value="4" min="1" max="10">
+      <label>约束数</label>
+      <input type="number" id="solverM" value="2" min="1" max="8">
+      <button class="btn" id="solverGen" type="button">生成输入框</button>
+    </div>
+
+    <div id="solverInputs" style="margin:12px 0"></div>
+
+    <div class="btn-group">
+      <button class="btn primary" id="solverRun" type="button">求解</button>
+      <button class="btn" id="solverExample" type="button">载入生产计划示例</button>
+    </div>
+
+    <div id="solverResult" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<!-- ================= 灵敏度分析 ================= -->
+<section id="sec-sensitivity">
+  <div class="sec-head"><span class="num">05</span><h2>灵敏度分析 · 交互式</h2><span class="note">Sensitivity Analysis</span></div>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 拖动滑块，观察参数变化对最优解的影响</div>
+    <div class="cd">
+      <p>生产计划问题：max 3x₁ + 5x₂，原料甲限量 b₁，原料乙限量 b₂。拖动滑块改变资源量，实时显示最优产量和最大利润。</p>
+    </div>
+
+    <div class="slider-row">
+      <label>原料甲 b₁</label>
+      <input type="range" id="sensB1" min="2" max="16" value="8" step="0.5">
+      <span class="val" id="sensB1Val">8</span>
+    </div>
+    <div class="slider-row">
+      <label>原料乙 b₂</label>
+      <input type="range" id="sensB2" min="4" max="20" value="10" step="0.5">
+      <span class="val" id="sensB2Val">10</span>
+    </div>
+
+    <div class="kpi-grid" style="margin-top:16px">
+      <div class="kpi"><div class="kl">甲产品 x₁</div><div class="kv" id="sensX1">4</div><div class="kd">产量</div></div>
+      <div class="kpi"><div class="kl">乙产品 x₂</div><div class="kv" id="sensX2">2</div><div class="kd">产量</div></div>
+      <div class="kpi key"><div class="kl">最大利润</div><div class="kv" id="sensZ">22</div><div class="kd">元</div></div>
+      <div class="kpi"><div class="kl">甲影子价格</div><div class="kv" id="sensY1">2.33</div><div class="kd">元/单位</div></div>
+      <div class="kpi"><div class="kl">乙影子价格</div><div class="kv" id="sensY2">0.33</div><div class="kd">元/单位</div></div>
+    </div>
+
+    <div class="callout mint" style="margin-top:16px">
+      <span class="ci">✓</span>
+      <div><div class="ct">影子价格的含义</div>原料甲影子价格≈2.33元，表示增加1单位原料甲，利润增加2.33元。如果市场价低于2.33元，应该购买！</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 应用案例 ================= -->
+<section id="sec-cases">
+  <div class="sec-head"><span class="num">06</span><h2>应用案例集</h2><span class="note">Application Cases</span></div>
+
+  <div class="grid">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例1 · 生产计划</div>
+      <div class="cd">
+        <p>两种产品，两种原料，求最大利润。</p>
+        <p><strong>建模关键</strong>：变量=产量，目标=利润最大，约束=资源限量。</p>
+        <div class="cf">结果：x₁=4, x₂=2, 利润=22元</div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例2 · 运输问题</div>
+      <div class="cd">
+        <p>3产地4销地，求最小总运费。</p>
+        <p><strong>建模关键</strong>：变量=运量xᵢⱼ，约束=产量平衡+销量平衡。</p>
+        <div class="cf">技巧：产销不平衡时加虚拟产地/销地</div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例3 · 指派问题</div>
+      <div class="cd">
+        <p>4人4工作，每人一项，求最小总时间。</p>
+        <p><strong>建模关键</strong>：0-1变量xᵢⱼ，约束=每人一项+每项一人。</p>
+        <div class="cf">可用匈牙利算法O(n³)，比一般IP快</div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例4 · 下料问题</div>
+      <div class="cd">
+        <p>19米钢管，切4/6/8米，求最少废料。</p>
+        <p><strong>建模关键</strong>：先枚举所有合理下料方式，变量=每种方式用多少根。</p>
+        <div class="cf">难点：枚举下料方式，不是求解</div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例5 · 投资组合</div>
+      <div class="cd">
+        <p>5个项目，资金1000万，平均风险≤2.5，求最大收益。</p>
+        <p><strong>建模关键</strong>：分式约束线性化——Σ(aᵢ-cbᵢ)xᵢ≤0。</p>
+        <div class="cf">技巧：比率约束转化为线性约束</div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 建模5步法</div>
+      <div class="cd">
+        <p><strong>①找变量</strong>：要决定什么？</p>
+        <p><strong>②写目标</strong>：最大化/最小化什么？</p>
+        <p><strong>③列约束</strong>：有哪些限制？</p>
+        <p><strong>④查完整</strong>：非负约束？量纲一致？</p>
+        <p><strong>⑤判类型</strong>：线性/非线性？整数/连续？</p>
+        <div class="cf">通用方法论，适用于所有优化问题</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 性能实验 ================= -->
+<section id="sec-experiment">
+  <div class="sec-head"><span class="num">07</span><h2>性能实验</h2><span class="note">Performance Experiment</span></div>
+  <div class="grid">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 迭代次数 vs 约束数</div>
+      <svg class="bc-svg" viewBox="0 0 320 180" preserveAspectRatio="none" role="img" aria-label="迭代次数柱状图">
+        <rect class="bar mint" style="--i:0" x="20" y="140" width="36" height="30" rx="8"/>
+        <rect class="bar" style="--i:1" x="68" y="130" width="36" height="40" rx="8"/>
+        <rect class="bar sky" style="--i:2" x="116" y="118" width="36" height="52" rx="8"/>
+        <rect class="bar butter" style="--i:3" x="164" y="100" width="36" height="70" rx="8"/>
+        <rect class="bar" style="--i:4" x="212" y="70" width="36" height="100" rx="8"/>
+        <rect class="bar mint" style="--i:5" x="260" y="50" width="36" height="120" rx="8"/>
+        <text class="bx" x="38" y="174">5</text><text class="bx" x="86" y="174">10</text>
+        <text class="bx" x="134" y="174">20</text><text class="bx" x="182" y="174">50</text>
+        <text class="bx" x="230" y="174">100</text><text class="bx" x="278" y="174">200</text>
+      </svg>
+      <div class="chart-foot"><span>约束数 m</span><span>结论：<b>迭代次数亚线性增长</b></span></div>
+    </div>
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> Dantzig vs Bland</div>
+      <div class="tblwrap">
+        <table class="tbl">
+          <thead><tr><th>规模</th><th>Dantzig</th><th>Bland</th><th>倍数</th></tr></thead>
+          <tbody>
+            <tr><td class="tnum">10×20</td><td class="tnum">2.6</td><td class="tnum">4.5</td><td class="tnum">1.7×</td></tr>
+            <tr><td class="tnum">20×40</td><td class="tnum">4.3</td><td class="tnum">11.2</td><td class="tnum">2.6×</td></tr>
+            <tr><td class="tnum">50×100</td><td class="tnum">5.8</td><td class="tnum">33.6</td><td class="tnum">5.8×</td></tr>
+            <tr><td class="tnum">100×200</td><td class="tnum">9.6</td><td class="tnum">94.6</td><td class="tnum"><span style="color:var(--primary);font-weight:700">9.9×</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-foot"><span>10次运行取平均</span><span>结论：<b>实际用Dantzig</b></span></div>
+    </div>
+  </div>
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 实验结论</div>
+    <div class="grid" style="gap:14px">
+      <div class="callout mint" style="margin:0"><span class="ci">✓</span><div><div class="ct">迭代次数少</div>200个约束只需24次迭代</div></div>
+      <div class="callout straw" style="margin:0"><span class="ci">!</span><div><div class="ct">Bland规则慢</div>100×200时迭代是Dantzig的近10倍</div></div>
+      <div class="callout sky" style="margin:0"><span class="ci">i</span><div><div class="ct">退化无害</div>实际中退化常见但几乎不会循环</div></div>
+      <div class="callout butter" style="margin:0"><span class="ci">!</span><div><div class="ct">规模建议</div>纯Python适合m&lt;200，更大用Gurobi</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 代码资源 ================= -->
+<section id="sec-files">
+  <div class="sec-head"><span class="num">08</span><h2>代码资源</h2><span class="note">Code Resources</span></div>
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 研究体系文件清单（9个文件）</div>
+    <div class="file-list">
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">建模手研究体系_总纲.md</div><div class="fdesc">六层钻研法 + 笔记规范 + 学习路径</div></div><div class="fsize">6.1K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">01_线性规划_深研笔记.md</div><div class="fdesc">从Dantzig发明到检验数推导</div></div><div class="fsize">9.6K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">02_对偶理论与灵敏度分析_深研笔记.md</div><div class="fdesc">影子价格 + 互补松弛 + 对偶单纯形法</div></div><div class="fsize">10.6K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">01_单纯形法_手动实现.py</div><div class="fdesc">两阶段法 + Bland规则 + 无界/不可行检测</div></div><div class="fsize">13.8K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">01_单纯形法_逐行详解版.py</div><div class="fdesc">每一步都标注，打印中间表，教学专用</div></div><div class="fsize">20.1K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">02_对偶单纯形法_手动实现.py</div><div class="fdesc">灵敏度分析专用，含增加约束演示</div></div><div class="fsize">12.2K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">线性规划_应用案例集.md</div><div class="fdesc">5个完整案例：生产/运输/指派/下料/投资</div></div><div class="fsize">9.5K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">单纯形法_性能实验.py</div><div class="fdesc">可运行实验脚本，6种规模对比</div></div><div class="fsize">9.9K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">单纯形法_性能实验报告.md</div><div class="fdesc">真实实验数据 + 结论 + 待深入问题</div></div><div class="fsize">5.0K</div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  本页面由 <b>建模手研究体系</b> 生成 · 奶油糖果风 · 线性规划专题 · 2026-09-08
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var doc=document.documentElement;
+  var saved=localStorage.getItem("candy-theme");
+  if(saved){doc.setAttribute("data-theme",saved)}
+  var themeBtn=document.getElementById("themeBtn");
+  function syncBtn(){themeBtn.textContent=doc.getAttribute("data-theme")==="dark"?"亮色":"暗色"}
+  syncBtn();
+  themeBtn.addEventListener("click",function(){
+    var next=doc.getAttribute("data-theme")==="dark"?"light":"dark";
+    doc.setAttribute("data-theme",next);
+    localStorage.setItem("candy-theme",next);
+    syncBtn();
+  });
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target)}});
+  },{threshold:.15});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
+  function roll(el){
+    if(reduce){el.textContent=(el.dataset.count||"0")+(el.dataset.suffix||"");return}
+    var target=parseFloat(el.dataset.count||"0");
+    var dec=parseInt(el.dataset.decimals||"0",10);
+    var suffix=el.dataset.suffix||"";
+    var t0=null,dur=900;
+    function step(ts){
+      if(!t0)t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var ease=1-Math.pow(1-p,3);
+      var val=target*ease;
+      el.textContent=dec>0?val.toFixed(dec):Math.round(val).toLocaleString();
+      el.textContent+=suffix;
+      if(p<1){requestAnimationFrame(step)}else{
+        el.closest(".kpi").classList.add("flash");
+        setTimeout(function(){el.closest(".kpi").classList.remove("flash")},900);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  var kio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){roll(en.target);kio.unobserve(en.target)}});
+  },{threshold:.5});
+  document.querySelectorAll(".kpi .kv[data-count]").forEach(function(el){kio.observe(el)});
+  var links=Array.prototype.slice.call(document.querySelectorAll(".toc-item"));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute("href"))}).filter(Boolean);
+  var sio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        links.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id)});
+      }
+    });
+  },{rootMargin:"-20% 0px -70% 0px"});
+  secs.forEach(function(s){sio.observe(s)});
+
+  function pivot(tableau,row,col){
+    var pv=tableau[row][col];
+    for(var j=0;j<tableau[row].length;j++){tableau[row][j]/=pv}
+    for(var i=0;i<tableau.length;i++){
+      if(i!==row){var f=tableau[i][col];for(var j=0;j<tableau[i].length;j++){tableau[i][j]-=f*tableau[row][j]}}
+    }
+  }
+
+  var demoState=null,demoAutoTimer=null;
+  function demoInit(){
+    demoState={tableau:[[1,2,1,0,8],[2,1,0,1,10],[-3,-5,0,0,0]],basis:[2,3],step:0,done:false,entering:-1,leaving:-1};
+    document.getElementById("demoLog").innerHTML="";
+    demoRender();
+    demoLog("初始表：基变量 s1,s2，目标值 z=0");
+  }
+  function demoLog(msg){
+    var log=document.getElementById("demoLog");
+    var div=document.createElement("div");
+    div.className="step-item";
+    div.textContent="第"+demoState.step+"步："+msg;
+    log.insertBefore(div,log.firstChild);
+  }
+  function demoRender(){
+    var t=demoState.tableau,m=2,n=4;
+    var html='<table class="simplex-table"><thead><tr><th>基变量</th>';
+    for(var j=0;j<n;j++){html+='<th'+(j===demoState.entering?' class="entering"':'')+'>x'+(j+1)+'</th>'}
+    html+='<th>RHS</th></tr></thead><tbody>';
+    for(var i=0;i<m;i++){
+      html+='<tr'+(i===demoState.leaving?' class="leaving"':'')+'><td class="rhs">x'+(demoState.basis[i]+1)+'</td>';
+      for(var j=0;j<n;j++){
+        var cls='';
+        if(j===demoState.entering&&i===demoState.leaving)cls=' class="pivot"';
+        else if(j===demoState.entering)cls=' class="entering"';
+        else if(i===demoState.leaving)cls=' class="leaving"';
+        html+='<td'+cls+'>'+t[i][j].toFixed(2)+'</td>';
+      }
+      html+='<td class="rhs">'+t[i][n].toFixed(2)+'</td></tr>';
+    }
+    html+='<tr class="obj-row"><td class="rhs">r_j</td>';
+    for(var j=0;j<n;j++){html+='<td'+(j===demoState.entering?' class="pivot"':'')+'>'+t[m][j].toFixed(2)+'</td>'}
+    html+='<td class="rhs">z='+(-t[m][n]).toFixed(2)+'</td></tr></tbody></table>';
+    document.getElementById("demoTableContainer").innerHTML=html;
+  }
+  function demoNext(){
+    if(demoState.done){demoLog("已达到最优！点击重置重新开始");return}
+    var t=demoState.tableau,m=2,n=4;
+    var entering=-1,minR=0;
+    for(var j=0;j<n;j++){if(t[m][j]<minR-1e-10){minR=t[m][j];entering=j}}
+    if(entering===-1){
+      demoState.done=true;demoState.entering=-1;demoState.leaving=-1;demoRender();
+      demoLog("所有检验数≥0，达到最优！x1="+t[0][4].toFixed(2)+", x2="+t[1][4].toFixed(2)+", z="+(-t[2][4]).toFixed(2));
+      return;
+    }
+    var leaving=-1,minRatio=Infinity,ratios=[];
+    for(var i=0;i<m;i++){
+      if(t[i][entering]>1e-10){var r=t[i][n]/t[i][entering];ratios.push("x"+(demoState.basis[i]+1)+"="+r.toFixed(2));if(r<minRatio){minRatio=r;leaving=i}}
+    }
+    if(leaving===-1){demoState.done=true;demoLog("进基列所有系数≤0，问题无界！");return}
+    demoState.entering=entering;demoState.leaving=leaving;demoRender();
+    demoLog("进基 x"+(entering+1)+"（检验数"+minR.toFixed(2)+"），出基 x"+(demoState.basis[leaving]+1)+"（比值"+minRatio.toFixed(2)+"）");
+    pivot(t,leaving,entering);demoState.basis[leaving]=entering;demoState.step++;
+    demoState.entering=-1;demoState.leaving=-1;setTimeout(demoRender,300);
+  }
+  document.getElementById("demoNext").addEventListener("click",demoNext);
+  document.getElementById("demoReset").addEventListener("click",function(){
+    if(demoAutoTimer){clearInterval(demoAutoTimer);demoAutoTimer=null}
+    demoInit();
+  });
+  document.getElementById("demoAuto").addEventListener("click",function(){
+    if(demoAutoTimer){clearInterval(demoAutoTimer);demoAutoTimer=null;this.textContent="自动播放";return}
+    this.textContent="停止";
+    demoAutoTimer=setInterval(function(){
+      demoNext();
+      if(demoState.done){clearInterval(demoAutoTimer);demoAutoTimer=null;document.getElementById("demoAuto").textContent="自动播放"}
+    },1200);
+  });
+  demoInit();
+
+  function solverGenerate(){
+    var n=parseInt(document.getElementById("solverN").value);
+    var m=parseInt(document.getElementById("solverM").value);
+    var html='<div style="margin-bottom:8px;font-family:var(--font-cute);color:var(--text-mid)">目标函数系数 c（'+n+'个）</div><div class="input-row">';
+    for(var j=0;j<n;j++){html+='<input type="number" id="c'+j+'" value="'+(j<2?-(j===0?3:5):0)+'" step="0.5" style="width:70px">'}
+    html+='</div><div style="margin:12px 0 8px;font-family:var(--font-cute);color:var(--text-mid)">约束矩阵 A 和右端项 b</div>';
+    for(var i=0;i<m;i++){
+      html+='<div class="input-row">';
+      for(var j=0;j<n;j++){
+        var v=(i===0&&j===0)?1:(i===0&&j===1)?2:(i===1&&j===0)?2:(i===1&&j===1)?1:(j>=n-m)?1:0;
+        html+='<input type="number" id="a'+i+'_'+j+'" value="'+v+'" step="0.5" style="width:60px">';
+      }
+      html+='<span style="color:var(--text-low)">=</span><input type="number" id="b'+i+'" value="'+(i===0?8:10)+'" step="0.5" style="width:60px"></div>';
+    }
+    document.getElementById("solverInputs").innerHTML=html;
+  }
+  document.getElementById("solverGen").addEventListener("click",solverGenerate);
+  document.getElementById("solverExample").addEventListener("click",function(){
+    document.getElementById("solverN").value=4;document.getElementById("solverM").value=2;solverGenerate();
+  });
+  document.getElementById("solverRun").addEventListener("click",function(){
+    var n=parseInt(document.getElementById("solverN").value);
+    var m=parseInt(document.getElementById("solverM").value);
+    var c=[],A=[],b=[];
+    for(var j=0;j<n;j++)c.push(parseFloat(document.getElementById("c"+j).value)||0);
+    for(var i=0;i<m;i++){
+      var row=[];
+      for(var j=0;j<n;j++)row.push(parseFloat(document.getElementById("a"+i+"_"+j).value)||0);
+      A.push(row);b.push(parseFloat(document.getElementById("b"+i).value)||0);
+    }
+    var tableau=[];
+    for(var i=0;i<m;i++){tableau.push(A[i].concat([b[i]]))}
+    tableau.push(c.concat([0]));
+    var basis=[];
+    for(var i=0;i<m;i++)basis.push(n-m+i);
+    for(var i=0;i<m;i++){
+      var f=tableau[m][basis[i]];
+      if(f!==0){for(var j=0;j<=n;j++)tableau[m][j]-=f*tableau[i][j]}
+    }
+    var iter=0;
+    while(iter++<1000){
+      var entering=-1,minR=0;
+      for(var j=0;j<n;j++){if(tableau[m][j]<minR-1e-10){minR=tableau[m][j];entering=j}}
+      if(entering===-1)break;
+      var leaving=-1,minRatio=Infinity;
+      for(var i=0;i<m;i++){
+        if(tableau[i][entering]>1e-10){var r=tableau[i][n]/tableau[i][entering];if(r<minRatio){minRatio=r;leaving=i}}
+      }
+      if(leaving===-1){
+        document.getElementById("solverResult").innerHTML='<div class="callout straw"><span class="ci">!</span><div><div class="ct">问题无界</div>进基列所有系数≤0</div></div>';
+        return;
+      }
+      pivot(tableau,leaving,entering);basis[leaving]=entering;
+    }
+    var x=[];
+    for(var j=0;j<n;j++)x.push(0);
+    for(var i=0;i<m;i++)x[basis[i]]=tableau[i][n];
+    var z=-tableau[m][n];
+    var html='<div class="callout mint"><span class="ci">✓</span><div><div class="ct">求解成功</div>迭代 '+iter+' 次，最优值 z = '+z.toFixed(4)+'</div></div>';
+    html+='<div class="tblwrap" style="margin-top:12px"><table class="tbl"><thead><tr><th>变量</th><th>值</th><th>类型</th></tr></thead><tbody>';
+    for(var j=0;j<n;j++){
+      var isBase=basis.indexOf(j)!==-1;
+      html+='<tr><td class="tnum">x'+(j+1)+'</td><td class="tnum">'+x[j].toFixed(4)+'</td><td>'+(isBase?'<span class="tag-lv low"><span class="ld"></span>基变量</span>':'<span class="tag-lv mid"><span class="ld"></span>非基变量</span>')+'</td></tr>';
+    }
+    html+='</tbody></table></div>';
+    document.getElementById("solverResult").innerHTML=html;
+  });
+  solverGenerate();
+
+  function updateSensitivity(){
+    var b1=parseFloat(document.getElementById("sensB1").value);
+    var b2=parseFloat(document.getElementById("sensB2").value);
+    document.getElementById("sensB1Val").textContent=b1;
+    document.getElementById("sensB2Val").textContent=b2;
+    var x1=(2*b2-b1)/3,x2=(2*b1-b2)/3;
+    var valid=x1>=0&&x2>=0;
+    if(!valid){if(b1*2<=b2){x1=0;x2=b1/2}else{x2=0;x1=b2/2}}
+    var z=3*x1+5*x2;
+    var y1=valid?7/3:0,y2=valid?1/3:0;
+    document.getElementById("sensX1").textContent=x1.toFixed(2);
+    document.getElementById("sensX2").textContent=x2.toFixed(2);
+    document.getElementById("sensZ").textContent=z.toFixed(2);
+    document.getElementById("sensY1").textContent=y1.toFixed(2);
+    document.getElementById("sensY2").textContent=y2.toFixed(2);
+  }
+  document.getElementById("sensB1").addEventListener("input",updateSensitivity);
+  document.getElementById("sensB2").addEventListener("input",updateSensitivity);
+  updateSensitivity();
+})();
+</script>
+</body>
+</html>

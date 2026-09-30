@@ -1,0 +1,282 @@
+运行器解释器: C:\Users\21722\AppData\Local\Programs\Python\Python311\python.exe
+Python: 3.11.9
+  [PASS] TestAPICompliance::test_api_1_request_payload_complete
+  [PASS] TestAPICompliance::test_api_2_module_import
+  [PASS] TestAPICompliance::test_api_3_audit_no_data_loss
+  [PASS] TestAPICompliance::test_api_4_retry_idempotent
+  [PASS] TestDataHandling::test_data_1_practice_outcome_recording
+  [PASS] TestHTTPProtocol::test_http_1_direction_response_parsing
+  [FAIL] TestHTTPProtocol::test_http_2_no_target_response  --  TypeError: HttpSimulatorClient.clear() missing 1 required positional argument: 'channel'
+  [PASS] TestHTTPProtocol::test_http_3_accepted_false
+  [PASS] TestHTTPProtocol::test_http_4_non_200_status
+  [PASS] TestHTTPProtocol::test_http_5_no_retry_on_400_409
+  [FAIL] TestHTTPProtocol::test_http_6_remaining_real_time  --  StopIteration: 
+  [PASS] TestHTTPProtocol::test_http_7_response_structure_validation
+  [FAIL] TestInterfaceConsistency::test_int_1_same_action_sequence  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestInterfaceConsistency::test_int_2_virtual_time_consistency  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestInterfaceConsistency::test_int_3_strategy_code_portable  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_10_failed_clear_timing  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_11_post_exit_state  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_12_svd_normalization  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_13_virtual_time_limit  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_1_first_measure_channel_1  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_2_first_measure_channel_2  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_3_cross_position_measure  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_4_5m_boundary_near  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_5_5_to_20m_range  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_6_clear_within_20m  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_7_directional_blind_spot_measure  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_8_directional_blind_spot_clear  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestOfflineSimulation::test_off_9_same_position_consistent_svd  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestProtocolCompliance::test_proto_1_reject_float_channel  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestProtocolCompliance::test_proto_2_enter_time_limit_fields  --  AttributeError: 'EnterResponse' object has no attribute 'result'
+  [PASS] TestProtocolCompliance::test_proto_3_svd_range_validation
+  [PASS] TestProtocolCompliance::test_proto_4_exit_reason_validation_http
+  [FAIL] TestProtocolCompliance::test_proto_5_exit_reason_consistency_offline  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [PASS] TestSemanticCorrections::test_sem_1_response_received_semantics_http
+  [FAIL] TestSemanticCorrections::test_sem_2_response_received_semantics_offline  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+  [FAIL] TestSemanticCorrections::test_sem_3_source_config_uniqueness  --  TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+========================================================================
+失败详情: TestHTTPProtocol::test_http_2_no_target_response
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 185, in test_http_2_no_target_response
+    outcome = client.clear(0.0, 0.0)
+              ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: HttpSimulatorClient.clear() missing 1 required positional argument: 'channel'
+
+------------------------------------------------------------------------
+失败详情: TestHTTPProtocol::test_http_6_remaining_real_time
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 288, in test_http_6_remaining_real_time
+    client.enter()
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\src\http_simulator_client.py", line 361, in enter
+    self._enter_wall_time = time.monotonic()
+                            ^^^^^^^^^^^^^^^^
+  File "C:\Users\21722\AppData\Local\Programs\Python\Python311\Lib\unittest\mock.py", line 1124, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\21722\AppData\Local\Programs\Python\Python311\Lib\unittest\mock.py", line 1128, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\21722\AppData\Local\Programs\Python\Python311\Lib\unittest\mock.py", line 1185, in _execute_mock_call
+    result = next(effect)
+             ^^^^^^^^^^^^
+StopIteration
+
+------------------------------------------------------------------------
+失败详情: TestInterfaceConsistency::test_int_1_same_action_sequence
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 618, in test_int_1_same_action_sequence
+    offline_client = OfflineSimulatorClient(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestInterfaceConsistency::test_int_2_virtual_time_consistency
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 654, in test_int_2_virtual_time_consistency
+    offline_client = OfflineSimulatorClient(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestInterfaceConsistency::test_int_3_strategy_code_portable
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 676, in test_int_3_strategy_code_portable
+    offline_client = OfflineSimulatorClient(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_10_failed_clear_timing
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 491, in test_off_10_failed_clear_timing
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_11_post_exit_state
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 510, in test_off_11_post_exit_state
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_12_svd_normalization
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 529, in test_off_12_svd_normalization
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_13_virtual_time_limit
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 545, in test_off_13_virtual_time_limit
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_1_first_measure_channel_1
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 328, in test_off_1_first_measure_channel_1
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_2_first_measure_channel_2
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 344, in test_off_2_first_measure_channel_2
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_3_cross_position_measure
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 360, in test_off_3_cross_position_measure
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_4_5m_boundary_near
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 378, in test_off_4_5m_boundary_near
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_5_5_to_20m_range
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 395, in test_off_5_5_to_20m_range
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_6_clear_within_20m
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 414, in test_off_6_clear_within_20m
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_7_directional_blind_spot_measure
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 435, in test_off_7_directional_blind_spot_measure
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_8_directional_blind_spot_clear
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 456, in test_off_8_directional_blind_spot_clear
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestOfflineSimulation::test_off_9_same_position_consistent_svd
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 473, in test_off_9_same_position_consistent_svd
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestProtocolCompliance::test_proto_1_reject_float_channel
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 698, in test_proto_1_reject_float_channel
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestProtocolCompliance::test_proto_2_enter_time_limit_fields
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 731, in test_proto_2_enter_time_limit_fields
+    assert outcome.result.max_virtual_duration_s == 3600.0
+           ^^^^^^^^^^^^^^
+AttributeError: 'EnterResponse' object has no attribute 'result'
+
+------------------------------------------------------------------------
+失败详情: TestProtocolCompliance::test_proto_5_exit_reason_consistency_offline
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 791, in test_proto_5_exit_reason_consistency_offline
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestSemanticCorrections::test_sem_2_response_received_semantics_offline
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 838, in test_sem_2_response_received_semantics_offline
+    client = OfflineSimulatorClient(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+失败详情: TestSemanticCorrections::test_sem_3_source_config_uniqueness
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验往来\_run_offline_tests_no_pytest.py", line 102, in main
+    meth(cls())
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\Q3\SimulatorClient_v1.3.1\tests\test_simulator_client.py", line 870, in test_sem_3_source_config_uniqueness
+    OfflineSimulatorClient(
+TypeError: OfflineSimulatorClient.__init__() got an unexpected keyword argument 'position_error_m'
+
+------------------------------------------------------------------------
+通过 13 ｜ 失败 23 ｜ 总计 36
+========================================================================

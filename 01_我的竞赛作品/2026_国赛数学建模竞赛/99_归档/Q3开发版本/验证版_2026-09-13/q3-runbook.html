@@ -1,0 +1,632 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q3 正式测试执行卡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ---------- tokens: bare :root = complete light palette ---------- */
+  :root{
+    --ground:#EDF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F5F8FA;
+    --ink:#0F1620;
+    --ink-2:#55626E;
+    --ink-3:#7C8894;
+    --rule:#D3DAE1;
+    --rule-soft:#E3E8ED;
+    --accent:#14657F;
+    --accent-soft:#E2EEF2;
+    --ok:#1B7048;
+    --ok-soft:#E2F0E8;
+    --alert:#A93B2C;
+    --alert-soft:#F7E6E3;
+    --warn:#8A5D0E;
+    --warn-soft:#F7EEDC;
+    --shadow:0 1px 2px rgba(15,22,32,.06), 0 8px 24px -16px rgba(15,22,32,.28);
+
+    --step:clamp(15px,2.4vw,19px);
+    --gutter:clamp(16px,4vw,40px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0C1116;
+      --surface:#141B22;
+      --surface-2:#1A232B;
+      --ink:#E3E9EF;
+      --ink-2:#93A2B0;
+      --ink-3:#76848F;
+      --rule:#28333D;
+      --rule-soft:#1F2831;
+      --accent:#54B5CF;
+      --accent-soft:#122A33;
+      --ok:#5FBE8C;
+      --ok-soft:#12271D;
+      --alert:#E0806F;
+      --alert-soft:#2C1815;
+      --warn:#D9A94F;
+      --warn-soft:#2A2113;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0C1116;
+    --surface:#141B22;
+    --surface-2:#1A232B;
+    --ink:#E3E9EF;
+    --ink-2:#93A2B0;
+    --ink-3:#76848F;
+    --rule:#28333D;
+    --rule-soft:#1F2831;
+    --accent:#54B5CF;
+    --accent-soft:#122A33;
+    --ok:#5FBE8C;
+    --ok-soft:#12271D;
+    --alert:#E0806F;
+    --alert-soft:#2C1815;
+    --warn:#D9A94F;
+    --warn-soft:#2A2113;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    font-size:var(--step);
+    line-height:1.6;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{
+    max-width:1080px;margin:0 auto;
+    padding-inline:var(--gutter);
+    padding-block:clamp(28px,5vw,56px) 96px;
+    display:flex;flex-direction:column;gap:clamp(28px,4vw,44px);
+  }
+
+  h1,h2,h3{
+    font-family:"IBM Plex Sans Condensed","IBM Plex Sans",Arial,sans-serif;
+    font-weight:600;line-height:1.18;text-wrap:balance;margin:0;
+    letter-spacing:-.01em;
+  }
+  h1{font-size:clamp(26px,4.4vw,40px);font-weight:700}
+  h2{font-size:clamp(19px,2.6vw,25px)}
+  h3{font-size:1em;font-weight:600}
+  p{margin:0}
+  code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);
+  }
+
+  /* ---------- masthead ---------- */
+  header.mast{display:flex;flex-direction:column;gap:18px}
+  .mast-top{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between}
+  .lede{color:var(--ink-2);max-width:62ch}
+
+  .clock{
+    display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,32px);
+    background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+    padding:16px 20px;box-shadow:var(--shadow);
+  }
+  .clock-item{display:flex;flex-direction:column;gap:2px;min-width:104px}
+  .clock-v{
+    font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+    font-size:clamp(20px,3.2vw,28px);font-weight:600;line-height:1.1;
+    color:var(--accent);
+  }
+  .clock-v.is-urgent{color:var(--alert)}
+  .clock-k{font-size:12px;color:var(--ink-3);letter-spacing:.04em}
+
+  /* ---------- timeline ---------- */
+  .track{position:relative;margin-top:6px}
+  .track-rail{position:absolute;left:0;right:0;top:31px;height:2px;background:var(--rule-soft)}
+  .track-fill{position:absolute;left:0;top:31px;height:2px;background:var(--accent);width:0;transition:width .5s ease}
+  .marks{
+    position:relative;display:flex;justify-content:space-between;gap:6px;
+  }
+  .mark{
+    flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:0;
+  }
+  .mark:last-child{align-items:flex-end;text-align:right}
+  .mark-t{
+    font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+    font-size:15px;font-weight:600;
+  }
+  .mark-dot{
+    width:9px;height:9px;border-radius:50%;background:var(--surface);
+    border:2px solid var(--accent);margin:12px 0 12px 0;
+  }
+  .mark:last-child .mark-dot{align-self:flex-end}
+  .mark-deadline .mark-dot{border-color:var(--alert);background:var(--alert)}
+  .mark-deadline .mark-t{color:var(--alert)}
+  .mark-l{font-size:13px;color:var(--ink-2);max-width:19ch}
+  @media (max-width:640px){ .mark-l{display:none} }
+
+  /* ---------- generic section shell ---------- */
+  section{
+    background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+    padding:clamp(18px,3vw,28px);
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .sec-head{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between}
+  .sec-note{color:var(--ink-2);font-size:14.5px;max-width:66ch}
+
+  /* ---------- checklist rows ---------- */
+  ul.check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+  ul.check li{display:flex;gap:12px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--rule-soft)}
+  ul.check li:last-child{border-bottom:0}
+  ul.check label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;width:100%}
+  input[type=checkbox]{
+    flex:0 0 auto;width:19px;height:19px;margin-top:2px;accent-color:var(--accent);cursor:pointer;
+  }
+  li.done .row-t{color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:1px}
+  .row-t{flex:1 1 auto;min-width:0}
+  .row-n{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);
+    flex:0 0 auto;padding-top:3px;font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- ordered step rail ---------- */
+  ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+  ol.steps li{
+    display:grid;grid-template-columns:auto 1fr;gap:0 16px;
+    padding:13px 0;border-bottom:1px solid var(--rule-soft);
+  }
+  ol.steps li:last-child{border-bottom:0}
+  .step-rail{display:flex;flex-direction:column;align-items:center;gap:0;grid-row:1}
+  .step-n{
+    width:26px;height:26px;border-radius:50%;flex:0 0 auto;
+    display:grid;place-items:center;
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;
+    background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent);
+  }
+  .step-body{grid-column:2;display:flex;flex-direction:column;gap:5px;padding-top:1px}
+  .step-t{font-weight:600}
+  .step-x{color:var(--ink-2);font-size:14.5px}
+  .step-x .mono{font-size:13.5px;background:var(--surface-2);border:1px solid var(--rule-soft);border-radius:3px;padding:1px 5px;color:var(--ink)}
+
+  /* ---------- callouts ---------- */
+  .callout{
+    border-left:3px solid var(--rule);background:var(--surface-2);
+    padding:12px 16px;border-radius:0 3px 3px 0;
+    display:flex;flex-direction:column;gap:6px;font-size:14.5px;
+  }
+  .callout.is-alert{border-left-color:var(--alert);background:var(--alert-soft)}
+  .callout.is-warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .callout.is-ok{border-left-color:var(--ok);background:var(--ok-soft)}
+  .callout strong{font-weight:600}
+  .callout .mono{font-size:13.5px}
+
+  /* ---------- tables ---------- */
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  thead th{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule);white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:0}
+  td.num,th.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;text-align:right}
+  .sev{
+    display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;
+    border:1px solid currentColor;white-space:nowrap;
+  }
+  .sev.no{color:var(--alert)}
+  .sev.warn{color:var(--warn)}
+  .sev.rule{color:var(--ink-3)}
+
+  /* ---------- record sheet ---------- */
+  input[type=text]{
+    width:100%;min-width:88px;
+    font-family:"IBM Plex Mono",monospace;font-size:13.5px;
+    color:var(--ink);background:var(--surface-2);
+    border:1px solid var(--rule);border-radius:3px;
+    padding:6px 8px;
+  }
+  input[type=text]:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  .record td:first-child{color:var(--ink-2);white-space:nowrap;font-size:14px}
+
+  /* ---------- GO / NO-GO pill ---------- */
+  .verdict{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    padding:4px 10px;border-radius:3px;border:1px solid var(--rule);color:var(--ink-2);background:var(--surface-2);
+  }
+
+  footer{color:var(--ink-3);font-size:13.5px;display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--rule);padding-top:18px}
+  footer .mono{font-size:12.5px}
+  a{color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+  @media (max-width:520px){
+    ol.steps li{grid-template-columns:auto 1fr;gap:0 12px}
+    .clock{padding:14px}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <div class="eyebrow">CUMCM2026 B题 · 无线电干扰源定位清除 · MATLAB 主线</div>
+      <h1>Q3 正式测试执行卡</h1>
+    </div>
+    <p class="lede">
+      三次正式测试是 Q3 得分的硬前提：附件 3 的表 1 与从模拟器导出的加密行为日志都要进支撑材料。
+      目前 <strong>0/3</strong>。这张卡只放当场要照着做的东西。
+    </p>
+
+    <div class="clock">
+      <div class="clock-item">
+        <span class="eyebrow">距截止</span>
+        <span class="clock-v" id="cd">—</span>
+        <span class="clock-k">17:30 后不能启动新测试</span>
+      </div>
+      <div class="clock-item">
+        <span class="eyebrow">现在</span>
+        <span class="clock-v" id="now">—</span>
+        <span class="clock-k" id="nowd">—</span>
+      </div>
+      <div class="clock-item">
+        <span class="eyebrow">单局实际耗时</span>
+        <span class="clock-v">~3 s</span>
+        <span class="clock-k">程序墙钟；MATLAB 启动另需 ~40 s</span>
+      </div>
+      <div class="clock-item">
+        <span class="eyebrow">当前预检</span>
+        <span class="verdict" id="verdict">未运行</span>
+        <span class="clock-k">手动跑 预检_正式测试.bat</span>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2>今天的时间线</h2>
+      <span class="sec-note" style="font-size:13.5px">每局程序只跑几秒，瓶颈是模拟器的案例准备与人工操作 —— 别把它当成长任务排期。</span>
+    </div>
+
+    <div class="track">
+      <div class="track-rail"></div>
+      <div class="track-fill" id="fill"></div>
+      <div class="marks">
+        <div class="mark">
+          <span class="mark-t">现在</span>
+          <span class="mark-dot"></span>
+          <span class="mark-l">确认预检 GO，代码冻结</span>
+        </div>
+        <div class="mark">
+          <span class="mark-t">13:45</span>
+          <span class="mark-dot"></span>
+          <span class="mark-l">关闭所有其他 MATLAB 与自动化窗口</span>
+        </div>
+        <div class="mark">
+          <span class="mark-t">14:00</span>
+          <span class="mark-dot"></span>
+          <span class="mark-l">开始三次正式测试</span>
+        </div>
+        <div class="mark">
+          <span class="mark-t">15:30</span>
+          <span class="mark-dot"></span>
+          <span class="mark-l">建议此时已完成三次</span>
+        </div>
+        <div class="mark mark-deadline">
+          <span class="mark-t">17:30</span>
+          <span class="mark-dot"></span>
+          <span class="mark-l">截止，此后不能启动新测试</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>赛前预检</h2>
+      <span class="verdict" id="verdict2">GO / NO-GO</span>
+    </div>
+    <p class="sec-note">双击仓库外的 <code class="mono">预检_正式测试.bat</code>。八项里 FAIL 必须清零，WARN 提示的是打包时才致命的问题。</p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>检查项</th><th>判据</th><th>不过怎么办</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>模拟器在线</td><td><code class="mono">127.0.0.1:2026</code> 可连</td><td>启动模拟器并联网登录</td></tr>
+          <tr><td>无残留 MATLAB</td><td>没有 <code class="mono">MATLAB.exe</code> 在跑</td><td>关掉上一局或队友的窗口，正式测试期间只能有一个</td></tr>
+          <tr><td>MATLAB 可执行文件</td><td><code class="mono">R2026a</code>，回退 <code class="mono">R2022b</code></td><td>改 <code class="mono">一键_跑Q3.bat</code> 里的 <code class="mono">MATLAB_EXE</code></td></tr>
+          <tr><td>交付树未漂移</td><td>逐字节等于冻结基线 <code class="mono">q3-v1.0.0</code></td><td>跑 <code class="mono">rollback_to_q3-v1.0.0.bat</code></td></tr>
+          <tr><td>源码不含真实队号</td><td><code class="mono">.m / .bat / .md</code> 零命中</td><td>替换为占位符；违规即整题不计分</td></tr>
+          <tr><td>logs 可写 + 磁盘</td><td>目录可写，剩余 &gt; 1 GB</td><td>清盘</td></tr>
+          <tr><td>时间预算</td><td>距 17:30 够跑完整一局</td><td>抓紧；或改为只跑剩下的局数</td></tr>
+          <tr><td><span class="sev warn">Warn</span> logs/ 队号脱敏</td><td>文件名不含真实队号</td><td>程序交付包<strong>必须排除 <code class="mono">logs/</code></strong>，手工压缩整个目录会泄漏队号</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>逐局操作</h2>
+      <span class="sec-note" style="font-size:13.5px">勾选状态只存在本机浏览器，刷新不丢。</span>
+    </div>
+
+    <ol class="steps" id="steps">
+      <li>
+        <div class="step-rail"><span class="step-n">1</span></div>
+        <div class="step-body">
+          <span class="step-t">模拟器就绪</span>
+          <span class="step-x">登录 → 选「问题 3 正式」→ 确认案例已生成。</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">2</span></div>
+        <div class="step-body">
+          <span class="step-t">先起程序，再点开始</span>
+          <span class="step-x">双击 <span class="mono">一键_跑Q3.bat</span>。队号填<strong>参赛队号</strong>（须与模拟器当前登录队号逐字节一致）；案例编码可留空；<strong>局数直接回车</strong> —— 填大于 1 会走未端到端验证过的批量路径。<br>MATLAB 启动约 40 s，所以这一步要在点「开始测试」之前做完。</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">3</span></div>
+        <div class="step-body">
+          <span class="step-t">点「开始测试」，等 5 秒倒计时</span>
+          <span class="step-x">倒计时结束接口才开放，程序会自动 <span class="mono">/enter</span>；提前调用连不上时它会用同一个 <span class="mono">request_id</span> 重试最多 90 s，这是赛题要求的行为，不是故障。</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">4</span></div>
+        <div class="step-body">
+          <span class="step-t">开局后先看这两行</span>
+          <span class="step-x"><span class="mono">[网格] 径向布点：中心 + 6@1000.0(相 0°) + 6@1300.0(相 30°) ⇒ 13 点</span><br><span class="mono">[覆盖自检] ✓ 通过，最大距离 811.60 m ≤ 1000.0 m</span><br>第二条不是「通过」，程序会直接中止 —— 说明代码被改过，去跑回退。</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">5</span></div>
+        <div class="step-body">
+          <span class="step-t">跑完程序自动 /exit</span>
+          <span class="step-x">终端打印「表 1 填写用」块，四列直接抄进下面的记录表。</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">6</span></div>
+        <div class="step-body">
+          <span class="step-t">导出加密行为日志</span>
+          <span class="step-x">到模拟器日志列表导出本局日志。<strong>不要改文件名。</strong></span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">7</span></div>
+        <div class="step-body">
+          <span class="step-t">记下自记录日志文件名</span>
+          <span class="step-x">本局新出现的 <span class="mono">logs/robot_&lt;队号&gt;_&lt;时间戳&gt;.jsonl</span>，填进记录表。</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-rail"><span class="step-n">8</span></div>
+        <div class="step-body">
+          <span class="step-t">重复到跑满三次</span>
+          <span class="step-x">三次之间不要改代码、不要改配置、不要跑离线自测。</span>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout is-alert">
+      <strong>正式测试期间不要跑离线自测或迷你模拟器。</strong>
+      它们会占端口、抢 MATLAB、往同一个 <span class="mono">logs/</span> 里混写回放日志，把真机数字冲淡。
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>失败应对</h2></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>现象</th><th>处理</th></tr></thead>
+        <tbody>
+          <tr><td>/enter 连不上</td><td>接口未开放（倒计时没过完）。程序按附件 2 §12 用原 <code class="mono">request_id</code> 自动重试至 90 s，等即可。</td></tr>
+          <tr><td>提示「不足 1200 s」</td><td>/enter 晚于窗口开始 5 分钟。照常跑，程序按剩余时间收尾。</td></tr>
+          <tr><td>终端报错、程序中止</td><td><strong>不要</strong>点 /exit 查原因（附件 2 §9.3 接口已关）。记下报错原文与本局 jsonl 文件名，事后分析。</td></tr>
+          <tr><td>某频道一直清不掉</td><td>阶段 C 的单方位 homing 会兜底。跑完看「已清除 / 下界」那一行。</td></tr>
+          <tr><td>程序卡住</td><td>等，墙钟预算 1200 s。真卡死就中断，本局作废并如实记录。</td></tr>
+          <tr><td>想改代码</td><td><strong>不要。</strong>改了受测版本就不等于交付版本；确需改动必须重跑全部九项核验。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>表 1 记录表</h2>
+      <span class="sec-note" style="font-size:13.5px">四列口径（附件 3）：案例编码 / 清除个数 / 平均定位清除时间 = 虚拟时间 ÷ 清除个数 / 程序运行时间（墙钟）。表 1 不要比率。</span>
+    </div>
+    <div class="tw">
+      <table class="record" id="record">
+        <thead><tr><th>项</th><th>第 1 局</th><th>第 2 局</th><th>第 3 局</th></tr></thead>
+        <tbody>
+          <tr><td>时刻</td><td><input type="text" data-k="t1" id="t1"></td><td><input type="text" data-k="t2" id="t2"></td><td><input type="text" data-k="t3" id="t3"></td></tr>
+          <tr><td>测试案例编码</td><td><input type="text" data-k="c1" id="c1"></td><td><input type="text" data-k="c2" id="c2"></td><td><input type="text" data-k="c3" id="c3"></td></tr>
+          <tr><td>清除干扰源个数</td><td><input type="text" data-k="n1" id="n1"></td><td><input type="text" data-k="n2" id="n2"></td><td><input type="text" data-k="n3" id="n3"></td></tr>
+          <tr><td>平均定位清除时间 (s)</td><td><input type="text" data-k="a1" id="a1"></td><td><input type="text" data-k="a2" id="a2"></td><td><input type="text" data-k="a3" id="a3"></td></tr>
+          <tr><td>程序运行时间 (s)</td><td><input type="text" data-k="w1" id="w1"></td><td><input type="text" data-k="w2" id="w2"></td><td><input type="text" data-k="w3" id="w3"></td></tr>
+          <tr><td>自记录日志文件</td><td><input type="text" data-k="l1" id="l1"></td><td><input type="text" data-k="l2" id="l2"></td><td><input type="text" data-k="l3" id="l3"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="check" id="deliv">
+      <li><label><input type="checkbox" data-k="d1"><span class="row-t">第 1 局加密日志已从模拟器导出（未改文件名）</span></label></li>
+      <li><label><input type="checkbox" data-k="d2"><span class="row-t">第 2 局加密日志已从模拟器导出（未改文件名）</span></label></li>
+      <li><label><input type="checkbox" data-k="d3"><span class="row-t">第 3 局加密日志已从模拟器导出（未改文件名）</span></label></li>
+      <li><label><input type="checkbox" data-k="d4"><span class="row-t">打包程序时已排除 <span class="mono" style="font-size:13px">logs/</span>（含真实队号）</span></label></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>红线</h2>
+      <span class="sec-note" style="font-size:13.5px">违反任意一条即整题不计分。出处为赛题附件。</span>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th class="num">#</th><th>红线</th><th>出处</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>只有 4 条 HTTP 指令；<strong>不得并发</strong>；同一 <code class="mono">request_id</code> 只能重试<strong>完全相同</strong>的动作</td><td class="mono">附件2 §1.4 / §5.3 / §12</td></tr>
+          <tr><td class="num">2</td><td>必须<strong>同时</strong>检查 HTTP 状态码与 <code class="mono">accepted</code></td><td class="mono">附件2 §5.3</td></tr>
+          <tr><td class="num">3</td><td><code class="mono">svd_deg</code> 只在 <code class="mono">measure_result=="direction"</code> 时存在，且含 ±1° 误差</td><td class="mono">附件2 §7.2 / §12</td></tr>
+          <tr><td class="num">4</td><td><code class="mono">/clear</code> 不切换频道；成功条件只看距离 ≤ 20 m</td><td class="mono">附件2 §1.3 / (8)</td></tr>
+          <tr><td class="num">5</td><td><code class="mono">no_signal</code> 不等于附近没有源</td><td class="mono">附件2 §2.2</td></tr>
+          <tr><td class="num">6</td><td>测试结束后<strong>不要</strong>调 <code class="mono">/exit</code> 查原因</td><td class="mono">附件2 §9.3</td></tr>
+          <tr><td class="num">7</td><td><strong>禁止看模拟器内部数据</strong> —— 加密行为日志自动上传，一眼可见</td><td class="mono">附件1 §4.6</td></tr>
+          <tr><td class="num">8</td><td>不改模拟器 exe 的逻辑，只能改端口</td><td class="mono">附件1 §4.4</td></tr>
+          <tr><td class="num">9</td><td>支撑材料隐去真实队号</td><td class="mono">格式规范</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>交付物核对</h2></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th class="num">#</th><th>内容</th><th>从哪来</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>机器狗程序</td><td>MATLAB 源码，<strong>不是 exe</strong> —— 赛题只要求通过 HTTP+JSON 通信</td><td><span class="sev rule">就绪</span></td></tr>
+          <tr><td class="num">2</td><td>程序自记录的指令序列与响应</td><td><code class="mono">logs/robot_&lt;队号&gt;_&lt;时间戳&gt;.jsonl</code>，程序自动写</td><td><span class="sev rule">机制就绪</span></td></tr>
+          <tr><td class="num">3</td><td>三次正式测试的加密行为日志</td><td>模拟器界面导出，不改文件名</td><td><span class="sev no">0 / 3</span></td></tr>
+          <tr><td class="num">4</td><td>论文表 1 四列</td><td>程序结束打印的「表 1 填写用」块</td><td><span class="sev no">待填</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout is-warn">
+      <strong>加密日志上传上限 2 MB</strong>（附件 1 §4.6）。程序结束时会打印本局自记录日志体积，
+      用来核对有没有异常高频循环。
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>已知缺口</h2><span class="sec-note" style="font-size:13.5px">诚实登记，不粉饰。</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th class="num">#</th><th>缺口</th><th>影响</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>三次正式测试尚未开始</td><td>交付物第 3、4 项仍为空</td></tr>
+          <tr><td class="num">2</td><td>界面「本局干扰源总数」不采集</td><td>「100% 清除」是内部一致性核对口径，强度弱一档</td></tr>
+          <tr><td class="num">3</td><td><code class="mono">webwrite</code> 拿不到 HTTP 4xx 的 JSON 响应体</td><td>只拿到状态码，诊断 400 时略少信息</td></tr>
+          <tr><td class="num">4</td><td><code class="mono">main_batch_Q3Q4.m</code> 未端到端验证</td><td>局数栏填 1 可避开</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>权威版本：仓库内 <span class="mono">03_编程手/交付文档/Q3正式测试_执行卡_2026-09-13.md</span>；背景与原理见 <span class="mono">MATLAB_Framework/Q3正式测试操作手册.md</span>。</span>
+    <span>勾选与记录存在本机浏览器，不跨设备同步；换机器需重新填。</span>
+    <span class="mono">代码基线 git tag q3-v1.0.0</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- live clock ---------- */
+  var DEADLINE = new Date(2026, 8, 13, 17, 30, 0);
+  var START = new Date(2026, 8, 13, 11, 30, 0);
+
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function tick() {
+    var now = new Date();
+    var left = DEADLINE - now;
+    var cd = document.getElementById("cd");
+    if (left <= 0) {
+      cd.textContent = "已截止";
+      cd.classList.add("is-urgent");
+    } else {
+      var h = Math.floor(left / 3600000);
+      var m = Math.floor((left % 3600000) / 60000);
+      cd.textContent = h + " 小时 " + pad(m) + " 分";
+      if (left < 60 * 60000) cd.classList.add("is-urgent");
+    }
+    document.getElementById("now").textContent = pad(now.getHours()) + ":" + pad(now.getMinutes());
+    document.getElementById("nowd").textContent =
+      now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+
+    var span = DEADLINE - START;
+    var pct = Math.max(0, Math.min(100, ((now - START) / span) * 100));
+    document.getElementById("fill").style.width = pct + "%";
+  }
+  tick();
+  setInterval(tick, 20000);
+
+  /* ---------- persisted form state (best effort) ---------- */
+  var KEY = "q3-runbook-v1";
+  var state = {};
+  try {
+    state = JSON.parse(localStorage.getItem(KEY) || "{}") || {};
+  } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode / blocked */ }
+  }
+
+  document.querySelectorAll("input[type=checkbox][data-k]").forEach(function (box) {
+    var k = box.getAttribute("data-k");
+    if (state[k]) {
+      box.checked = true;
+      if (box.closest("li")) box.closest("li").classList.add("done");
+    }
+    box.addEventListener("change", function () {
+      state[k] = box.checked;
+      if (box.closest("li")) box.closest("li").classList.toggle("done", box.checked);
+      save();
+    });
+  });
+
+  document.querySelectorAll("input[type=text][data-k]").forEach(function (inp) {
+    var k = inp.getAttribute("data-k");
+    if (typeof state[k] === "string") inp.value = state[k];
+    inp.addEventListener("input", function () { state[k] = inp.value; save(); });
+  });
+
+  /* ---------- per-game steps as checkboxes on the rail ---------- */
+  document.querySelectorAll("#steps li .step-n").forEach(function (num, i) {
+    var k = "s" + i;
+    var box = document.createElement("input");
+    box.type = "checkbox";
+    box.id = "step-" + i;
+    box.style.marginTop = "4px";
+    box.setAttribute("data-k", k);
+    box.setAttribute("aria-label", "第 " + num.textContent + " 步已完成");
+    num.parentNode.appendChild(box);
+    if (state[k]) {
+      box.checked = true;
+      num.closest("li").classList.add("done");
+    }
+    box.addEventListener("change", function () {
+      state[k] = box.checked;
+      num.closest("li").classList.toggle("done", box.checked);
+      save();
+    });
+  });
+
+  /* ---------- verdict badge mirrors the record sheet ---------- */
+  function refreshVerdict() {
+    var done = ["d1", "d2", "d3"].filter(function (k) { return state[k]; }).length;
+    var v = document.getElementById("verdict");
+    var v2 = document.getElementById("verdict2");
+    v.textContent = done === 3 ? "三次已导出" : (done + " / 3 局已导出");
+    v2.textContent = done === 3 ? "三次已导出" : (done + " / 3 局已导出");
+  }
+  refreshVerdict();
+  document.querySelectorAll("#deliv input[type=checkbox]").forEach(function (b) {
+    b.addEventListener("change", refreshVerdict);
+  });
+})();
+</script>

@@ -1,0 +1,37 @@
+# Q3 稳定基线冻结快照 · 清单
+# 来源: 03_编程手/MATLAB_Framework/   (git tag q3-v1.0.0 -> commit 9b01124)
+# 冻结时间: 2026-09-13
+# 校验: py -3.11 _verify_baseline.py [--live]
+
+7513de1270926d78c002c33257e12c4a  *ChannelStateMachine.m
+4bb3043c7a5954720846b6b932a216ab  *Q1_geometry.m
+0d96a06825fe3f8b5459bac58bcf7e3b  *Q3正式测试操作手册.md
+d6b31368ca337b74e4cb3858e6dc8d8a  *Q4_extensions.m
+ecd38ad5d9e56a006c7fe09268150bf4  *README_MATLAB_Framework.md
+b6ca63a4bfc39a8b8c27539d411cc5d7  *SimulatorClient.m
+05925db611d4e6c2a3702de033cd78b7  *check_coverage.m
+66a9ce7ca6455a7c87887ce541dac3b4  *clear_source.m
+5dbac21baffea8f96ba04cf339b11712  *cmp_grid_second_nearest.m
+50fca319ae7e7a1f210d3acfc8702ce4  *crossval_q1_geom.m
+30dee4924285c4a63f4e10f4e69becdb  *design_constants.m
+9d43b5bf8fb400988563d3e9c2d4f11a  *generate_radial_grid.m
+1455d6a31f36f74d2d11798f191968ec  *generate_triangular_grid.m
+0207b76ceb02371020ba7ba2821ea0c8  *main_Q3Q4.m
+d1f068b2938ca02778ae4078e9f6deb4  *main_batch_Q3Q4.m
+397a91b537b79d4e2caf2be22862517f  *optimize_route.m
+2a92d393b3431c166634e62ed7ba5e0a  *run_assertions.m
+d17e6004be470510e3bc8af1e69946d9  *sweep_clear_exact.m
+965b7971e9f6d9021da85a2bc4bdce64  *test_Q1_geometry.m
+5ca0f0d26acb996a4c3c101808b00629  *test_Q4_extensions.m
+07b8a2240730646216af8453f22f37af  *test_SimulatorClient_logging.m
+5d78ff7798829bfd4b964202bde8739b  *test_clear_source_homing.m
+90a1dcb74cfa3fd618c15934e3c12b26  *test_clip_to_domain.m
+baa9123c050bd18f05502df10cca16cb  *test_homing_convergence.m
+ff7055291e81d80c64e4dd3e2db53a82  *test_optimize_route.m
+f86446116c580fd8b6b9864ee8622785  *test_phaseC_homing.m
+384bbafab9f7cf51122bcebb37885cdd  *test_sweep_clear.m
+fd3c5c27a2b251f87e55d050d601fa1a  *triangulate_source.m
+749d5355b24216c977b0e816ca7d3567  *visualization_tools.m
+3c61416e361249a3e995eae9cb038ae1  *一键_跑Q3.bat
+b383d6cbb670be463578d7ff432e85c8  *文档_历史/MATLAB框架交付说明书.md
+251d6467bed76ef69b76766f30233c03  *文档_历史/Phase1_完成报告.md

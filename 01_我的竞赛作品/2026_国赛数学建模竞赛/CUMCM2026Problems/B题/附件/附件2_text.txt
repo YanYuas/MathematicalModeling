@@ -1,0 +1,558 @@
+模拟器通信接口说明及编程指南
+1. 基本设定
+1.1. 目标区域与坐标系
+测试在一个二维虚拟目标区域中进行。
+目标区域是半径 1800 米的圆形区域。
+所有干扰源位于目标区域内。
+目标区域圆心是坐标原点 。
+ 轴正方向为东。
+ 轴正方向为北。
+坐标单位为米。
+机器狗可以向模拟器提交目标区域外的位置；模拟器仍会按提交的位置计算移动耗时和检测、清除结果。
+机器狗位置不构成正常策略约束，但每个坐标分量必须是有限数值，且绝对值不得超过2000000米。NaN、正负无穷大和超出范围的坐标返回HTTP 400，请求不执行，也不推进位置或虚拟时间。
+1.2. 角度约定
+所有方位角都采用以下约定：
+正东方向为 。
+逆时针方向为正。
+正北方向为 。
+正西方向为 。
+正南方向为 。
+角度范围为 。
+/measure 返回的 svd_deg 表示干扰源的示向度，单位为度。
+1.3. 频道
+频道用整数表示。
+有效频道范围是 。
+每个频道最多对应一个干扰源。
+一次测试中干扰源总数量在 10 到 16 个之间。
+具体有多少个干扰源不会通过接口直接返回，机器狗程序需要根据检测和清除结果自行判断。
+/measure 的 channel 表示测向机要检测的频道。
+/clear 的 channel 表示要尝试清除的目标干扰源频道。
+注意：/clear 的 channel 不会改变测向机当前频道，也不会产生切换频道耗时。
+1.4. 初始状态
+机器狗成功调用 /enter 后，模拟器初始状态如下，并开始计时：
+初始位置：(0,0)。
+测向机初始频道：1。
+/enter 本身不推进虚拟时钟。
+每次测试只允许一个与当前登录参赛队号一致的机器狗进入。机器狗必须逐次发送动作，并在收到本次完整HTTP响应后再发送下一个新动作。正常串行合法请求没有请求速率上限；每次检测的5秒只增加虚拟时间，不要求在现实中等待5秒。
+1.5. 其他信息
+模拟器默认服务地址：http://127.0.0.1:2026。
+选手可以在模拟器空闲时修改端口。
+模拟器只监听本机回环地址，其他电脑不能直接访问该接口。
+非测试期间、5秒倒计时期间以及测试结束后，机器狗接口未开放，连接可能直接失败。
+2. 关键物理规则
+2.1. 最大可被有效接收距离
+每个干扰源都有一个最大可被有效接收距离，简称有效接收半径。
+该距离在 1000 米到 1500 米之间。
+距离超过该干扰源的有效接收半径时，机器狗在该位置接收不到该频道信号。
+该距离不是固定常数，不同干扰源可能不同。
+模拟器接口不会返回某个干扰源的有效接收半径。
+2.2. 全向与定向干扰源
+干扰源分为全向和定向两类。
+全向干扰源：检测点到干扰源的距离不超过有效接收半径时，可以检测到信号。
+定向干扰源：检测点必须同时满足距离条件，并且位于该干扰源的有效覆盖角度范围内，才能检测到信号。有效覆盖角度范围为 （包含边界），定向方向未知。
+因此，/measure 返回无信号时，只能说明当前位置接收不到该频道信号。可能原因包括：
+该频道没有未清除干扰源。
+距离超过有效接收半径。
+该频道干扰源是定向干扰源，但当前位置不在它的覆盖范围内。
+2.3. 示向度误差
+/measure 返回的 svd_deg 是示向度，不是干扰源的精确真实方位。
+svd_deg 表示在检测点处测得的干扰源的示向度，单位为度。
+模拟器返回的 svd_deg 与干扰源的最大场强方向的真实方位角之间存在一定的误差，参见题目正文。
+误差范围为 。
+返回值保留两位小数。
+返回值仍按  归一化。
+机器狗程序不应把单次 svd_deg 当作完全精确的真实方位。
+2.4. 近距离阈值与清除半径
+近距离阈值为 5 米。检测距离不超过 5 米并且位于干扰源信号覆盖角度范围内时，由于信号太强，将无法获得示向度信息，/measure 返回 measure_result="near"，不返回 svd_deg。
+清除半径为 20 米。清除位置与目标干扰源距离小于等于 20 米时，/clear 可以清除成功。注：光学精确定位及清除操作是否成功仅与清除点与干扰源之间的距离有关，与定向干扰源的朝向无关。
+3. 指令
+机器狗程序只需要调用 4 条 HTTP 接口：
+移动和切换频道没有单独的接口：
+移动由 /measure 或 /clear 请求中的 position 体现。
+切换测向机频道只由 /measure 请求中的 channel 体现。
+4. 虚拟时间计算方法
+4.1.虚拟时钟推进规则
+只有请求被模拟器接受，即响应中 accepted=true 时，才可能推进虚拟时钟。
+/enter：accepted=true 时也不推进虚拟时钟。
+/exit：accepted=true 时也不推进虚拟时钟。
+/measure：accepted=true 时推进虚拟时钟。
+/clear：accepted=true 时推进虚拟时钟。
+accepted=false：本次请求不生效，虚拟时钟不推进。
+accepted=false 的响应里 virtual_time_s 为 0。不要把这个 0 当作当前虚拟时刻。需要记录虚拟时刻时，应使用最近一次 accepted=true 的响应。
+virtual_time_s 是JSON number，可能带小数，不应按整数解析。模拟器内部按微秒累计，响应最多保留6位小数，并删除无意义的末尾零。
+4.2. 移动耗时
+模拟器会记录机器狗上一次合法动作的位置。
+一次合法 /measure 或 /clear 的移动耗时为
+默认移动速度：5 m/s
+例如，从  移动到 ，直线距离为 500 米，移动耗时为
+4.3. 检测耗时
+一次合法 /measure 的总耗时为
+默认值：
+检测动作耗时：5 秒。
+切换频道耗时：1 秒。
+切换频道耗时只看合法 /measure：
+如果本次合法 /measure 的 channel 与测向机当前频道不同，切换频道耗时为 1 秒。
+如果频道相同，切换频道耗时为 0 秒。
+合法 /measure 完成后，测向机当前频道会更新为本次检测频道。
+4.4. 清除耗时
+一次合法 /clear 的总耗时为
+默认值：
+未发现可清除目标时，只有精确定位动作，没有清除动作，耗时为 3 秒。
+成功清除时，精确定位与清除两个动作总耗时为 5 秒。
+/clear 不产生切换频道耗时，也不会改变测向机当前频道。
+4.5. 现实时间和虚拟时间
+用户在模拟器中确认开始后，模拟器先准备数据。数据准备完成后显示5秒倒计时。倒计时结束时开启25分钟测试窗口并开放机器狗接口。
+机器狗成功调用 /enter 后开始计算最长20分钟的程序运行时间。实际现实截止时刻是“25分钟窗口截止”和“/enter 成功后20分钟”两者中较早的时刻。/enter 成功响应中的 remaining_real_duration_s 是本局实际还能使用的完整现实时间秒数，范围为0至1200；机器狗程序应使用该值，不应固定假定每次都有1200秒。
+虚拟世界限时为360000秒。达到现实时间或虚拟时间截止条件后，模拟器结束测试并关闭机器狗接口。截止前已经完整到达并被登记的唯一动作允许完成；在截止时刻或之后才完整到达的请求不再执行，连接可能直接关闭。测试结束后不能再调用 /exit 查询原因，具体结束原因由模拟器界面显示。
+5. 通信格式总规则
+5.1. 请求格式
+4条指令都使用 HTTP+JSON。
+方法：POST
+请求头：Content-Type 必须是 application/json，可以带且只允许参数 charset=utf-8。出现其他参数时返回 HTTP 415。
+Content-Encoding 可以省略，或为 identity。其他值返回 HTTP 415。
+请求体必须是无 BOM 的 UTF-8 JSON 对象，不能有重复键；JSON 嵌套不超过16层；请求体最大65536字节。
+路径必须精确为 /enter、/measure、/clear 或 /exit，不接受尾随斜线和查询参数。
+请求体必须是UTF-8 JSON对象，不能有重复键；请求体最大65536字节。
+channel 必须是 1 至 20 的整数。写成 JSON number 1.0 且数值恰好为整数时也会被接受；如写成1.5 则返回 HTTP 400。
+未声明的JSON字段不会被忽略，而是返回HTTP 200和 accepted=false，用于帮助发现字段拼写错误。
+arena_id 必须是ASCII字符串“default”。
+robot_id 必须逐字节等于当前登录参赛队号，UTF-8长度为1至64字节。
+request_id 是当前测试会话内的幂等键，UTF-8长度为1至128字节。robot_id 和 request_id 不能包含控制字符或不可见格式字符。
+5.2. 响应格式
+业务响应也是 JSON 对象。
+所有 JSON 业务响应都有以下字段：
+如果 accepted=false，响应只包含上面 3 个字段，不包含检测结果、清除结果或退出原因。
+5.3. HTTP状态和业务接受状态
+所有能够形成HTTP响应的错误都返回JSON，其中至少包含 accepted、real_timestamp_ms 和 virtual_time_s。机器狗程序必须同时检查HTTP状态和 accepted，不能只判断其中一个。
+每个新动作必须使用新的 request_id。只有在网络超时、连接中断等情况下重试完全相同的动作时，才复用原请求内容和原 request_id。同一ID、同一内容返回第一次的完整响应，不重复移动、检测、清除、退出或推进时间；同一ID改动路径、位置、频道等内容返回HTTP 409。结构错误、未知字段以及 arena_id、robot_id 不匹配不占用该ID，修正请求后可以复用。正常串行合法动作不设速率上限，但不同新动作不得并发发送。
+并非所有错误都能形成HTTP响应。倒计时未结束、接口尚未开放、测试已经结束，或模拟器内部无法继续服务时，连接可能被直接关闭，此时没有JSON体。机器狗程序必须同时处理“连不上”和“收到JSON”。
+结构错误（HTTP 400）以及未知字段、arena_id / robot_id 不匹配（HTTP 200且 accepted=false）不占用该 request_id，修正后可以复用。业务上已被接受的动作占用该 request_id。
+6. POST /enter：进入目标区域
+6.1. 请求
+发送字段：
+请求示例：
+{
+  "arena_id": "default",
+  "robot_id": "<参赛队号>",
+  "request_id": "enter-1"
+}
+6.2. 响应
+accepted=true 时，返回字段：
+响应示例：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 0,
+  "max_virtual_duration_s": 360000,
+  "max_real_duration_s": 1200,
+  "remaining_real_duration_s": 1200
+}
+6.3. 请求未执行的常见原因
+HTTP 200且 accepted=false：
+arena_id 不是 "default"。
+robot_id 与当前登录参赛队号不一致。
+请求包含未声明字段。
+重复调用 /enter。
+HTTP 400：
+请求体不是合法 JSON，或含有重复键。
+缺少 arena_id、robot_id 或 request_id。
+robot_id 或 request_id 为空、超长，或含控制/格式字符。
+测试已经结束或接口未开放时，连接可能直接失败，没有HTTP响应。
+7. POST /measure：检测
+7.1. 请求
+发送字段：
+请求示例：
+{
+  "arena_id": "default",
+  "robot_id": "<参赛队号>",
+  "request_id": "measure-1",
+  "position": {"x": 300, "y": 400},
+  "channel": 1
+}
+7.2. 响应字段
+accepted=true 时，返回字段：
+7.3. 三种检测结果
+无信号：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 105,
+  "measure_result": "no_signal"
+}
+含义：当前位置接收不到该频道的干扰源信号。可能原因包括该频道没有未清除干扰源、距离超过最大可被有效接收距离、定向干扰源没有覆盖该位置等。
+距离过近：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 105,
+  "measure_result": "near"
+}
+含义：已检测到该频道信号，但距离干扰源不超过 5 米。此时不返回 svd_deg。
+正常返回示向度：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 105,
+  "measure_result": "direction",
+  "svd_deg": 123.45
+}
+含义：已检测到该频道信号，并返回从检测点指向干扰源的方位角。svd_deg 保留两位小数，包含误差，参见题目正文。
+7.4. 请求未执行的常见原因
+HTTP 200且 accepted=false：
+尚未成功调用 /enter。
+arena_id 不是 "default"。
+robot_id 与当前登录参赛队号不一致。
+请求包含未声明字段，包括 position 下的未知字段。
+机器狗已经退出，或测试已经因超时等原因结束。
+HTTP 400：
+请求体不是合法 JSON，或含有重复键。
+缺少 position、position.x、position.y 或 channel。
+position.x 或 position.y 不是有限数值（含 NaN、正负无穷大），或绝对值超过2000000。
+channel 不在 1..20 范围内，或不是整数。
+robot_id 或 request_id 格式不合法。
+测试已经结束或接口未开放时，连接可能直接失败，没有HTTP响应
+8. POST /clear：清除
+8.1. 请求
+发送字段：
+请求示例：
+{
+  "arena_id": "default",
+  "robot_id": "<参赛队号>",
+  "request_id": "clear-1",
+  "position": {"x": 300, "y": 0},
+  "channel": 3
+}
+8.2. 清除规则
+清除半径是 20 米。
+如果指定频道的未清除干扰源距离 position 小于等于 20 米，则清除成功。注意，无论全向还是定向干扰源，只要指定频道的干扰源距离小于等于 20 米，都能够精确定位并清除，不受定向干扰源有效覆盖角度范围的限制。
+如果该频道不存在干扰源、干扰源已经被清除、或干扰源距离超过 20 米，都视为未发现可清除目标。
+同一个干扰源只能清除一次。重复清除已被清除的干扰源，会返回未发现可清除目标。
+/clear 不会切换测向机当前频道。
+8.3. 响应字段
+accepted=true 时，返回字段：
+8.4. 两种清除结果
+成功清除：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 196,
+  "clear_result": "success"
+}
+对应含义：
+clear_result="success"。
+清除动作耗时为 5 秒，再加移动耗时。
+未发现可清除目标：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 194,
+  "clear_result": "no_target_in_range"
+}
+对应含义：
+clear_result="no_target_in_range"。
+清除动作耗时为 3 秒，再加移动耗时。
+8.5. 请求未执行的常见原因
+与 /measure 相同，见第7.4节。/clear 的 channel 表示要尝试清除的目标干扰源频道，同样必须是 1..20 的整数；该字段不会切换测向机当前频道。
+9. POST /exit：退出目标区域
+9.1. 请求
+发送字段：
+请求示例：
+{
+  "arena_id": "default",
+  "robot_id": "<参赛队号>",
+  "request_id": "exit-1"
+}
+9.2. 响应
+accepted=true 时，返回字段：
+exit_reason 可能取值：
+/exit 与其他动作使用相同的 request_id 幂等规则。超时和手工中止会直接结束测试并关闭接口，不通过事后 /exit 返回原因。
+响应示例：
+{
+  "accepted": true,
+  "real_timestamp_ms": 1760000000000,
+  "virtual_time_s": 199,
+  "exit_reason": "user_exit"
+}
+9.3. 请求未执行的常见原因
+HTTP 200且 accepted=false：
+尚未成功调用 /enter。
+arena_id 不是 "default"。
+robot_id 与当前登录参赛队号不一致。
+请求包含未声明字段。
+HTTP 400：
+请求体不是合法 JSON，或含有重复键。
+缺少 arena_id、robot_id 或 request_id。
+robot_id 或 request_id 格式不合法。
+测试已经结束或接口未开放时，连接可能直接失败，没有HTTP响应。不要在测试结束后调用 /exit 查询原因。
+10. 完整计时示例
+本示例只说明指令含义和虚拟耗时计算，不代表查找策略。
+指令序列：
+关键说明：
+第 2 步从 (0,0) 到 (300,400)，移动距离为 500 米，移动耗时 100 秒；检测频道为 1，与初始频道相同，不需要切换频道。
+第 3 步位置不变，但检测频道从 1 改为 2，产生 1 秒切换频道耗时。
+第 4 步是 /clear，频道 3 是目标干扰源频道，不是测向机切换频道；本例假设未发现可清除目标，所以清除动作耗时为 3 秒。
+第 5 步再次 /measure 频道 2，测向机仍保持第 3 步检测后的频道 2，所以没有切换频道耗时。
+11. 示例程序
+下面代码只演示如何发送 4 类请求并读取响应，不包含查找策略。
+Python版：
+import json
+from urllib.request import Request, urlopen
+
+
+# 修改为你们自己的参赛队号
+BASE_URL = "http://127.0.0.1:2026"
+ROBOT_ID = "<参赛队号>"
+
+
+def post(path, payload):
+    request = Request(
+        BASE_URL + path,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urlopen(request, timeout=5) as http_response:
+        response = json.loads(http_response.read().decode("utf-8"))
+    print(path, response)
+    return response
+
+
+def base(request_id):
+    return {
+        "arena_id": "default",
+        "robot_id": ROBOT_ID,
+        "request_id": request_id,
+    }
+
+
+def action(request_id, x, y, channel):
+    payload = base(request_id)
+    payload["position"] = {"x": x, "y": y}
+    payload["channel"] = channel
+    return payload
+
+
+def main():
+    enter_response = post("/enter", base("enter-1"))
+    if enter_response.get("accepted") is not True:
+        print("进入失败")
+        return
+
+    remaining_time = enter_response["remaining_real_duration_s"]
+    print("本局可用现实时间：", remaining_time, "秒")
+
+    # 与第10节计时示例完全相同的四个动作。
+    actions = [
+        ("/measure", action("measure-1", 300, 400, 1)),
+        ("/measure", action("measure-2", 300, 400, 2)),
+        ("/clear", action("clear-1", 300, 0, 3)),
+        ("/measure", action("measure-3", 300, 0, 2)),
+    ]
+
+    for path, payload in actions:
+        # 如果因网络故障重试本动作，必须复用这个payload及其中的request_id。
+        response = post(path, payload)
+        if response.get("accepted") is not True:
+            print("请求未执行")
+            return
+
+        if path == "/measure":
+            if response["measure_result"] == "direction":
+                print("示向度：", response["svd_deg"], "度")
+            elif response["measure_result"] == "near":
+                print("距离过近，没有示向度")
+            else:
+                print("未测得信号")
+        else:
+            if response["clear_result"] == "success":
+                print("清除成功")
+            else:
+                print("清除位置附近没有目标")
+
+    exit_response = post("/exit", base("exit-1"))
+    if exit_response.get("accepted") is True:
+        print("退出原因：", exit_response["exit_reason"])
+
+main()
+Matlab版：
+function demo_robot()
+
+% 修改为你们自己的参赛队号。
+baseUrl = 'http://127.0.0.1:2026';
+robotId = '<参赛队号>';
+options = weboptions('MediaType', 'application/json', 'Timeout', 5);
+
+enterRequest = baseRequest(robotId, 'enter-1');
+enterResponse = post(baseUrl, '/enter', enterRequest, options);
+if enterResponse.accepted ~= true
+    fprintf('进入失败\n');
+    return;
+end
+
+remainingTime = enterResponse.remaining_real_duration_s;
+fprintf('本局可用现实时间：%d秒\n', remainingTime);
+
+% 与第10节计时示例完全相同的四个动作。
+actions = {
+    '/measure', actionRequest(robotId, 'measure-1', 300, 400, 1);
+    '/measure', actionRequest(robotId, 'measure-2', 300, 400, 2);
+    '/clear', actionRequest(robotId, 'clear-1', 300, 0, 3);
+    '/measure', actionRequest(robotId, 'measure-3', 300, 0, 2)
+};
+
+for i = 1:size(actions, 1)
+    path = actions{i, 1};
+    payload = actions{i, 2};
+    % 如果因网络故障重试本动作，必须复用这个payload及其中的request_id。
+    response = post(baseUrl, path, payload, options);
+    if response.accepted ~= true
+        fprintf('请求未执行\n');
+        return;
+    end
+
+    if strcmp(path, '/measure')
+        if strcmp(response.measure_result, 'direction')
+            fprintf('示向度：%.2f度\n', response.svd_deg);
+        elseif strcmp(response.measure_result, 'near')
+            fprintf('距离过近，没有示向度\n');
+        else
+            fprintf('未测得信号\n');
+        end
+    else
+        if strcmp(response.clear_result, 'success')
+            fprintf('清除成功\n');
+        else
+            fprintf('清除位置附近没有目标\n');
+        end
+    end
+end
+
+exitRequest = baseRequest(robotId, 'exit-1');
+exitResponse = post(baseUrl, '/exit', exitRequest, options);
+if exitResponse.accepted == true
+    fprintf('退出原因：%s\n', exitResponse.exit_reason);
+end
+end
+
+function request = baseRequest(robotId, requestId)
+request = struct( ...
+    'arena_id', 'default', ...
+    'robot_id', robotId, ...
+    'request_id', requestId);
+end
+
+function request = actionRequest(robotId, requestId, x, y, channel)
+request = baseRequest(robotId, requestId);
+request.position = struct('x', x, 'y', y);
+request.channel = channel;
+end
+
+function response = post(baseUrl, path, payload, options)
+response = webwrite([baseUrl path], payload, options);
+fprintf('%s  %s\n', path, jsonencode(response));
+end
+12. 编程注意事项
+先在模拟器中在线登录，启动测试，等待界面显示机器狗接口已经就绪。
+使用当前登录参赛队号作为 robot_id。
+每个新动作使用新的 request_id；只在重试完全相同动作时复用原ID和原请求内容。
+逐次等待响应，不得并发发送不同动作；正常串行合法动作没有速率上限。
+同时检查HTTP状态和 accepted。accepted=false 时动作没有生效，virtual_time_s=0 不是当前虚拟时刻。
+使用 /enter 返回的 remaining_real_duration_s 控制现实运行时间，不要固定假定有1200秒。
+每次检测增加的5秒是虚拟耗时，现实中不需要等待5秒。
+只有 measure_result="direction" 时才读取 svd_deg，并且不是精确的真实方位，有误差。
+/clear 不切换测向机频道；只有成功的 /measure 可能会更新当前频道。
+no_signal 不等于附近一定没有干扰源；也可能是超出接收距离或不在定向覆盖范围内。
+测试超时、中止或其他原因结束测试后接口会关闭；不要尝试调用 /exit 查询原因。
+程序判断JSON取值时使用 direction、near、no_signal、success、no_target_in_range 和 user_exit 等实际字符串，不依赖界面中文说明。
+机器狗程序应该自行记录测试过程中的指令序列、响应信息等内容，模拟器没有这一功能。
+倒计时未结束、测试已经结束或接口未开放时，连接可能直接失败，没有JSON体。
+加密日志文件上传上限为2MB，与机器狗接口协议无关；机器狗程序应避免异常高频循环。
+===TABLE===
+指令 | 含义 | 是否推进虚拟时钟
+POST /enter | 进入目标区域，开始本次运行。 | 否
+POST /measure | 到指定位置，对指定频道检测。 | 是
+POST /clear | 到指定位置，尝试清除指定频道的干扰源。 | 是
+POST /exit | 退出目标区域，结束本次运行。 | 否
+===TABLE===
+字段 | 类型 | 含义
+accepted | boolean | 模拟器是否接受本次请求。
+real_timestamp_ms | number | 模拟器响应时的现实世界时间戳，单位为毫秒。
+virtual_time_s | number | 虚拟时钟，单位为秒。
+===TABLE===
+HTTP状态 | 含义
+200，accepted=true | 动作已执行。
+200，accepted=false | JSON结构合法，但当前测试状态拒绝动作；或存在未知字段；或 arena_id、robot_id 不匹配。
+400 | JSON语法、重复键、缺失字段、字段类型、标识符格式、频道或坐标范围错误。
+404 | 路径未知或路径不精确。
+405 | 已知路径使用了非POST方法。
+409 | 同一 request_id 对应了不同动作，或并发发送了不同动作。
+413 | 请求体超过65536字节。
+415 | Content-Type 或 Content-Encoding 不受支持。
+429 | 连接/无效流量保护触发，或本局幂等记录达到上限。
+500 | 模拟器内部错误。
+===TABLE===
+字段 | 类型 | 必填 | 取值说明
+arena_id | string | 是 | 必须是 "default"。
+robot_id | string | 是 | 机器狗标识，非空字符串，参赛队号。
+request_id | string | 是 | 请求标识，非空字符串。
+===TABLE===
+字段 | 类型 | 取值说明
+accepted | boolean | true。
+real_timestamp_ms | number | 现实世界时间戳，单位为毫秒。
+virtual_time_s | number | 进入后的虚拟时刻；/enter 不推进虚拟时钟。
+max_virtual_duration_s | number | 模拟器配置的虚拟世界限时，默认 360000。
+max_real_duration_s | number | 模拟器配置的现实世界限时，默认 1200。
+remaining_real_duration_s | number | 本次测试从 /enter 成功起实际还能使用的完整现实时间秒数，整数范围 。
+===TABLE===
+字段 | 类型 | 必填 | 取值说明
+arena_id | string | 是 | 必须是 "default"。
+robot_id | string | 是 | 机器狗标识，非空字符串，参赛队号。
+request_id | string | 是 | 请求标识，非空字符串。
+position | object | 是 | 检测位置。
+position.x | number | 是 | X 坐标，有限JSON number，单位米，绝对值不得超过2000000。
+position.y | number | 是 | Y 坐标，有限JSON number，单位米，绝对值不得超过2000000。
+channel | number | 是 | 检测频道，整数范围 。
+===TABLE===
+字段 | 类型 | 取值说明
+accepted | boolean | true。
+real_timestamp_ms | number | 现实世界时间戳，单位为毫秒。
+virtual_time_s | number | 本次检测完成后的虚拟时刻。
+measure_result | string | 检测结果，取值为 "no_signal"、"near" 或 "direction"。
+svd_deg | number | 示向度，单位为度，保留两位小数。只有 measure_result="direction" 时返回。
+===TABLE===
+字段 | 类型 | 必填 | 取值说明
+arena_id | string | 是 | 必须是 "default"。
+robot_id | string | 是 | 机器狗标识，非空字符串，参赛队号。
+request_id | string | 是 | 请求标识，非空字符串。
+position | object | 是 | 清除位置。
+position.x | number | 是 | X 坐标，有限JSON number，单位米，绝对值不得超过2000000。
+position.y | number | 是 | Y 坐标，有限JSON number，单位米，绝对值不得超过2000000。
+channel | number | 是 | 要尝试清除的目标干扰源频道，整数范围 。
+===TABLE===
+字段 | 类型 | 取值说明
+accepted | boolean | true。
+real_timestamp_ms | number | 现实世界时间戳，单位为毫秒。
+virtual_time_s | number | 本次清除完成后的虚拟时刻。
+clear_result | string | 清除结果码。只有 "success" 和 "no_target_in_range"。
+===TABLE===
+字段 | 类型 | 必填 | 取值说明
+arena_id | string | 是 | 必须是 "default"。
+robot_id | string | 是 | 机器狗标识，非空字符串，参赛队号。
+request_id | string | 是 | 请求标识，非空字符串。
+===TABLE===
+字段 | 类型 | 取值说明
+accepted | boolean | true。
+real_timestamp_ms | number | 现实世界时间戳，单位为毫秒。
+virtual_time_s | number | 退出时的虚拟时刻；/exit 不推进虚拟时钟。
+exit_reason | string | 退出原因。
+===TABLE===
+取值 | 含义
+user_exit | 主动调用 /exit 退出。
+===TABLE===
+步骤 | 指令 | 位置参数 | 频道参数含义 | 移动距离(m) | 移动耗时(s) | 切换频道耗时(s) | 检测/清除动作耗时(s) | 本步总耗时(s) | 虚拟时刻(s)
+1 | /enter | - | - | 0 | 0 | 0 | 0 | 0 | 0
+2 | /measure | (300,400) | 检测频道 1 | 500 | 100 | 0 | 5 | 105 | 105
+3 | /measure | (300,400) | 检测频道 2 | 0 | 0 | 1 | 5 | 6 | 111
+4 | /clear | (300,0) | 目标干扰源频道 3 | 400 | 80 | 0 | 3 | 83 | 194
+5 | /measure | (300,0) | 检测频道 2 | 0 | 0 | 0 | 5 | 5 | 199
+6 | /exit | - | - | 0 | 0 | 0 | 0 | 0 | 199

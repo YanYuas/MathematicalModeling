@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="503.750551pt" height="358.272pt" viewBox="0 0 503.750551 358.272" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-12T21:48:14.546023</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 358.272 
+L 503.750551 358.272 
+L 503.750551 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 93.01629 48.530304 
+L 311.136151 48.530304 
+Q 315.120076 48.530304 315.120076 45.710208 
+L 315.120076 30.552192 
+Q 315.120076 27.732096 311.136151 27.732096 
+L 93.01629 27.732096 
+Q 89.032365 27.732096 89.032365 30.552192 
+L 89.032365 45.710208 
+Q 89.032365 48.530304 93.01629 48.530304 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #e6f0f3; stroke: #355f9d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 202.07622 61.749504 
+L 284.244661 76.90752 
+L 202.07622 92.065536 
+L 119.90778 76.90752 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #f9edd9; stroke: #d77b36; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 344.501518 88.187904 
+L 458.043364 88.187904 
+Q 462.027288 88.187904 462.027288 85.367808 
+L 462.027288 68.447232 
+Q 462.027288 65.627136 458.043364 65.627136 
+L 344.501518 65.627136 
+Q 340.517594 65.627136 340.517594 68.447232 
+L 340.517594 85.367808 
+Q 340.517594 88.187904 344.501518 88.187904 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #fbf2ea; stroke: #d77b36; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 202.07622 109.338624 
+L 284.244661 124.49664 
+L 202.07622 139.654656 
+L 119.90778 124.49664 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #f9edd9; stroke: #d77b36; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 344.501518 135.777024 
+L 458.043364 135.777024 
+Q 462.027288 135.777024 462.027288 132.956928 
+L 462.027288 116.036352 
+Q 462.027288 113.216256 458.043364 113.216256 
+L 344.501518 113.216256 
+Q 340.517594 113.216256 340.517594 116.036352 
+L 340.517594 132.956928 
+Q 340.517594 135.777024 344.501518 135.777024 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #fbf2ea; stroke: #d77b36; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 93.01629 183.366144 
+L 311.136151 183.366144 
+Q 315.120076 183.366144 315.120076 180.546048 
+L 315.120076 161.5104 
+Q 315.120076 158.690304 311.136151 158.690304 
+L 93.01629 158.690304 
+Q 89.032365 158.690304 89.032365 161.5104 
+L 89.032365 180.546048 
+Q 89.032365 183.366144 93.01629 183.366144 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #e6f0f3; stroke: #355f9d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 93.01629 220.379904 
+L 311.136151 220.379904 
+Q 315.120076 220.379904 315.120076 217.559808 
+L 315.120076 200.639232 
+Q 315.120076 197.819136 311.136151 197.819136 
+L 93.01629 197.819136 
+Q 89.032365 197.819136 89.032365 200.639232 
+L 89.032365 217.559808 
+Q 89.032365 220.379904 93.01629 220.379904 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #e6f0f3; stroke: #355f9d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 33.257424 267.969024 
+L 181.658608 267.969024 
+Q 185.642532 267.969024 185.642532 265.148928 
+L 185.642532 241.178112 
+Q 185.642532 238.358016 181.658608 238.358016 
+L 33.257424 238.358016 
+Q 29.273499 238.358016 29.273499 241.178112 
+L 29.273499 265.148928 
+Q 29.273499 267.969024 33.257424 267.969024 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #e6f0f3; stroke: #355f9d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 244.903408 267.969024 
+L 408.244309 267.969024 
+Q 412.228233 267.969024 412.228233 265.148928 
+L 412.228233 241.178112 
+Q 412.228233 238.358016 408.244309 238.358016 
+L 244.903408 238.358016 
+Q 240.919483 238.358016 240.919483 241.178112 
+L 240.919483 265.148928 
+Q 240.919483 267.969024 244.903408 267.969024 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #e6f0f3; stroke: #355f9d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 78.076573 318.025728 
+L 326.075868 318.025728 
+Q 330.059792 318.025728 330.059792 315.205632 
+L 330.059792 287.709696 
+Q 330.059792 284.8896 326.075868 284.8896 
+L 78.076573 284.8896 
+Q 74.092649 284.8896 74.092649 287.709696 
+L 74.092649 315.205632 
+Q 74.092649 318.025728 78.076573 318.025728 
+z
+" clip-path="url(#p5f817ae834)" style="fill: #e6f2ee; stroke: #168d98; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #203044" x="7.859906" y="15.21792" transform="rotate(-0 7.859906 15.21792)">a</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #203044" x="30.26948" y="15.21792" transform="rotate(-0 30.26948 15.21792)">问题一求解流程</text>
+   </g>
+   <g id="text_3">
+    <!-- 输入 $S_i,\ \theta_i,\ \varepsilon$ → 构造角域 $W_i$ -->
+    <g style="fill: #203044" transform="translate(154.33872 40.7187)">
+     <text>
+      <tspan x="0" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">输</tspan>
+      <tspan x="7.5" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">入</tspan>
+      <tspan x="15" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044"> </tspan>
+      <tspan x="43.243041" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044"> </tspan>
+      <tspan x="45.462279" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">→</tspan>
+      <tspan x="52.962279" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044"> </tspan>
+      <tspan x="55.181517" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">构</tspan>
+      <tspan x="62.681517" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">造</tspan>
+      <tspan x="70.181517" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">角</tspan>
+      <tspan x="77.681517" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">域</tspan>
+      <tspan x="85.181517" y="-0.6875" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044"> </tspan>
+      <tspan x="17.219238" y="-0.6875" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">S</tspan>
+      <tspan x="28.641151" y="-0.6875" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">θ</tspan>
+      <tspan x="39.91307" y="-0.6875" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">ε</tspan>
+      <tspan x="87.400756" y="-0.6875" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">W</tspan>
+      <tspan x="20.969208" y="0.4375" style="font-style: italic; font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">i</tspan>
+      <tspan x="32.241126" y="0.4375" style="font-style: italic; font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">i</tspan>
+      <tspan x="93.648207" y="0.4375" style="font-style: italic; font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">i</tspan>
+      <tspan x="22.766191" y="-0.6875" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">,</tspan>
+      <tspan x="34.03811" y="-0.6875" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">,</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="202.07622" y="79.11189" transform="rotate(-0 202.07622 79.11189)">角域交集非空？</text>
+   </g>
+   <g id="patch_12">
+    <path d="M 202.07622 49.998616 
+Q 202.07622 54.874259 202.07622 58.855475 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 203.87622 55.255475 
+L 202.07622 58.855475 
+L 200.27622 55.255475 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #203044" x="401.272441" y="79.526075" transform="rotate(-0 401.272441 79.526075)">无可行定位区域</text>
+   </g>
+   <g id="patch_13">
+    <path d="M 286.247049 76.90752 
+Q 312.383629 76.90752 337.625783 76.90752 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 334.025783 75.10752 
+L 337.625783 76.90752 
+L 334.025783 78.70752 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 7px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #677788" x="316.365052" y="74.087424" transform="rotate(-0 316.365052 74.087424)">否</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="202.07622" y="126.686362" transform="rotate(-0 202.07622 126.686362)">交集有界？</text>
+   </g>
+   <g id="patch_14">
+    <path d="M 202.07622 94.068641 
+Q 202.07622 100.702658 202.07622 106.442248 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 203.87622 102.842248 
+L 202.07622 106.442248 
+L 200.27622 102.842248 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 7px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #677788" x="206.060145" y="97.881984" transform="rotate(-0 206.060145 97.881984)">是</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(386.272441 121.107504)">无界区域</text>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(375.022441 133.126401)">无有限覆盖半径</text>
+   </g>
+   <g id="patch_15">
+    <path d="M 286.247049 124.49664 
+Q 312.383629 124.49664 337.625783 124.49664 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 334.025783 122.69664 
+L 337.625783 124.49664 
+L 334.025783 126.29664 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 7px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #677788" x="316.365052" y="121.676544" transform="rotate(-0 316.365052 121.676544)">否</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(153.32622 167.668385)">枚举边界射线交点与站址候选</text>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(157.07622 179.650368)">保留满足全部角域约束的点</text>
+   </g>
+   <g id="patch_16">
+    <path d="M 202.07622 141.654748 
+Q 202.07622 149.526698 202.07622 156.504219 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 203.87622 152.904219 
+L 202.07622 156.504219 
+L 200.27622 152.904219 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 7px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #677788" x="206.060145" y="146.704896" transform="rotate(-0 206.060145 146.704896)">是</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(175.82622 205.73558)">去重与凸包构造</text>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(160.82622 217.707015)">识别点、线段或凸多边形</text>
+   </g>
+   <g id="patch_17">
+    <path d="M 202.07622 184.663364 
+Q 202.07622 190.593795 202.07622 195.629799 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 203.87622 192.029799 
+L 202.07622 195.629799 
+L 200.27622 192.029799 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(95.991805 249.851142)">直径 D</text>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(73.636531 261.760468)">旋转卡壳 / 点对枚举</text>
+   </g>
+   <g id="text_15">
+    <!-- 最小包围圆 $R_{\mathrm{MEC}}$ -->
+    <g style="fill: #203044" transform="translate(298.561358 249.720478)">
+     <text>
+      <tspan x="0" y="-0.75" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">最</tspan>
+      <tspan x="7.5" y="-0.75" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">小</tspan>
+      <tspan x="15" y="-0.75" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">包</tspan>
+      <tspan x="22.5" y="-0.75" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">围</tspan>
+      <tspan x="30" y="-0.75" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">圆</tspan>
+      <tspan x="37.5" y="-0.75" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044"> </tspan>
+      <tspan x="39.719238" y="-0.75" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">R</tspan>
+      <tspan x="44.301697" y="0.375" style="font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">M</tspan>
+      <tspan x="48.968901" y="0.375" style="font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">E</tspan>
+      <tspan x="52.176622" y="0.375" style="font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">C</tspan>
+     </text>
+    </g>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(294.316241 261.771601)">Welzl / 支撑点枚举</text>
+   </g>
+   <g id="patch_18">
+    <path d="M 150.441615 220.468914 
+Q 129.866733 229.369331 110.11276 237.914633 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 114.131514 238.137374 
+L 110.11276 237.914633 
+L 112.702205 234.833274 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 253.812952 220.177808 
+Q 289.227494 229.36972 323.776294 238.336927 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 320.743962 235.690237 
+L 323.776294 238.336927 
+L 319.839543 239.174778 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_16">
+    <!-- 交叉复核：$D/2\leq R_{\mathrm{MEC}}\leq D/\sqrt{3}$ -->
+    <g style="fill: #203044" transform="translate(151.33872 298.389622)">
+     <text>
+      <tspan x="0" y="-0.253125" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">交</tspan>
+      <tspan x="7.5" y="-0.253125" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">叉</tspan>
+      <tspan x="15" y="-0.253125" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">复</tspan>
+      <tspan x="22.5" y="-0.253125" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">核</tspan>
+      <tspan x="30" y="-0.253125" style="font-size: 7.5px; font-family: 'Microsoft YaHei'; fill: #203044">：</tspan>
+      <tspan x="37.5" y="-0.253125" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">D</tspan>
+      <tspan x="56.887344" y="-0.253125" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">R</tspan>
+      <tspan x="81.321399" y="-0.253125" style="font-style: italic; font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">D</tspan>
+      <tspan x="42.914948" y="-0.253125" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">/</tspan>
+      <tspan x="44.999924" y="-0.253125" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">2</tspan>
+      <tspan x="50.249893" y="-0.253125" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">≤</tspan>
+      <tspan x="74.683948" y="-0.253125" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">≤</tspan>
+      <tspan x="86.736346" y="-0.253125" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">/</tspan>
+      <tspan x="88.821323" y="-0.253125" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">√</tspan>
+      <tspan x="96.718768" y="-0.46875" style="font-size: 7.5px; font-family: 'STIXGeneral'; fill: #203044">3</tspan>
+      <tspan x="61.469803" y="0.871875" style="font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">M</tspan>
+      <tspan x="66.137007" y="0.871875" style="font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">E</tspan>
+      <tspan x="69.344728" y="0.871875" style="font-size: 5.25px; font-family: 'STIXGeneral'; fill: #203044">C</tspan>
+     </text>
+     <rect x="95.781268" y="-8.53125" width="5.624969" height="0.46875"/>
+    </g>
+    <text style="font-size: 7.5px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; fill: #203044" transform="translate(142.353369 310.083909)">Thales 顶点检验 → 直径圆覆盖结论</text>
+   </g>
+   <g id="patch_20">
+    <path d="M 109.309979 268.021436 
+Q 129.869138 276.429945 149.600433 284.499865 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 146.949744 281.471029 
+L 149.600433 284.499865 
+L 145.586951 284.803115 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 324.627063 267.741733 
+Q 289.2214 276.430089 254.684393 284.905282 
+" style="fill: none; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 258.609644 285.795451 
+L 254.684393 284.905282 
+L 257.751679 282.299182 
+z
+" style="fill: #677788; stroke: #677788; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 7px; font-family: 'Microsoft YaHei', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #677788" x="202.07622" y="337.7664" transform="rotate(-0 202.07622 337.7664)">输出区域、直径、最小包围圆及覆盖判定；点区域单独处理。</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p5f817ae834">
+   <rect x="2.88" y="2.88" width="497.990551" height="352.512"/>
+  </clipPath>
+ </defs>
+</svg>

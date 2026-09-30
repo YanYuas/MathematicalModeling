@@ -1,0 +1,303 @@
+[
+  {
+    "库内路径": "Q1/核心/q1_main.py",
+    "原位路径": "03_编程手/Q1/实验结果/q1_main.py",
+    "类别": "核心",
+    "bytes": 30943,
+    "md5": "606270ccbb9ce6798aa1f6344ed42702"
+  },
+  {
+    "库内路径": "Q1/测试/_独立校验.py",
+    "原位路径": "03_编程手/Q1/实验结果/_独立校验.py",
+    "类别": "测试",
+    "bytes": 3127,
+    "md5": "7644abbaf70bf12ff899f031074e190b"
+  },
+  {
+    "库内路径": "Q2/核心/Q2_algorithm_implementation.py",
+    "原位路径": "03_编程手/Q2/代码/Q2_algorithm_implementation.py",
+    "类别": "核心",
+    "bytes": 21547,
+    "md5": "7a30cfe1560da09a3be03c3e027164e9"
+  },
+  {
+    "库内路径": "Q2/核心/Q2_algorithm_alpha_complete.py",
+    "原位路径": "03_编程手/Q2/代码/Q2_algorithm_alpha_complete.py",
+    "类别": "核心",
+    "bytes": 11465,
+    "md5": "350ed7d7eee5af5ed6c0861cab7c9a28"
+  },
+  {
+    "库内路径": "Q2/测试/Q2_independent_verification.py",
+    "原位路径": "03_编程手/Q2/代码/Q2_independent_verification.py",
+    "类别": "测试",
+    "bytes": 12908,
+    "md5": "7d97f2ec99dc6c8d162915c3520628c7"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/Q1_geometry.m",
+    "原位路径": "03_编程手/MATLAB_Framework/Q1_geometry.m",
+    "类别": "核心",
+    "bytes": 7287,
+    "md5": "752c336812581f16524d7319ef3ed274"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/generate_triangular_grid.m",
+    "原位路径": "03_编程手/MATLAB_Framework/generate_triangular_grid.m",
+    "类别": "核心",
+    "bytes": 1650,
+    "md5": "1455d6a31f36f74d2d11798f191968ec"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/ChannelStateMachine.m",
+    "原位路径": "03_编程手/MATLAB_Framework/ChannelStateMachine.m",
+    "类别": "核心",
+    "bytes": 4418,
+    "md5": "8f8f5fbb7c29a9f184d71fd96a165da9"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/SimulatorClient.m",
+    "原位路径": "03_编程手/MATLAB_Framework/SimulatorClient.m",
+    "类别": "核心",
+    "bytes": 19806,
+    "md5": "b92ec05225124eb77b22d5eb9743a78c"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/triangulate_source.m",
+    "原位路径": "03_编程手/MATLAB_Framework/triangulate_source.m",
+    "类别": "核心",
+    "bytes": 3191,
+    "md5": "fd3c5c27a2b251f87e55d050d601fa1a"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/clear_source.m",
+    "原位路径": "03_编程手/MATLAB_Framework/clear_source.m",
+    "类别": "核心",
+    "bytes": 8915,
+    "md5": "66a9ce7ca6455a7c87887ce541dac3b4"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/sweep_clear_exact.m",
+    "原位路径": "03_编程手/MATLAB_Framework/sweep_clear_exact.m",
+    "类别": "核心",
+    "bytes": 3033,
+    "md5": "89decc3d0fc089b7fb44ca295e00dba8"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/optimize_route.m",
+    "原位路径": "03_编程手/MATLAB_Framework/optimize_route.m",
+    "类别": "核心",
+    "bytes": 2301,
+    "md5": "397a91b537b79d4e2caf2be22862517f"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/check_coverage.m",
+    "原位路径": "03_编程手/MATLAB_Framework/check_coverage.m",
+    "类别": "核心",
+    "bytes": 2132,
+    "md5": "c7375b4ecba8e1134e698520d64e61fc"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/Q4_extensions.m",
+    "原位路径": "03_编程手/MATLAB_Framework/Q4_extensions.m",
+    "类别": "核心",
+    "bytes": 8833,
+    "md5": "e5cc921c70862c79f6ab3a042090bd63"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/design_constants.m",
+    "原位路径": "03_编程手/MATLAB_Framework/design_constants.m",
+    "类别": "核心",
+    "bytes": 5650,
+    "md5": "c85e1cd6c6dde0c864e48b3b6eeec154"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/visualization_tools.m",
+    "原位路径": "03_编程手/MATLAB_Framework/visualization_tools.m",
+    "类别": "核心",
+    "bytes": 7235,
+    "md5": "519e3bdd9ef87e03ebc95d5eb0ac173a"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/main_Q3Q4.m",
+    "原位路径": "03_编程手/MATLAB_Framework/main_Q3Q4.m",
+    "类别": "核心（主程序）",
+    "bytes": 24862,
+    "md5": "0207b76ceb02371020ba7ba2821ea0c8"
+  },
+  {
+    "库内路径": "Q3/核心_Python对照/q3_main.py",
+    "原位路径": "03_编程手/Q3/实验结果/q3_main.py",
+    "类别": "核心（对照/留痕）",
+    "bytes": 28298,
+    "md5": "21bae2f90a94f009ba686e834ae27b06"
+  },
+  {
+    "库内路径": "Q3/核心_Python对照/q3_main_clean.py",
+    "原位路径": "03_编程手/Q3/实验结果/q3_main_clean.py",
+    "类别": "核心（对照）",
+    "bytes": 17323,
+    "md5": "d6272033dbc8b25920cabda7b12ce95b"
+  },
+  {
+    "库内路径": "Q3/测试/run_assertions.m",
+    "原位路径": "03_编程手/MATLAB_Framework/run_assertions.m",
+    "类别": "测试",
+    "bytes": 14573,
+    "md5": "2a92d393b3431c166634e62ed7ba5e0a"
+  },
+  {
+    "库内路径": "Q3/测试/test_Q1_geometry.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_Q1_geometry.m",
+    "类别": "测试",
+    "bytes": 5355,
+    "md5": "95e9665a14a69e12ee70897cf06a528d"
+  },
+  {
+    "库内路径": "Q3/测试/test_Q4_extensions.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_Q4_extensions.m",
+    "类别": "测试",
+    "bytes": 6145,
+    "md5": "4633f361c0eaaf4d7255dcf72d0eecce"
+  },
+  {
+    "库内路径": "Q2/测试_外部复核/Q2_review_Codex_verify.py",
+    "原位路径": "99_归档/Q2_团队交付v2.1_2026-09-12/审核/Q2_review_Codex_verify.py",
+    "类别": "测试（Codex 审核复现）",
+    "bytes": 2902,
+    "md5": "980d24a2c9eb42db6244d60b95fe8d50"
+  },
+  {
+    "库内路径": "Q2/测试_外部复核/Q2_review_DSH_consistency_verify.py",
+    "原位路径": "99_归档/Q2_团队交付v2.1_2026-09-12/审核/Q2_review_DSH_consistency_verify.py",
+    "类别": "测试（DSH 一致性审核复现）",
+    "bytes": 4824,
+    "md5": "223c5fcee149063c5a0ec8c7d09619c9"
+  },
+  {
+    "库内路径": "Q2/测试_外部复核/Q2_audit_probe.py",
+    "原位路径": "99_归档/Q2_团队交付v2.1_2026-09-12/审核/Q2_audit_probe.py",
+    "类别": "测试（审计探针）",
+    "bytes": 4718,
+    "md5": "6706ab71d812a78051fb5f81cdf5e18b"
+  },
+  {
+    "库内路径": "Q2/测试_外部复核/Q2_audit_probe2.py",
+    "原位路径": "99_归档/Q2_团队交付v2.1_2026-09-12/审核/Q2_audit_probe2.py",
+    "类别": "测试（审计探针 2）",
+    "bytes": 2976,
+    "md5": "67a6556ec4d33c5b110efbe721116d96"
+  },
+  {
+    "库内路径": "Q2/测试_外部复核/Q2_palette_audit.py",
+    "原位路径": "99_归档/Q2_团队交付v2.1_2026-09-12/审核/Q2_palette_audit.py",
+    "类别": "测试（配色审计）",
+    "bytes": 2023,
+    "md5": "2345839d8c58c49e04d0f3a30ede342a"
+  },
+  {
+    "库内路径": "实验脚本/Q1_q1_scan.py",
+    "原位路径": "03_编程手/Q1/实验结果/q1_scan.py",
+    "类别": "实验（参数扫描 → 表5.1-5 数据源）",
+    "bytes": 10550,
+    "md5": "4cd292d1ca0ce2c2a55a5f8c74414f5d"
+  },
+  {
+    "库内路径": "实验脚本/Q1_q1_gamma_max.py",
+    "原位路径": "03_编程手/Q1/实验结果/q1_gamma_max.py",
+    "类别": "实验（γ 上界）",
+    "bytes": 4295,
+    "md5": "b8c6366ba4f8cc186b85d6fda417cbd5"
+  },
+  {
+    "库内路径": "实验脚本/Q2_Q2_parameter_scan.py",
+    "原位路径": "03_编程手/Q2/代码/Q2_parameter_scan.py",
+    "类别": "实验（180 例参数扫描）",
+    "bytes": 7524,
+    "md5": "2685b194786b95623e8af9650e8866de"
+  },
+  {
+    "库内路径": "实验脚本/Q2_q2_scan_and_figures.py",
+    "原位路径": "03_编程手/图表库/Q2/01_生图代码/q2_scan_and_figures.py",
+    "类别": "实验（扫描 + 出图）",
+    "bytes": 15271,
+    "md5": "6199061fce789124ed0076f1a1a10f3c"
+  },
+  {
+    "库内路径": "Q3/测试/test_SimulatorClient_logging.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_SimulatorClient_logging.m",
+    "类别": "测试",
+    "bytes": 8790,
+    "md5": "07b8a2240730646216af8453f22f37af"
+  },
+  {
+    "库内路径": "Q3/测试/test_clear_source_homing.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_clear_source_homing.m",
+    "类别": "测试",
+    "bytes": 5226,
+    "md5": "5d78ff7798829bfd4b964202bde8739b"
+  },
+  {
+    "库内路径": "Q3/测试/test_optimize_route.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_optimize_route.m",
+    "类别": "测试",
+    "bytes": 5492,
+    "md5": "ff7055291e81d80c64e4dd3e2db53a82"
+  },
+  {
+    "库内路径": "Q3/测试/test_homing_convergence.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_homing_convergence.m",
+    "类别": "测试",
+    "bytes": 5509,
+    "md5": "baa9123c050bd18f05502df10cca16cb"
+  },
+  {
+    "库内路径": "Q3/测试/crossval_q1_geom.m",
+    "原位路径": "03_编程手/MATLAB_Framework/crossval_q1_geom.m",
+    "类别": "测试",
+    "bytes": 3007,
+    "md5": "50fca319ae7e7a1f210d3acfc8702ce4"
+  },
+  {
+    "库内路径": "Q3/测试/test_sweep_clear.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_sweep_clear.m",
+    "类别": "测试",
+    "bytes": 5817,
+    "md5": "7d3fecb417d028b09c55412b2f39bfd6"
+  },
+  {
+    "库内路径": "Q3/测试/test_phaseC_homing.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_phaseC_homing.m",
+    "类别": "测试",
+    "bytes": 5040,
+    "md5": "f86446116c580fd8b6b9864ee8622785"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/generate_radial_grid.m",
+    "原位路径": "03_编程手/MATLAB_Framework/generate_radial_grid.m",
+    "类别": "核心",
+    "bytes": 1712,
+    "md5": "9d43b5bf8fb400988563d3e9c2d4f11a"
+  },
+  {
+    "库内路径": "Q3/核心_MATLAB主线/main_batch_Q3Q4.m",
+    "原位路径": "03_编程手/MATLAB_Framework/main_batch_Q3Q4.m",
+    "类别": "核心",
+    "bytes": 12904,
+    "md5": "d1f068b2938ca02778ae4078e9f6deb4"
+  },
+  {
+    "库内路径": "Q3/测试/cmp_grid_second_nearest.m",
+    "原位路径": "03_编程手/MATLAB_Framework/cmp_grid_second_nearest.m",
+    "类别": "测试",
+    "bytes": 1396,
+    "md5": "5dbac21baffea8f96ba04cf339b11712"
+  },
+  {
+    "库内路径": "Q3/测试/test_clip_to_domain.m",
+    "原位路径": "03_编程手/MATLAB_Framework/test_clip_to_domain.m",
+    "类别": "测试",
+    "bytes": 4094,
+    "md5": "90a1dcb74cfa3fd618c15934e3c12b26"
+  }
+]

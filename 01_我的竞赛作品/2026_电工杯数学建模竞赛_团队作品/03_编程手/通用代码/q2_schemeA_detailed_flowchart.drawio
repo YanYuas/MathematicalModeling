@@ -1,0 +1,381 @@
+<mxfile host="Electron" agent="Claude Code">
+  <diagram id="schemeA-flow" name="方案A NSGA-II双目标Pareto GA">
+    <mxGraphModel dx="1264" dy="907" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1550" pageHeight="1950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;fontColor=#1a1a2e;" value="问题二 方案A: NSGA-II 双目标Pareto遗传算法 详细流程" vertex="1">
+          <mxGeometry height="32" width="700" x="240" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="e-title" edge="1" parent="1" source="title" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#1a1a2e;strokeWidth=1.5;" target="s0-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s0-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="52" width="1100" x="60" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="s0-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontColor=#ffffff;fontStyle=1;" value="0. 问题建模 — xi in {0(不建),1(小型18万),2(中型32万),3(大型45万)} | 预算 &lt;= 120万 | 目标: max 覆盖率(C) + max 满意度(S)" vertex="1">
+          <mxGeometry height="24" width="1080" x="70" y="53" as="geometry" />
+        </mxCell>
+        <mxCell id="s0-text2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#cccccc;" value="C = 实际服务人数/总人数  |  S = 0.2*S1(距离) + 0.3*S2(利用率,连续线性插值) + 0.5*S3(价格), 按服务老人数加权" vertex="1">
+          <mxGeometry height="22" width="1080" x="70" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s0-s1" edge="1" parent="1" source="s0-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;strokeWidth=1.5;" target="s1-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s1-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="65" width="1100" x="60" y="128" as="geometry" />
+        </mxCell>
+        <mxCell id="s1-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#999999;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;" value="1. 数据加载与预处理 (get_data)" vertex="1">
+          <mxGeometry height="20" width="1080" x="70" y="131" as="geometry" />
+        </mxCell>
+        <mxCell id="s1-a" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#bbbbbb;fontSize=10;arcSize=4;" value="附件: X_{m,i}(5)老人数, d_{i,j}(10x10), a_{k,m}(6x3), C_s(建设成本), P_k(基准价)" vertex="1">
+          <mxGeometry height="28" width="320" x="80" y="158" as="geometry" />
+        </mxCell>
+        <mxCell id="s1-b" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#bbbbbb;fontSize=10;arcSize=4;" value="消费约束日需求: daily=(N5*constrained)/30" vertex="1">
+          <mxGeometry height="28" width="320" x="440" y="158" as="geometry" />
+        </mxCell>
+        <mxCell id="s1-c" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#bbbbbb;fontSize=10;arcSize=4;" value="预计算: S1距离满意度 + 可达矩阵(dist&lt;=1000)" vertex="1">
+          <mxGeometry height="28" width="340" x="800" y="158" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s1a" edge="1" parent="1" source="s1-a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#aaa;strokeWidth=1;" target="s1-b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s1b" edge="1" parent="1" source="s1-b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#aaa;strokeWidth=1;" target="s1-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s1-s2" edge="1" parent="1" source="s1-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;strokeWidth=1.5;" target="s2-params-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s2-params-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f0fe;strokeColor=#4a90d9;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="34" width="1100" x="60" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="s2-params-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontColor=#1a1a2e;fontStyle=1;" value="2. GA参数: POP=80 | GEN=60 | ELITE=8 | RUNS=3 | k=5 | pc=0.8 | pm=0.15" vertex="1">
+          <mxGeometry height="30" width="1080" x="70" y="217" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s2-s3" edge="1" parent="1" source="s2-params-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1.5;" target="s3-container">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ebf3fb;strokeColor=#4a90d9;strokeWidth=2;arcSize=8;" value="" vertex="1">
+          <mxGeometry height="910" width="1140" x="40" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-container-label" parent="1" style="text;html=1;strokeColor=none;fillColor=#4a90d9;align=center;verticalAlign=middle;fontSize=14;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=6;" value="NSGA-II 遗传算法主流程" vertex="1">
+          <mxGeometry height="28" width="500" x="350" y="341" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-init" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="52" width="1100" x="60" y="378" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-init-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#6c8ebf;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;" value="3. 种群初始化 gen_random_config() X 80" vertex="1">
+          <mxGeometry height="20" width="1080" x="70" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-i1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f0fe;strokeColor=#4a90d9;fontSize=10;arcSize=4;" value="随机10位整数 xi=randint(0,1,2,3)" vertex="1">
+          <mxGeometry height="20" width="190" x="100" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-i2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#d79b00;fontSize=10;arcSize=4;fontStyle=1;" value="repair() 预算修复: 超120万-&gt;降级/移除" vertex="1">
+          <mxGeometry height="20" width="260" x="390" y="406" as="geometry" />
+        </mxCell>
+        <mxCell id="s3-i3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;arcSize=4;fontStyle=1;" value="evaluate_config() 评估 -&gt; (C,S) 存入数组" vertex="1">
+          <mxGeometry height="20" width="240" x="910" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="e-si1" edge="1" parent="1" source="s3-i1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#4a90d9;strokeWidth=1;startArrow=classic;startFill=1;endFill=0;" target="s3-i2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-si2" edge="1" parent="1" source="s3-i2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1;" target="s3-i3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4-container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#4a90d9;strokeWidth=2;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="620" width="1100" x="60" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="s4-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#4a90d9;align=center;verticalAlign=middle;fontSize=12;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;" value="4. 主循环 — for gen in range(60)" vertex="1">
+          <mxGeometry height="24" width="600" x="300" y="374" as="geometry" />
+        </mxCell>
+        <mxCell id="s4a" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f0fe;strokeColor=#4a90d9;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="50" width="1060" x="80" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="s4a-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#4a90d9;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=3;" value="4a. 非支配排序 non_dominated_sort() — 按Pareto支配关系分层" vertex="1">
+          <mxGeometry height="20" width="820" x="200" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="s4a-detail" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;fontStyle=1;" value="若 Ci&gt;=Cj 且 Si&gt;=Sj 且至少一个严格大于, 则 i 支配 j. F1=Pareto前沿, F2=仅被F1支配, F3=..." vertex="1">
+          <mxGeometry height="16" width="1040" x="90" y="436" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4a-4b" edge="1" parent="1" source="s4a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1.2;" target="s4b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4b" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f0fe;strokeColor=#6c8ebf;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="42" width="1060" x="80" y="478" as="geometry" />
+        </mxCell>
+        <mxCell id="s4b-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#6c8ebf;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=3;" value="4b. 拥挤距离 crowding_distance() — 按C排序-&gt;累加邻距, 再按S排序-&gt;累加" vertex="1">
+          <mxGeometry height="20" width="820" x="200" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="s4b-detail" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#333333;" value="边界dist=inf, 中间dist+=(next-prev)/(max-min). 拥挤距离大=Pareto前沿分布均匀, 优选保留" vertex="1">
+          <mxGeometry height="14" width="1040" x="90" y="502" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4b-4c" edge="1" parent="1" source="s4b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1.2;" target="s4c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4c" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="30" width="1060" x="80" y="538" as="geometry" />
+        </mxCell>
+        <mxCell id="s4c-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#2e7d32;fontStyle=1;" value="4c. 精英保留: 按(front_rank升序, -crowding降序)排序, 前8个直接进入下一代" vertex="1">
+          <mxGeometry height="26" width="1040" x="90" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4c-4d" edge="1" parent="1" source="s4c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1.2;" target="s4d">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4d" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="36" width="1060" x="80" y="586" as="geometry" />
+        </mxCell>
+        <mxCell id="s4d-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#6c8ebf;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=3;" value="4d. Pareto锦标赛选择 X 72次 — 随机5候选, 层号小胜, 同层拥挤大胜 -&gt; 选出父代" vertex="1">
+          <mxGeometry height="20" width="820" x="200" y="588" as="geometry" />
+        </mxCell>
+        <mxCell id="s4d-detail" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontColor=#333333;" value="对80-8=72个空位, 每次选2个父代: 层号小者胜 -&gt; 同层拥挤距离大者胜 -&gt; 进入交叉变异" vertex="1">
+          <mxGeometry height="12" width="1040" x="90" y="608" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4d-4e" edge="1" parent="1" source="s4d" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1.2;" target="s4efg">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4efg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8f0;strokeColor=#d79b00;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="62" width="1060" x="80" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="s4efg-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#d79b00;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=3;" value="4e-4g. 遗传算子: 单点交叉(pc=0.8) -&gt; 基因变异(pm=0.15) -&gt; 预算修复" vertex="1">
+          <mxGeometry height="20" width="820" x="200" y="642" as="geometry" />
+        </mxCell>
+        <mxCell id="s4e" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;arcSize=4;fontStyle=1;" value="4e. 单点交叉: 随机切点, 交换基因段" vertex="1">
+          <mxGeometry height="22" width="310" x="100" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="s4f" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;arcSize=4;fontStyle=1;" value="4f. 基因变异: 随机基因位-&gt;随机0-3" vertex="1">
+          <mxGeometry height="22" width="310" x="455" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="s4g" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#d4a017;fontSize=10;arcSize=4;fontStyle=1;" value="4g. repair(): 超120万-&gt;降级/移除" vertex="1">
+          <mxGeometry height="22" width="310" x="810" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4ef" edge="1" parent="1" source="s4e" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#d79b00;strokeWidth=1;" target="s4f">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4fg" edge="1" parent="1" source="s4f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#d79b00;strokeWidth=1;" target="s4g">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4g-4h" edge="1" parent="1" source="s4efg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=2;" target="s4h">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4h" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="30" width="1060" x="80" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="s4h-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#2e7d32;fontStyle=1;" value="4h. 重新评估: evaluate_config() 对80个新个体评估(C,S), gen+=1, 若gen&lt;60回到4a" vertex="1">
+          <mxGeometry height="26" width="1040" x="90" y="722" as="geometry" />
+        </mxCell>
+        <mxCell id="e-loop-back" edge="1" parent="1" source="s4h" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=4;dashed=1;dashPattern=8 4;" target="s4a">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="52" y="735" />
+              <mxPoint x="52" y="435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-loop-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=12;fontColor=#c44e52;fontStyle=1;" value="循环X60代" vertex="1">
+          <mxGeometry height="28" width="38" x="14" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="s4-exit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="28" width="1060" x="80" y="772" as="geometry" />
+        </mxCell>
+        <mxCell id="s4-exit-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;" value="60代结束 -&gt; 收集本运行F1(Pareto前沿)个体 -&gt; 存入 all_C[], all_S[], all_configs[]" vertex="1">
+          <mxGeometry height="24" width="1040" x="90" y="774" as="geometry" />
+        </mxCell>
+        <mxCell id="s4-multirun" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="34" width="660" x="280" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="s4-multirun-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#333333;fontStyle=1;" value="独立运行 X3 (seed=run*137+42) — 每次初始化-&gt;60代进化-&gt;收集F1" vertex="1">
+          <mxGeometry height="30" width="640" x="290" y="822" as="geometry" />
+        </mxCell>
+        <mxCell id="e-multi-loop" edge="1" parent="1" source="s4-multirun" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=4;dashed=1;dashPattern=8 4;" target="s3-init">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="837" />
+              <mxPoint x="260" y="406" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-multi-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=12;fontColor=#c44e52;fontStyle=1;" value="X3" vertex="1">
+          <mxGeometry height="18" width="30" x="230" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s4-s5" edge="1" parent="1" source="s3-container" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#1a1a2e;strokeWidth=2.5;" target="s5-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s5-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="92" width="1100" x="60" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="s5-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;fontColor=#ffffff;fontStyle=1;" value="5. 多运行合并 &amp; 最终Pareto前沿" vertex="1">
+          <mxGeometry height="24" width="1080" x="70" y="1233" as="geometry" />
+        </mxCell>
+        <mxCell id="s5-step1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#888888;fontSize=11;arcSize=4;" value="合并3次运行所有F1个体" vertex="1">
+          <mxGeometry height="28" width="230" x="80" y="1265" as="geometry" />
+        </mxCell>
+        <mxCell id="s5-step2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#888888;fontSize=11;arcSize=4;" value="按(C,S)对去重" vertex="1">
+          <mxGeometry height="28" width="230" x="350" y="1265" as="geometry" />
+        </mxCell>
+        <mxCell id="s5-step3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f0fe;strokeColor=#4a90d9;fontSize=11;arcSize=4;fontStyle=1;" value="重新非支配排序取F1" vertex="1">
+          <mxGeometry height="28" width="230" x="620" y="1265" as="geometry" />
+        </mxCell>
+        <mxCell id="s5-step4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;arcSize=4;fontStyle=1;" value="按C排序-&gt;最终Pareto前沿" vertex="1">
+          <mxGeometry height="28" width="230" x="890" y="1265" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s5a" edge="1" parent="1" source="s5-step1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#aaa;strokeWidth=1.2;" target="s5-step2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s5b" edge="1" parent="1" source="s5-step2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#aaa;strokeWidth=1.2;" target="s5-step3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s5c" edge="1" parent="1" source="s5-step3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#aaa;strokeWidth=1.2;" target="s5-step4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s5-s6" edge="1" parent="1" source="s5-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;strokeWidth=1.5;" target="s6-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s6-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8f0;strokeColor=#d79b00;strokeWidth=2;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="70" width="1100" x="60" y="1345" as="geometry" />
+        </mxCell>
+        <mxCell id="s6-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#d79b00;align=center;verticalAlign=middle;fontSize=12;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=6;" value="6. TOPSIS 折中方案选择" vertex="1">
+          <mxGeometry height="22" width="1080" x="70" y="1348" as="geometry" />
+        </mxCell>
+        <mxCell id="s6-step1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;arcSize=4;" value="归一化: Z=[C,S]/||[C,S]||" vertex="1">
+          <mxGeometry height="22" width="230" x="80" y="1377" as="geometry" />
+        </mxCell>
+        <mxCell id="s6-step2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;arcSize=4;" value="等权: W=Z*[0.5,0.5]" vertex="1">
+          <mxGeometry height="22" width="230" x="350" y="1377" as="geometry" />
+        </mxCell>
+        <mxCell id="s6-step3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;arcSize=4;" value="D+=dist(W,ideal+), D-=dist(W,ideal-)" vertex="1">
+          <mxGeometry height="22" width="230" x="620" y="1377" as="geometry" />
+        </mxCell>
+        <mxCell id="s6-step4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#d4a017;fontSize=10;arcSize=4;fontStyle=1;" value="score=D-/(D++D-)-&gt;argmax-&gt;推荐方案" vertex="1">
+          <mxGeometry height="22" width="230" x="890" y="1377" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s6a" edge="1" parent="1" source="s6-step1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#d79b00;strokeWidth=1;" target="s6-step2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s6b" edge="1" parent="1" source="s6-step2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#d79b00;strokeWidth=1;" target="s6-step3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s6c" edge="1" parent="1" source="s6-step3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#d79b00;strokeWidth=1;" target="s6-step4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-s6-s7" edge="1" parent="1" source="s6-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;strokeWidth=1.5;" target="s7-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="65" width="1100" x="60" y="1437" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#82b366;align=center;verticalAlign=middle;fontSize=12;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=6;" value="7. 结果输出" vertex="1">
+          <mxGeometry height="22" width="1080" x="70" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-o1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;arcSize=4;" value="Pareto前沿CSV (14行)" vertex="1">
+          <mxGeometry height="26" width="190" x="80" y="1467" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-o2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;arcSize=4;" value="Pareto散点图 PNG" vertex="1">
+          <mxGeometry height="26" width="190" x="300" y="1467" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-o3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;arcSize=4;" value="TOPSIS推荐方案" vertex="1">
+          <mxGeometry height="26" width="190" x="520" y="1467" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-o4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;arcSize=4;" value="各站覆盖+利用+利润" vertex="1">
+          <mxGeometry height="26" width="190" x="740" y="1467" as="geometry" />
+        </mxCell>
+        <mxCell id="s7-o5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;arcSize=4;" value="极端点(最高C/S)" vertex="1">
+          <mxGeometry height="26" width="180" x="960" y="1467" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-panel" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff5f5;strokeColor=#c44e52;strokeWidth=2;arcSize=6;dashed=1;" value="" vertex="1">
+          <mxGeometry height="730" width="430" x="1200" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-panel-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#c44e52;align=center;verticalAlign=middle;fontSize=11;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;" value="核心子程序: solve_equilibrium() — 阻尼固定点迭代求解分配均衡" vertex="1">
+          <mxGeometry height="24" width="410" x="1210" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e08080;fontSize=10;arcSize=4;" value="输入: config[10], data(全部模型数据)" vertex="1">
+          <mxGeometry height="24" width="380" x="1225" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-init" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e08080;fontSize=10;arcSize=4;" value="初始化: utils[10]=0, damping=0.12, max_iter=250" vertex="1">
+          <mxGeometry height="24" width="380" x="1225" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eq-in" edge="1" parent="1" source="eq-input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=1;" target="eq-init">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-loop-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0f0;strokeColor=#e08080;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="440" width="400" x="1215" y="162" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-loop-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#e08080;align=center;verticalAlign=middle;fontSize=10;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=3;" value="迭代循环 (max 250次, tol=0.001)" vertex="1">
+          <mxGeometry height="20" width="380" x="1225" y="167" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0a0a0;fontSize=9;arcSize=3;align=left;spacingLeft=6;fontStyle=1;" value="1. 算S2: S2[s]=s2_continuous(utils[s])  连续分段线性" vertex="1">
+          <mxGeometry height="24" width="374" x="1228" y="194" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0a0a0;fontSize=9;arcSize=3;align=left;spacingLeft=6;" value="2. 分配: 每小区贪心选max(0.2*S1+0.3*S2+0.5*S3), 仅可达站点" vertex="1">
+          <mxGeometry height="24" width="374" x="1228" y="226" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0a0a0;fontSize=9;arcSize=3;align=left;spacingLeft=6;" value="3. 新利用率: new_u[s]=assigned/capacity, 上限1.0" vertex="1">
+          <mxGeometry height="24" width="374" x="1228" y="258" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#d4a017;fontSize=9;arcSize=3;align=left;spacingLeft=6;fontStyle=1;" value="4. 阻尼平滑: utils = 0.12*new_u + 0.88*old_u" vertex="1">
+          <mxGeometry height="22" width="374" x="1228" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;arcSize=3;align=left;spacingLeft=6;fontStyle=1;" value="5. 收敛? max|delta_u| &lt; 0.001 -&gt; 输出结果" vertex="1">
+          <mxGeometry height="22" width="374" x="1228" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0a0a0;fontSize=9;arcSize=3;align=left;spacingLeft=6;" value="6. 周期检测: 每15步, 时均漂移&lt;0.008 -&gt; 用时均输出" vertex="1">
+          <mxGeometry height="22" width="374" x="1228" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0a0a0;fontSize=9;arcSize=3;align=left;spacingLeft=6;" value="7. 未收敛: 记录history, 回到步骤1继续" vertex="1">
+          <mxGeometry height="22" width="374" x="1228" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eqs1" edge="1" parent="1" source="eq-s1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=0.8;" target="eq-s2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eqs2" edge="1" parent="1" source="eq-s2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=0.8;" target="eq-s3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eqs3" edge="1" parent="1" source="eq-s3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=0.8;" target="eq-s4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eqs4" edge="1" parent="1" source="eq-s4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=0.8;" target="eq-s5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eqs5" edge="1" parent="1" source="eq-s5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=0.8;" target="eq-s6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eqs6" edge="1" parent="1" source="eq-s6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=0.8;" target="eq-s7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eq-loop" edge="1" parent="1" source="eq-s7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=3;dashed=1;dashPattern=8 4;" target="eq-s1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1205" y="391" />
+              <mxPoint x="1205" y="206" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eq-output" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e08080;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="44" width="380" x="1225" y="616" as="geometry" />
+        </mxCell>
+        <mxCell id="e-eq-loop-out" edge="1" parent="1" source="eq-loop-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=1.5;" target="eq-output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-output-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#333333;spacingLeft=6;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;输出: assignments[10], avg_utils[10], comm_sats[10], converged" vertex="1">
+          <mxGeometry height="38" width="370" x="1230" y="619" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s2detail" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#d4a017;arcSize=3;" value="" vertex="1">
+          <mxGeometry height="92" width="380" x="1225" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="eq-s2detail-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontColor=#856404;fontStyle=1;spacingLeft=6;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;S2(u) 连续分段: u&amp;lt;=0.6:1.0, 0.6-&amp;gt;0.75:&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;1.0-&amp;gt;0.93, 0.75-&amp;gt;0.85:&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(133, 100, 4), rgb(179, 151, 68));&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 0.93-&amp;gt;0.85, 0.85-&amp;gt;0.95:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(133, 100, 4), rgb(179, 151, 68));&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 0.85-&amp;gt;0.72, u&amp;gt;=0.95:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(133, 100, 4), rgb(179, 151, 68));&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 0.72-&amp;gt;0.50&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="86" width="370" x="1230" y="678" as="geometry" />
+        </mxCell>
+        <mxCell id="e-link-eq" edge="1" parent="1" source="s4h" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#c44e52;strokeWidth=1.5;dashed=1;" target="eq-panel">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="735" />
+              <mxPoint x="1180" y="417" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-link-eq-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#c44e52;fontStyle=1;" value="每次evaluate调用" vertex="1">
+          <mxGeometry height="18" width="70" x="1168" y="545" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

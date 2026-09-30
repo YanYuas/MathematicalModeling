@@ -1,0 +1,19 @@
+C:\Users\21722\Desktop\2026年第七届华数杯数学建模竞赛赛题\B题 VLSI布图规划设计\CLAUDE工作文件\论文手\Q3\Q3配图\m3_figs_lb.py:136: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all Axes decorations.
+  fig.tight_layout(); fig.savefig(os.path.join(OUT, 'q3_fig8_chain.png'), dpi=150); plt.close(fig)
+[n100] S*=443.00 W=442 H=442 死区=0.0853 HPWL=243,660
+[n200] S*=432.00 W=432 H=431 死区=0.0586 HPWL=476,589
+[n300] S*=533.01 W=533 H=533 死区=0.0385 HPWL=767,699
+权衡曲线采样...
+  [n100] Γ=0.0933 S=443.0 HPWL=247,892
+  [n100] Γ=0.1100 S=446.4 HPWL=244,364
+  [n100] Γ=0.1500 S=454.3 HPWL=244,488
+  [n200] Γ=0.0622 S=432.0 HPWL=489,918
+  [n200] Γ=0.0800 S=435.6 HPWL=496,318
+  [n200] Γ=0.1100 S=441.6 HPWL=485,868
+  [n200] Γ=0.1500 S=449.5 HPWL=466,844
+  [n300] Γ=0.0400 S=533.0 HPWL=784,620
+  [n300] Γ=0.0500 S=535.6 HPWL=777,334
+  [n300] Γ=0.0800 S=543.2 HPWL=754,770
+  [n300] Γ=0.1100 S=550.7 HPWL=725,018
+  [n300] Γ=0.1500 S=560.5 HPWL=713,858
+全部完成 → C:\Users\21722\Desktop\2026年第七届华数杯数学建模竞赛赛题\B题 VLSI布图规划设计\CLAUDE工作文件\论文手\Q3\Q3配图

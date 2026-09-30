@@ -1,0 +1,199 @@
+{
+  "scan_delta_d": [
+    {
+      "delta_d": 200,
+      "b_min": 167.819926235456,
+      "b_max": 979.7958971132713,
+      "feasible": true,
+      "phi_min_max": 78.46304096718453,
+      "E_nominal": 0.2348558382056588,
+      "width": 811.9759708778153
+    },
+    {
+      "delta_d": 300,
+      "b_min": 251.72988935318398,
+      "b_max": 953.9392014169456,
+      "feasible": true,
+      "phi_min_max": 72.54239687627792,
+      "E_nominal": 0.24171045550252332,
+      "width": 702.2093120637617
+    },
+    {
+      "delta_d": 400,
+      "b_min": 335.639852470912,
+      "b_max": 916.515138991168,
+      "feasible": true,
+      "phi_min_max": 66.42182152179817,
+      "E_nominal": 0.25099262077434453,
+      "width": 580.8752865202559
+    },
+    {
+      "delta_d": 500,
+      "b_min": 419.54981558863994,
+      "b_max": 866.0254037844386,
+      "feasible": true,
+      "phi_min_max": 60.00000000000001,
+      "E_nominal": 0.2624448873403565,
+      "width": 446.47558819579865
+    },
+    {
+      "delta_d": 600,
+      "b_min": 503.45977870636796,
+      "b_max": 800.0,
+      "feasible": true,
+      "phi_min_max": 53.13010235415599,
+      "E_nominal": 0.2757970520563858,
+      "width": 296.54022129363204
+    },
+    {
+      "delta_d": 650,
+      "b_min": 545.414760265232,
+      "b_max": 759.9342076785332,
+      "feasible": true,
+      "phi_min_max": 49.45839812649548,
+      "E_nominal": 0.2831030967208522,
+      "width": 214.51944741330124
+    },
+    {
+      "delta_d": 700,
+      "b_min": 587.369741824096,
+      "b_max": 714.142842854285,
+      "feasible": true,
+      "phi_min_max": 45.5729959991943,
+      "E_nominal": 0.2907875182652706,
+      "width": 126.77310103018908
+    },
+    {
+      "delta_d": 747.5,
+      "b_min": 627.2269743050167,
+      "b_max": 664.2618083256029,
+      "feasible": true,
+      "phi_min_max": 41.62571823706027,
+      "E_nominal": 0.298411584072666,
+      "width": 37.03483402058623
+    }
+  ],
+  "scan_phi_min": [
+    {
+      "phi_min": 30,
+      "b_min": 431.5693262192452,
+      "b_max": 664.2618083256029,
+      "feasible": true,
+      "width": 232.69248210635772
+    },
+    {
+      "phi_min": 35,
+      "b_min": 523.405134811758,
+      "b_max": 664.2618083256029,
+      "feasible": true,
+      "width": 140.85667351384495
+    },
+    {
+      "phi_min": 40,
+      "b_min": 627.2269743050167,
+      "b_max": 664.2618083256029,
+      "feasible": true,
+      "width": 37.03483402058623
+    },
+    {
+      "phi_min": 45,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    },
+    {
+      "phi_min": 50,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    },
+    {
+      "phi_min": 55,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    },
+    {
+      "phi_min": 60,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    },
+    {
+      "phi_min": 70,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    },
+    {
+      "phi_min": 80,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    },
+    {
+      "phi_min": 90,
+      "b_min": NaN,
+      "b_max": NaN,
+      "feasible": false,
+      "width": 0
+    }
+  ],
+  "scan_R": [
+    {
+      "R": 1000,
+      "b_min": 627.2269743050167,
+      "b_max": 664.2618083256029,
+      "feasible": true,
+      "phi_min_max": 41.62571823706027
+    },
+    {
+      "R": 1100,
+      "b_min": 627.2269743050167,
+      "b_max": 806.9967472053404,
+      "feasible": true,
+      "phi_min_max": 47.19186653801082
+    },
+    {
+      "R": 1200,
+      "b_min": 627.2269743050167,
+      "b_max": 938.745838872269,
+      "feasible": true,
+      "phi_min_max": 51.47056083195781
+    },
+    {
+      "R": 1250,
+      "b_min": 627.2269743050167,
+      "b_max": 1001.8701263137852,
+      "feasible": true,
+      "phi_min_max": 53.27320791573602
+    },
+    {
+      "R": 1300,
+      "b_min": 627.2269743050167,
+      "b_max": 1063.599431176982,
+      "feasible": true,
+      "phi_min_max": 54.90036780460649
+    },
+    {
+      "R": 1400,
+      "b_min": 627.2269743050167,
+      "b_max": 1183.7414202434584,
+      "feasible": true,
+      "phi_min_max": 57.728721092202974
+    },
+    {
+      "R": 1500,
+      "b_min": 627.2269743050167,
+      "b_max": 1300.4782774041248,
+      "feasible": true,
+      "phi_min_max": 60.110204656184735
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "checks": [
+    {
+      "assert": "L 为四边形 (4 顶点)",
+      "pass": true,
+      "got": 4,
+      "want": 4
+    },
+    {
+      "assert": "L 有界",
+      "pass": true,
+      "got": 120.07248693585298,
+      "want": "<=180"
+    },
+    {
+      "assert": "P1 坐标 4 位小数一致",
+      "pass": true,
+      "got": [
+        288.1342,
+        499.7929
+      ],
+      "want": [
+        288.1342,
+        499.7929
+      ]
+    },
+    {
+      "assert": "P2 坐标 4 位小数一致",
+      "pass": true,
+      "got": [
+        300.0,
+        480.7768
+      ],
+      "want": [
+        300.0,
+        480.7768
+      ]
+    },
+    {
+      "assert": "P3 坐标 4 位小数一致",
+      "pass": true,
+      "got": [
+        311.8658,
+        499.7929
+      ],
+      "want": [
+        311.8658,
+        499.7929
+      ]
+    },
+    {
+      "assert": "P4 坐标 4 位小数一致",
+      "pass": true,
+      "got": [
+        300.0,
+        520.3752
+      ],
+      "want": [
+        300.0,
+        520.3752
+      ]
+    },
+    {
+      "assert": "D == 39.5983",
+      "pass": true,
+      "got": 39.5983,
+      "want": 39.5983
+    },
+    {
+      "assert": "直径端点为 P2/P4",
+      "pass": true
+    },
+    {
+      "assert": "R_MEC == 19.7992",
+      "pass": true,
+      "got": 19.7992,
+      "want": 19.7992
+    },
+    {
+      "assert": "C* == (300, 500.5760)",
+      "pass": true,
+      "got": [
+        300.0,
+        500.576
+      ]
+    },
+    {
+      "assert": "gamma == 1.0000 (本例)",
+      "pass": true,
+      "got": 1.0
+    },
+    {
+      "assert": "本例被直径圆覆盖 (Thales)",
+      "pass": true,
+      "got": 118.0725
+    },
+    {
+      "assert": "每个顶点同时属于两个角域",
+      "pass": true
+    },
+    {
+      "assert": "Jung 夹逼成立 D/2 <= R_MEC <= D/sqrt(3)",
+      "pass": true,
+      "got": [
+        19.7992,
+        19.7992,
+        22.8621
+      ]
+    },
+    {
+      "assert": "等边三角形: R_MEC == D/sqrt(3)",
+      "pass": true,
+      "got": 0.5773502691896257,
+      "want": 0.5773502691896258
+    },
+    {
+      "assert": "等边三角形: 直径圆不覆盖 (反例成立)",
+      "pass": true,
+      "got": 60.0
+    },
+    {
+      "assert": "等边三角形: gamma > 1",
+      "pass": true,
+      "got": 1.154701
+    },
+    {
+      "assert": "与 verify_facts.json 口径一致 (D)",
+      "pass": true
+    },
+    {
+      "assert": "与 verify_facts.json 口径一致 (R_MEC)",
+      "pass": true
+    }
+  ],
+  "n_pass": 19,
+  "n_total": 19,
+  "all_pass": true
+}

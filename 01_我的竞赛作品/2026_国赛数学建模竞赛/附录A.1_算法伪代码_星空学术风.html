@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>附录A.1 交会定位与选点优化核心算法伪代码 · 星空学术风</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ================= 设计 tokens ================= */
+:root{
+  --bg-deep:#1A1F3A; --bg-deep-2:#232A52;
+  --bg-panel:rgba(255,255,255,.06); --bg-panel-solid:#252B4D;
+  --bg-inset:rgba(255,255,255,.04);
+  --line:rgba(255,255,255,.12);
+  --text-hi:#F0F3FA; --text-mid:#B8C0D9; --text-low:#7A84A8;
+  --primary:#8B9DFF; --accent-cyan:#6EC6FF; --accent-gold:#F5D76E;
+  --accent-mint:#7FE0C8; --accent-rose:#FF8FA3; --star:#E8ECF5;
+  --radius-sm:8px; --radius-md:14px; --radius-lg:20px; --radius-pill:999px;
+  --shadow-card:0 4px 24px rgba(0,0,0,.25);
+  --glow:0 0 24px rgba(139,157,255,.25);
+  --ease-soft:cubic-bezier(.22,1,.36,1);
+  --font-serif:'Cormorant Garamond','Noto Serif SC','Source Han Serif SC',serif;
+  --font-body:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  --font-mono:'JetBrains Mono','Consolas',monospace;
+}
+[data-theme="light"]{
+  --bg-deep:#F0F4FC; --bg-deep-2:#E0E8F8;
+  --bg-panel:#FFFFFF; --bg-panel-solid:#FFFFFF;
+  --bg-inset:#EEF3FC; --line:#D0D8EE;
+  --text-hi:#1E2850; --text-mid:#4A5680; --text-low:#8A96B8;
+  --primary:#4A5FD0; --accent-cyan:#2A8BD0; --accent-gold:#B8901A;
+  --accent-mint:#2A9878; --accent-rose:#C44860; --star:#6B7AB8;
+  --shadow-card:0 4px 18px rgba(74,95,208,.10);
+  --glow:0 0 18px rgba(74,95,208,.18);
+}
+html[data-theme="light"] body{
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(140,160,255,.07) 42%, rgba(170,185,255,.11) 50%, rgba(140,160,255,.07) 58%, transparent 70%),
+    radial-gradient(ellipse 90% 60% at 50% -15%, rgba(140,160,255,.16), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(110,198,255,.09), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 90% 20%, rgba(180,150,220,.07), transparent 60%),
+    var(--bg-deep);
+}
+[data-theme="light"] .star.bright{background:#4A5FD0;box-shadow:0 0 4px 1px rgba(74,95,208,.5),0 0 8px 2px rgba(140,160,255,.3)}
+[data-theme="light"] .star.gold{background:#B8901A;box-shadow:0 0 4px 1px rgba(184,144,26,.4)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(180,190,255,.06) 42%, rgba(220,225,255,.10) 50%, rgba(180,190,255,.06) 58%, transparent 70%),
+    radial-gradient(ellipse 90% 60% at 50% -15%, rgba(139,157,255,.25), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(110,198,255,.10), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 90% 20%, rgba(200,170,255,.10), transparent 60%),
+    radial-gradient(ellipse 60% 30% at 50% 110%, rgba(245,215,110,.06), transparent 60%),
+    var(--bg-deep);
+  color:var(--text-hi);
+  font-family:var(--font-body);
+  font-size:13.5px; line-height:1.75;
+  min-height:100vh;
+  transition:background .4s var(--ease-soft), color .4s var(--ease-soft);
+  overflow-x:hidden;
+}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.star{position:absolute;border-radius:50%;background:var(--star);animation:twinkle 3s ease-in-out infinite}
+.star.bright{background:#fff;box-shadow:0 0 4px 1px rgba(255,255,255,.6),0 0 8px 2px rgba(180,190,255,.4)}
+.star.gold{background:var(--accent-gold);box-shadow:0 0 4px 1px rgba(245,215,110,.5)}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease-soft),transform .5s var(--ease-soft)}
+.reveal.in{opacity:1;transform:none}
+/* ================= 页面骨架 ================= */
+.hero{padding:60px 32px 10px;text-align:center;position:relative;z-index:1}
+.hero .kick{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-serif);font-size:12px;
+  color:var(--accent-cyan);background:rgba(110,198,255,.1);border:1px solid rgba(110,198,255,.25);
+  border-radius:var(--radius-pill);padding:4px 14px;margin-bottom:16px}
+.hero h1{font-family:var(--font-serif);font-weight:900;font-size:clamp(26px,4vw,36px);letter-spacing:2px;line-height:1.3}
+.hero .sub{color:var(--text-mid);margin-top:12px;font-size:13.5px;max-width:720px;margin-left:auto;margin-right:auto}
+.hero .meta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.meta-chip{font-family:var(--font-serif);font-size:12px;color:var(--text-mid);background:var(--bg-panel);
+  border:1px solid var(--line);border-radius:var(--radius-pill);padding:4px 14px;backdrop-filter:blur(8px)}
+.meta-chip b{color:var(--text-hi);font-weight:600}
+.toolbar{position:fixed;top:18px;right:22px;display:flex;gap:8px;z-index:50}
+.tb-btn{font-family:var(--font-serif);font-size:13px;color:var(--text-mid);background:var(--bg-panel);
+  border:1px solid var(--line);border-radius:var(--radius-pill);padding:7px 16px;cursor:pointer;
+  backdrop-filter:blur(8px);transition:all .25s var(--ease-soft)}
+.tb-btn:hover{color:var(--primary);border-color:var(--primary)}
+main{max-width:1080px;margin:0 auto;padding:24px 24px 80px;position:relative;z-index:1}
+/* ================= 目录 ================= */
+.toc{background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-lg);
+  backdrop-filter:blur(12px);padding:18px 20px;margin-top:24px}
+.toc .toc-t{font-family:var(--font-serif);font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.toc .toc-t .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary)}
+.toc-list{display:flex;flex-wrap:wrap;gap:8px}
+.toc-item{font-family:var(--font-serif);font-size:12.5px;color:var(--text-mid);padding:5px 14px;border-radius:var(--radius-pill);
+  cursor:pointer;border:1px solid var(--line);background:transparent;transition:all .25s var(--ease-soft);text-decoration:none}
+.toc-item:hover{color:var(--primary);border-color:var(--primary)}
+/* ================= 章节 ================= */
+section{margin-top:48px;scroll-margin-top:24px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.sec-head .num{font-family:var(--font-serif);font-size:13px;font-weight:700;color:#fff;background:var(--primary);
+  padding:3px 14px;border-radius:var(--radius-pill);box-shadow:var(--glow);letter-spacing:1px}
+.sec-head h2{font-family:var(--font-serif);font-weight:900;font-size:24px;letter-spacing:1px}
+.sec-head .note{color:var(--text-low);font-size:12px;font-family:var(--font-serif)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.card{background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-lg);
+  backdrop-filter:blur(12px);box-shadow:var(--shadow-card);padding:20px;position:relative;overflow:hidden;
+  transition:transform .3s var(--ease-soft),box-shadow .3s var(--ease-soft),border-color .3s}
+.card:hover{transform:translateY(-2px);border-color:rgba(139,157,255,.3);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.card .ct{font-family:var(--font-serif);font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.card .ct .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);flex:none;box-shadow:0 0 6px var(--primary)}
+.card .cd{font-size:13px;color:var(--text-mid);line-height:1.8}
+/* ================= 摘要框 ================= */
+.abstract-box{background:var(--bg-panel);border:1px solid var(--line);border-left:3px solid var(--accent-gold);
+  border-radius:var(--radius-md);backdrop-filter:blur(12px);padding:18px 20px;margin-top:24px}
+.abstract-box .ab-t{font-family:var(--font-serif);font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text-hi)}
+.abstract-box p{font-size:13.5px;color:var(--text-mid)}
+/* ================= 输入输出 ================= */
+.io-row{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.io-box{flex:1;min-width:240px;background:var(--bg-inset);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 16px}
+.io-box .io-label{font-family:var(--font-serif);font-size:12px;font-weight:700;color:var(--accent-cyan);margin-bottom:6px;letter-spacing:1px}
+.io-box .io-label.out{color:var(--accent-mint)}
+.io-box p{font-size:12.5px;color:var(--text-mid);line-height:1.7}
+/* ================= 伪代码块 ================= */
+.algo{background:var(--bg-inset);border:1px solid var(--line);border-radius:var(--radius-md);
+  padding:16px 18px;margin:14px 0;position:relative}
+.algo .algo-head{font-family:var(--font-serif);font-weight:700;font-size:14px;color:var(--primary);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px}
+.algo .algo-head .badge{font-size:10px;background:var(--primary);color:#fff;padding:2px 8px;border-radius:var(--radius-pill);font-weight:600}
+.algo ol{margin-left:20px;font-size:12.5px;color:var(--text-hi);line-height:1.9}
+.algo ol li{margin:4px 0}
+.algo ol li::marker{color:var(--primary);font-family:var(--font-serif);font-weight:700}
+.algo ul{margin-left:20px;font-size:12.5px;color:var(--text-hi);line-height:1.9}
+.algo ul li{margin:3px 0}
+.algo ul li::marker{color:var(--accent-cyan)}
+.algo .sub-step{margin-left:18px;border-left:1px solid var(--line);padding-left:14px;margin-top:6px}
+.algo .formula{font-family:var(--font-mono);font-size:12px;color:var(--accent-gold);background:rgba(245,215,110,.08);
+  padding:2px 8px;border-radius:4px;display:inline-block;margin:2px 0}
+.algo .kw{color:var(--accent-cyan);font-weight:600}
+.algo .var{color:var(--accent-gold);font-family:var(--font-mono)}
+/* ================= 设计要点 / 核心创新 ================= */
+.insight{background:rgba(139,157,255,.08);border:1px solid rgba(139,157,255,.25);border-radius:var(--radius-md);
+  padding:12px 16px;margin:12px 0;display:flex;gap:10px;align-items:flex-start}
+.insight .ic{flex:none;font-size:14px;margin-top:1px}
+.insight .it{font-family:var(--font-serif);font-size:12.5px;font-weight:700;color:var(--primary);margin-bottom:2px}
+.insight p{font-size:12px;color:var(--text-mid);line-height:1.7}
+.insight.gold{background:rgba(245,215,110,.08);border-color:rgba(245,215,110,.25)}
+.insight.gold .it{color:var(--accent-gold)}
+.insight.mint{background:rgba(127,224,200,.08);border-color:rgba(127,224,200,.25)}
+.insight.mint .it{color:var(--accent-mint)}
+/* ================= 创新点总结 ================= */
+.innov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:16px}
+.innov-card{background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-md);
+  backdrop-filter:blur(12px);padding:16px 18px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.innov-card:hover{transform:translateY(-2px);border-color:rgba(139,157,255,.35)}
+.innov-card .in-num{font-family:var(--font-serif);font-size:28px;font-weight:900;color:var(--primary);opacity:.4;
+  position:absolute;top:8px;right:14px;line-height:1}
+.innov-card .in-t{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-hi);margin-bottom:6px;padding-right:36px}
+.innov-card .in-d{font-size:12px;color:var(--text-mid);line-height:1.7}
+/* ================= 正文排版 ================= */
+.prose h3{font-family:var(--font-serif);font-weight:700;font-size:17px;margin:22px 0 10px}
+.prose h4{font-family:var(--font-serif);font-weight:700;font-size:15px;margin:18px 0 8px}
+.prose p{margin:10px 0;font-size:13.5px;color:var(--text-hi)}
+.prose strong{color:var(--text-hi);font-weight:700}
+/* ================= 页脚 ================= */
+footer{margin-top:60px;padding:24px 24px 40px;text-align:center;border-top:1px solid var(--line);color:var(--text-low);font-size:12px}
+footer b{color:var(--text-mid);font-weight:600}
+/* ================= 响应式 / 降级 ================= */
+@media (max-width:720px){
+  .hero{padding:48px 18px 8px}
+  .toolbar{position:static;justify-content:flex-end;padding:12px 18px 0}
+  main{padding:16px 14px 60px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .star{animation:none;opacity:.6}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="toolbar">
+  <button class="tb-btn" id="themeBtn" type="button">☀️ 亮色</button>
+</div>
+
+<header class="hero">
+  <div class="kick"><span class="dot on"></span> 附录 · Appendix</div>
+  <h1>附录 A.1　交会定位与选点优化核心算法伪代码</h1>
+  <p class="sub">本附录给出问题一交会定位算法与问题二选点优化算法的结构化伪代码，分别对应正文 5.1.6 节与 5.2.6 节的算法设计。整套算法基于确定性凸几何框架构建，核心几何模块可跨问题复用，关键计算环节采用双实现交叉验证机制，无需外部基准即可实现正确性自校验。</p>
+  <div class="meta">
+    <span class="meta-chip">对应正文 <b>5.1.6 / 5.2.6</b></span>
+    <span class="meta-chip">算法数量 <b>12</b></span>
+    <span class="meta-chip">框架 <b>确定性凸几何</b></span>
+    <span class="meta-chip">验证机制 <b>双实现交叉</b></span>
+  </div>
+</header>
+
+<main>
+  <nav class="toc reveal">
+    <div class="toc-t"><span class="dot"></span> 目录</div>
+    <div class="toc-list">
+      <a class="toc-item" href="#sec-q1">A.1.1 问题一算法</a>
+      <a class="toc-item" href="#sec-q2">A.1.2 问题二算法</a>
+      <a class="toc-item" href="#sec-innov">创新点总结</a>
+    </div>
+  </nav>
+
+  <!-- ==================== A.1.1 问题一 ==================== -->
+  <section id="sec-q1">
+    <div class="sec-head"><span class="num">A.1.1</span><h2>问题一：多站交会定位区域直径与覆盖判定算法</h2><span class="note">Problem I · Localization</span></div>
+
+    <div class="io-row reveal">
+      <div class="io-box">
+        <div class="io-label">▸ 输入 INPUT</div>
+        <p><span class="var">n</span> 个检测点坐标 {S<sub>1</sub>, S<sub>2</sub>, …, S<sub>n</sub>}、对应示向度 {θ<sub>1</sub>, θ<sub>2</sub>, …, θ<sub>n</sub>}、测向误差半角 <span class="var">ε</span></p>
+      </div>
+      <div class="io-box">
+        <div class="io-label out">▸ 输出 OUTPUT</div>
+        <p>定位区域直径 <span class="var">D</span>、最小包围圆半径 <span class="var">R<sub>MEC</sub></span>、直径圆覆盖判定结果</p>
+      </div>
+    </div>
+
+    <!-- 算法A.1.1.1 整体流程 -->
+    <div class="algo reveal">
+      <div class="algo-head"><span class="badge">A.1.1.1</span> 整体流程</div>
+      <ol>
+        <li><span class="kw">角域构造</span>：为每个检测点构造对应角域 W<sub>i</sub>，每个角域由两条边界射线表示（算法 A.1.1.2）</li>
+        <li><span class="kw">有界性判定</span>：检查所有角域的方向区间是否存在公共方向，若存在则输出"区域无界"并终止（算法 A.1.1.7）</li>
+        <li><span class="kw">候选顶点生成</span>：枚举所有边界射线的交点，经全域角域包含性过滤得到有效顶点集（算法 A.1.1.3）</li>
+        <li><span class="kw">凸包计算</span>：采用 Andrew 单调链算法对有效顶点集计算凸包，得到定位区域 L（算法 A.1.1.4）</li>
+        <li><span class="kw">直径求解</span>：暴力枚举法与旋转卡壳法双实现交叉验证，输出区域直径 D 及对应端点对（算法 A.1.1.5）</li>
+        <li><span class="kw">最小包围圆求解</span>：暴力枚举法与 Welzl 随机增量法双实现交叉验证，输出 R<sub>MEC</sub> 及圆心（算法 A.1.1.6）</li>
+        <li><span class="kw">覆盖判定</span>：基于 Thales 定理验证直径圆对凸多边形的覆盖性，结合 Jung 定理完成边界验证</li>
+      </ol>
+    </div>
+
+    <div class="grid">
+      <!-- 算法A.1.1.2 角域构造 -->
+      <div class="algo reveal">
+        <div class="algo-head"><span class="badge">A.1.1.2</span> 角域构造</div>
+        <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：顶点 S、中心示向度 θ、误差半角 ε　|　输出：角域对象（左、右边界射线）</p>
+        <ol>
+          <li>计算边界方向：<span class="formula">θ<sub>−</sub> = θ − ε，θ<sub>+</sub> = θ + ε</span></li>
+          <li>生成单位方向向量 <b>u</b><sub>−</sub>、<b>u</b><sub>+</sub>，构造两条射线 R<sub>−</sub>(S, <b>u</b><sub>−</sub>)、R<sub>+</sub>(S, <b>u</b><sub>+</sub>)</li>
+          <li>返回角域 W = (S, θ, ε, R<sub>−</sub>, R<sub>+</sub>)</li>
+        </ol>
+        <div class="insight gold" style="margin-top:10px">
+          <span class="ic">✦</span>
+          <div><div class="it">设计要点</div><p>角域等价于两个闭半平面的交集，天然具有凸性，为后续全部凸几何运算奠定基础。</p></div>
+        </div>
+      </div>
+
+      <!-- 算法A.1.1.3 候选顶点生成 -->
+      <div class="algo reveal">
+        <div class="algo-head"><span class="badge">A.1.1.3</span> 候选顶点生成（含全域过滤）</div>
+        <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：角域列表 {W<sub>1</sub>, …, W<sub>n</sub>}　|　输出：定位区域有效顶点集</p>
+        <ol>
+          <li>收集所有角域的边界射线，构成射线集合</li>
+          <li>枚举所有射线对，计算交点；若无交点或交点在射线反向延长线上则跳过</li>
+          <li><span class="kw">全域过滤</span>：对每个交点，验证其属于所有角域；仅全部满足的点加入有效顶点集</li>
+          <li>返回有效顶点集</li>
+        </ol>
+        <div class="insight" style="margin-top:10px">
+          <span class="ic">⚡</span>
+          <div><div class="it">核心创新</div><p>必须对每个交点做全域角域包含性校验，剔除落在其他角域外的虚假交点。这是本算法最关键的正确性保障，省略该步会导致顶点集混入大量假点，最终直径结果偏大。</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- 算法A.1.1.4 凸包计算 -->
+      <div class="algo reveal">
+        <div class="algo-head"><span class="badge">A.1.1.4</span> 凸包计算（Andrew 单调链算法）</div>
+        <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：平面点集　|　输出：凸多边形（逆时针顶点序列）</p>
+        <ol>
+          <li>按坐标升序对点集排序</li>
+          <li>分别构造下凸壳与上凸壳，维护右转性质，非右转则弹出末端点</li>
+          <li>合并上下凸壳，去除首尾重复点，得到凸多边形顶点序列</li>
+        </ol>
+        <div class="insight mint" style="margin-top:10px">
+          <span class="ic">◆</span>
+          <div><div class="it">性质</div><p>凸多边形的直径必在顶点处取得，因此后续直径求解仅需枚举顶点对。</p></div>
+        </div>
+      </div>
+
+      <!-- 算法A.1.1.7 有界性判定 -->
+      <div class="algo reveal">
+        <div class="algo-head"><span class="badge">A.1.1.7</span> 有界性判定</div>
+        <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：角域列表　|　输出：有界 / 无界</p>
+        <ol>
+          <li>收集每个角域的方向区间 [θ<sub>i</sub> − ε, θ<sub>i</sub> + ε]</li>
+          <li>检查所有区间的交集是否为空</li>
+          <li>交集为空则返回有界，存在公共方向则返回无界</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 算法A.1.1.5 直径求解 -->
+    <div class="algo reveal">
+      <div class="algo-head"><span class="badge">A.1.1.5</span> 直径求解（双实现交叉验证）</div>
+      <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：凸多边形 L　|　输出：直径 D、直径端点对</p>
+      <ol>
+        <li><span class="kw">实现一 · 暴力枚举法</span>：枚举所有顶点对，计算两两距离，取最大值 D<sub>1</sub></li>
+        <li><span class="kw">实现二 · 旋转卡壳算法</span>：逆时针遍历多边形边，同步旋转对踵点指针，记录最大距离 D<sub>2</sub></li>
+        <li><span class="kw">交叉校验</span>：若 |D<sub>1</sub> − D<sub>2</sub>| &lt; ε<sub>geom</sub>，输出 D = D<sub>1</sub> 及对应端点；否则触发异常</li>
+      </ol>
+      <div class="insight" style="margin-top:10px">
+        <span class="ic">⚖</span>
+        <div><div class="it">创新机制</div><p>两种独立算法互为基准，实现正确性自校验，无需外部真值即可发现实现错误。</p></div>
+      </div>
+    </div>
+
+    <!-- 算法A.1.1.6 最小包围圆求解 -->
+    <div class="algo reveal">
+      <div class="algo-head"><span class="badge">A.1.1.6</span> 最小包围圆求解（双实现交叉验证）</div>
+      <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：平面点集　|　输出：最小包围圆圆心 c<sup>*</sup>、半径 R<sub>MEC</sub></p>
+      <ol>
+        <li><span class="kw">实现一 · 暴力枚举法</span>：枚举所有两点定圆、三点定外接圆，取能覆盖全部点的最小圆 (c<sub>1</sub>, R<sub>1</sub>)</li>
+        <li><span class="kw">实现二 · Welzl 随机增量算法</span>：随机打乱点集，递归构造最小包围圆，边界点分 0/1/2/3 个情形处理，输出 (c<sub>2</sub>, R<sub>2</sub>)</li>
+        <li><span class="kw">交叉校验</span>：若 |R<sub>1</sub> − R<sub>2</sub>| &lt; ε<sub>geom</sub>，输出 R<sub>MEC</sub> = R<sub>1</sub> 及圆心；否则触发异常</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ==================== A.1.2 问题二 ==================== -->
+  <section id="sec-q2">
+    <div class="sec-head"><span class="num">A.1.2</span><h2>问题二：第二检测点候选区域与选点策略算法</h2><span class="note">Problem II · Station Selection</span></div>
+
+    <div class="io-row reveal">
+      <div class="io-box">
+        <div class="io-label">▸ 输入 INPUT</div>
+        <p>第一检测点 S<sub>1</sub>、示向度 θ<sub>1</sub>、最小交会角要求 φ<sub>min</sub>、最坏接收半径 R<sub>worst</sub>、源距范围 [d<sub>min</sub>, d<sub>max</sub>]</p>
+      </div>
+      <div class="io-box">
+        <div class="io-label out">▸ 输出 OUTPUT</div>
+        <p>候选区域边界、可行性判定、可达交会角上界</p>
+      </div>
+    </div>
+
+    <!-- 算法A.1.2.1 整体流程 -->
+    <div class="algo reveal">
+      <div class="algo-head"><span class="badge">A.1.2.1</span> 整体流程</div>
+      <ol>
+        <li><span class="kw">坐标归约</span>：建立以 S<sub>1</sub> 为原点、示向度中线为 +x 轴的局部坐标系（算法 A.1.2.2）</li>
+        <li><span class="kw">基准候选区域求解</span>：在 α = 0（源在测量中线）假设下，推导闭式边界，判定可行性（算法 A.1.2.3）</li>
+        <li><span class="kw">鲁棒候选区域求解</span>：纳入示向度误差 α ∈ [−ε, ε]，逐点取最坏情形，求解广义可行边界与可达上界（算法 A.1.2.4）</li>
+        <li><span class="kw">跨问交叉验证</span>：调用问题一算法，验证候选点位的定位精度改善效果（算法 A.1.2.5）</li>
+      </ol>
+    </div>
+
+    <div class="grid">
+      <!-- 算法A.1.2.2 坐标归约 -->
+      <div class="algo reveal">
+        <div class="algo-head"><span class="badge">A.1.2.2</span> 坐标归约与逆变换</div>
+        <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：世界坐标 S<sub>1</sub>、示向度 θ<sub>1</sub>、待转换点 P　|　输出：局部坐标 (a, b)</p>
+        <ol>
+          <li>计算沿示向度单位向量 <b>u</b>、垂直示向度单位向量 <b>v</b></li>
+          <li>向量 <span class="formula">S<sub>1</sub>P</span> 分别向 <b>u</b>、<b>v</b> 投影，得到 a、b</li>
+          <li>逆变换：<span class="formula">P = S<sub>1</sub> + a·<b>u</b> + b·<b>v</b></span></li>
+        </ol>
+        <div class="insight gold" style="margin-top:10px">
+          <span class="ic">✦</span>
+          <div><div class="it">设计要点</div><p>刚体变换不改变距离与夹角，归约后公式大幅简化，且不失一般性。</p></div>
+        </div>
+      </div>
+
+      <!-- 算法A.1.2.5 跨问交叉验证 -->
+      <div class="algo reveal">
+        <div class="algo-head"><span class="badge">A.1.2.5</span> 跨问交叉验证</div>
+        <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：候选点位 S<sub>2</sub>、真实源位置 G、误差半角 ε　|　输出：定位区域直径 D、精度改善率</p>
+        <ol>
+          <li>调用问题一算法，输入 S<sub>1</sub>、S<sub>2</sub> 及对应示向度，计算定位区域直径 D</li>
+          <li>与基准配置的直径对比，计算精度改善率</li>
+          <li>返回验证结果</li>
+        </ol>
+        <div class="insight mint" style="margin-top:10px">
+          <span class="ic">🔗</span>
+          <div><div class="it">体系优势</div><p>问题二可直接复用问题一的完整几何计算管线，两问算法天然自洽，无需重复开发。</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 算法A.1.2.3 基准候选区域求解 -->
+    <div class="algo reveal">
+      <div class="algo-head"><span class="badge">A.1.2.3</span> 基准候选区域求解（α = 0 闭式解）</div>
+      <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：源距中值 d̂、源距不确定半径 Δd、φ<sub>min</sub>、R<sub>worst</sub>　|　输出：b<sub>min</sub>、b<sub>max</sub>、可行性、可达交会角上界</p>
+      <ol>
+        <li><span class="kw">可行性判据</span>：候选区域非空当且仅当 <span class="formula">Δd ≤ R<sub>worst</sub> · cos φ<sub>min</sub></span></li>
+        <li>若不可行，计算可达交会角上界 <span class="formula">φ<sub>max</sub> = arccos( Δd / R<sub>worst</sub> )</span>，返回不可行</li>
+        <li>若可行，计算边界：
+          <ul>
+            <li>角度约束下界：<span class="formula">b<sub>min</sub> = Δd · tan φ<sub>min</sub></span></li>
+            <li>距离约束上界：<span class="formula">b<sub>max</sub> = √( R<sub>worst</sub><sup>2</sup> − Δd<sup>2</sup> )</span></li>
+          </ul>
+        </li>
+        <li>返回 b<sub>min</sub>、b<sub>max</sub>、可行标记、可达上界</li>
+      </ol>
+      <div class="insight" style="margin-top:10px">
+        <span class="ic">◆</span>
+        <div><div class="it">核心结论</div><p>最坏情形出现在深度偏差取端点 |Δ| = Δd 处，由目标函数与约束关于 Δ<sup>2</sup> 的单调性保证。</p></div>
+      </div>
+    </div>
+
+    <!-- 算法A.1.2.4 含示向度误差的鲁棒候选区域求解 -->
+    <div class="algo reveal">
+      <div class="algo-head"><span class="badge">A.1.2.4</span> 含示向度误差的鲁棒候选区域求解</div>
+      <p style="font-size:11.5px;color:var(--text-low);margin-bottom:8px">输入：纵向坐标 a、φ<sub>min</sub>、R<sub>worst</sub>、源距端点集、α 采样集　|　输出：鲁棒边界、可行性、最大可达交会角</p>
+      <ol>
+        <li>对横向偏移 b 进行网格扫描，对每个 (a, b)：
+          <div class="sub-step">
+            <ol>
+              <li>遍历所有 α ∈ [−ε, ε] 与源距端点 r</li>
+              <li>计算最坏交会角 <span class="formula">sin φ<sub>worst</sub> = min<sub>α,r</sub> |a·sin α − b·cos α| / d<sub>2</sub>(a, b, r, α)</span></li>
+              <li>计算最坏站源距 <span class="formula">d<sub>2,max</sub> = max<sub>α,r</sub> d<sub>2</sub>(a, b, r, α)</span></li>
+            </ol>
+          </div>
+        </li>
+        <li>找到满足 φ<sub>worst</sub> ≥ φ<sub>min</sub> 的最小 b（b<sub>min</sub><sup>α</sup>）与最大 b（b<sub>max</sub><sup>α</sup>）</li>
+        <li>若 b<sub>min</sub><sup>α</sup> &gt; b<sub>max</sub><sup>α</sup>，判定不可行，求解全域最大可达交会角 φ<sub>min</sub><sup>max</sup></li>
+        <li>返回鲁棒边界、可行性标记、最大可达交会角</li>
+      </ol>
+      <div class="insight gold" style="margin-top:10px">
+        <span class="ic">⚡</span>
+        <div><div class="it">关键发现</div><p>角度约束与距离约束的最坏 α 方向恰好相反（角度在 α = +ε 最坏、距离在 α = −ε 最坏），两条约束无法合并为单式判据。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 创新点总结 ==================== -->
+  <section id="sec-innov">
+    <div class="sec-head"><span class="num">★</span><h2>算法体系创新点总结</h2><span class="note">Innovation Summary</span></div>
+
+    <div class="innov-grid">
+      <div class="innov-card reveal">
+        <div class="in-num">01</div>
+        <div class="in-t">凸几何确定性框架</div>
+        <div class="in-d">将带误差的测向问题完全转化为纯凸几何计算，全程无随机、无近似，结果唯一确定且可复现。</div>
+      </div>
+      <div class="innov-card reveal">
+        <div class="in-num">02</div>
+        <div class="in-t">双实现自校验机制</div>
+        <div class="in-d">直径、最小包围圆等核心几何量均采用两种独立算法交叉验证，在无外部基准的情况下保证实现正确性。</div>
+      </div>
+      <div class="innov-card reveal">
+        <div class="in-num">03</div>
+        <div class="in-t">全域顶点过滤机制</div>
+        <div class="in-d">对所有射线交点做全角域包含性校验，从根源上避免虚假顶点导致的结果偏大问题。</div>
+      </div>
+      <div class="innov-card reveal">
+        <div class="in-num">04</div>
+        <div class="in-t">两问算法复用体系</div>
+        <div class="in-d">问题二的选点算法可直接复用问题一的几何计算模块，两问共享同一套几何内核，保证理论自洽与工程可复用性。</div>
+      </div>
+      <div class="innov-card reveal">
+        <div class="in-num">05</div>
+        <div class="in-t">双维度鲁棒设计</div>
+        <div class="in-d">同时考虑源距未知与示向度误差两个独立信息缺口，分别做最坏化处理，给出闭式判据与可达上界。</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  本附录由 <b>Doubao</b> 生成 · 星空学术风模板 v1.0 · 对应正文 5.1.6 / 5.2.6 节 · 仅作学术参考
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var doc=document.documentElement;
+  /* 星点生成 */
+  var starsBox=document.getElementById("stars");
+  for(var i=0;i<140;i++){
+    var s=document.createElement("div");
+    var r=Math.random();
+    if(r<0.10){s.className="star bright";}
+    else if(r<0.15){s.className="star gold";}
+    else{s.className="star";}
+    var size=s.className.indexOf("bright")>=0?Math.random()*1.5+2:Math.random()*1.6+0.5;
+    s.style.width=size+"px";s.style.height=size+"px";
+    s.style.left=Math.random()*100+"%";
+    s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=(Math.random()*4)+"s";
+    s.style.animationDuration=(2+Math.random()*4)+"s";
+    starsBox.appendChild(s);
+  }
+  /* 主题切换 */
+  var saved=localStorage.getItem("starry-theme");
+  if(saved){doc.setAttribute("data-theme",saved)}
+  var themeBtn=document.getElementById("themeBtn");
+  function syncBtn(){themeBtn.textContent=doc.getAttribute("data-theme")==="light"?"🌙 暗色":"☀️ 亮色"}
+  syncBtn();
+  themeBtn.addEventListener("click",function(){
+    var next=doc.getAttribute("data-theme")==="dark"?"light":"dark";
+    doc.setAttribute("data-theme",next);
+    localStorage.setItem("starry-theme",next);
+    syncBtn();
+  });
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* 视口进入 */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target)}
+    });
+  },{threshold:.15});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>

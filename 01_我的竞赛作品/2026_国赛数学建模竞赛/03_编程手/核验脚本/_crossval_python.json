@@ -1,0 +1,570 @@
+[
+ {
+  "name": "baseline_2wedge",
+  "empty": false,
+  "R_MEC": 19.798882808999963,
+  "D": 39.59776561799998,
+  "area": 469.8581811435579,
+  "nv": 4
+ },
+ {
+  "name": "rand_00_n2",
+  "empty": false,
+  "R_MEC": 35.624512151196036,
+  "D": 71.24902430239212,
+  "area": 885.0355895775137,
+  "nv": 4
+ },
+ {
+  "name": "rand_01_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_02_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_03_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_04_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_05_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_06_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_07_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_08_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_09_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_10_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_11_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_12_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_13_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_14_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_15_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_16_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_17_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_18_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_19_n2",
+  "empty": false,
+  "R_MEC": 53.176995089583386,
+  "D": 106.35399017916656,
+  "area": 3115.352593981079,
+  "nv": 4
+ },
+ {
+  "name": "rand_20_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_21_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_22_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_23_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_24_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_25_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_26_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_27_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_28_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_29_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_30_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_31_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_32_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_33_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_34_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_35_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_36_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_37_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_38_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_39_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_40_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_41_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_42_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_43_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_44_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_45_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_46_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_47_n2",
+  "empty": false,
+  "R_MEC": 29.809056979200722,
+  "D": 59.618113958401445,
+  "area": 153.2410592873348,
+  "nv": 4
+ },
+ {
+  "name": "rand_48_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_49_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_50_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_51_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_52_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_53_n4",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_54_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_55_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_56_n3",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_57_n2",
+  "empty": false,
+  "R_MEC": 74.07062562927159,
+  "D": 148.14125125854318,
+  "area": 6236.904377910541,
+  "nv": 4
+ },
+ {
+  "name": "rand_58_n5",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "rand_59_n2",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "adv_parallel_far",
+  "empty": false,
+  "R_MEC": 0.0,
+  "D": 0.0,
+  "area": 0.0,
+  "nv": 1
+ },
+ {
+  "name": "adv_parallel_near",
+  "empty": false,
+  "R_MEC": 0.0,
+  "D": 0.0,
+  "area": 0.0,
+  "nv": 1
+ },
+ {
+  "name": "adv_antiparallel",
+  "empty": false,
+  "R_MEC": 300.0,
+  "D": 600.0,
+  "area": 3141.9116870791677,
+  "nv": 4
+ },
+ {
+  "name": "adv_antiparallel_eps",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "adv_coincident",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "adv_wrap_zero",
+  "empty": false,
+  "R_MEC": 450.01713527358936,
+  "D": 900.0342705471787,
+  "area": 0.0,
+  "nv": 2
+ },
+ {
+  "name": "adv_rim",
+  "empty": false,
+  "R_MEC": 44.446883241360695,
+  "D": 88.89376648272139,
+  "area": 3948.643986312356,
+  "nv": 4
+ },
+ {
+  "name": "adv_nearly_collinear3",
+  "empty": false,
+  "R_MEC": 238864.2485370823,
+  "D": 477728.49707416474,
+  "area": 867811609.7524898,
+  "nv": 3
+ },
+ {
+  "name": "adv_tight_triangle",
+  "empty": true,
+  "R_MEC": null,
+  "D": null,
+  "area": null,
+  "nv": 0
+ },
+ {
+  "name": "adv_far_stations",
+  "empty": false,
+  "R_MEC": 1799.0,
+  "D": 3598.0,
+  "area": 112983.17917749673,
+  "nv": 4
+ }
+]

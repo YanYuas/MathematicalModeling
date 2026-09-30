@@ -1,0 +1,273 @@
+<mxfile host="Electron" agent="Claude Code">
+  <diagram id="q2-flow" name="Q2算法流程">
+    <mxGraphModel dx="1848" dy="1326" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=13;fontStyle=1;fontColor=#1a1a2e;" value="问题二: 服务站选址与规模优化 — 算法流程图" vertex="1">
+          <mxGeometry height="25" width="700" x="200" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f5;strokeColor=#c0c0d0;fontSize=9;arcSize=8;" value="输入: 1.1老人预测 + 1.3消费约束日需求(8196次/日) + 距离矩阵 + 成本/满意度参数" vertex="1">
+          <mxGeometry height="30" width="900" x="100" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="45" width="900" x="100" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#ffffff;align=center;" value="决策变量: sᵢ∈{0(不建),1(小),2(中),3(大)}  约束: 预算≤120万  半径≤1000m" vertex="1">
+          <mxGeometry height="20" width="860" x="120" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=8;fontColor=#cccccc;align=center;" value="目标: max 覆盖率(至少一项服务/总人数) + max 满意度(0.2S₁距离+0.3S₂利用率+0.5S₃价格)" vertex="1">
+          <mxGeometry height="18" width="860" x="120" y="122" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#4a90d9;strokeWidth=1.5;" target="a-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#e8a838;strokeWidth=1.5;" target="b-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#5a9e6f;strokeWidth=1.5;" target="c-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ebf3fb;strokeColor=#4a90d9;strokeWidth=2;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="380" width="310" x="30" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="a-loop" parent="a-box" style="text;html=1;strokeColor=none;fillColor=none;fontSize=7;fontColor=#e05050;fontStyle=1;align=center;" value="×150代  5次独立运行取最优" vertex="1">
+          <mxGeometry height="15" width="250" x="60" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="a-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#4a90d9;fontSize=9;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;align=center;" value="方案A (主要) — NSGA-II双目标Pareto GA" vertex="1">
+          <mxGeometry height="25" width="300" x="35" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=8;arcSize=4;" value="① 初始化种群(200) 整数编码x∈{0,1,2,3}¹⁰" vertex="1">
+          <mxGeometry height="28" width="260" x="55" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ea1" edge="1" parent="1" source="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=8;arcSize=4;" value="② 均衡求解(连续S₂+阻尼)→评估(C,S)" vertex="1">
+          <mxGeometry height="28" width="260" x="55" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="ea2" edge="1" parent="1" source="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="a3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;arcSize=4;fontStyle=1;" value="③ 非支配排序+拥挤距离 → Pareto层" vertex="1">
+          <mxGeometry height="28" width="260" x="55" y="304" as="geometry" />
+        </mxCell>
+        <mxCell id="ea3" edge="1" parent="1" source="a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="a4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=8;arcSize=4;" value="④ Pareto锦标赛选择+交叉(pc=0.8)+变异(pm=0.15)" vertex="1">
+          <mxGeometry height="28" width="280" x="45" y="346" as="geometry" />
+        </mxCell>
+        <mxCell id="ea4" edge="1" parent="1" source="a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="a5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=8;arcSize=4;" value="⑤ 预算修复+精英保留(15) → 循环150代" vertex="1">
+          <mxGeometry height="28" width="260" x="55" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="ea-loop" edge="1" parent="1" source="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#e05050;strokeWidth=1;dashed=1;" target="a2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="35" y="402" />
+              <mxPoint x="35" y="276" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a-out" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4a90d9;strokeColor=#3a70b9;fontSize=8;fontColor=#ffffff;arcSize=4;" value="→ 14个Pareto解  C:40.9%~85.7%  S:90.0%~98.6%&#xa;8/14命中枚举前沿" vertex="1">
+          <mxGeometry height="42" width="280" x="45" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="a-time" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=7;fontColor=#888;align=center;" value="耗时: ~68s" vertex="1">
+          <mxGeometry height="12" width="130" x="120" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="b-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef7ec;strokeColor=#e8a838;strokeWidth=2;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="380" width="310" x="370" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="b-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#e8a838;fontSize=9;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;align=center;" value="方案B (次主要) — 分层先后优化GA" vertex="1">
+          <mxGeometry height="25" width="300" x="375" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d0;strokeColor=#e8a838;fontSize=8;fontStyle=1;arcSize=4;" value="第一层: 最大化覆盖率 C → C*=85.7%" vertex="1">
+          <mxGeometry height="28" width="260" x="395" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="eb1" edge="1" parent="1" source="b1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="b2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d9a040;fontSize=8;arcSize=4;" value="GA搜索(100个体×60代) 标量适应度" vertex="1">
+          <mxGeometry height="28" width="260" x="395" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="eb2" edge="1" parent="1" source="b2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="b3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c0;strokeColor=#e8a838;fontSize=8;fontStyle=1;arcSize=4;" value="第二层: max(0.6C+0.4S) C≥C*-0.01" vertex="1">
+          <mxGeometry height="28" width="270" x="390" y="304" as="geometry" />
+        </mxCell>
+        <mxCell id="eb3" edge="1" parent="1" source="b3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="b4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d9a040;fontSize=8;arcSize=4;" value="热启动(一层最优为种子)+GA(60代)" vertex="1">
+          <mxGeometry height="28" width="260" x="395" y="346" as="geometry" />
+        </mxCell>
+        <mxCell id="eb4" edge="1" parent="1" source="b4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="b5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d9a040;fontSize=8;arcSize=4;" value="交叉变异+修复 (同方案A算子)" vertex="1">
+          <mxGeometry height="28" width="260" x="395" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="b-out" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8a838;strokeColor=#c89828;fontSize=8;fontColor=#ffffff;arcSize=4;" value="→ 1个最优解  Cmax=85.6%  Smax=94.7%  F=0.882&#xa;配置在枚举Pareto前沿上" vertex="1">
+          <mxGeometry height="42" width="280" x="385" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="b-time" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=7;fontColor=#888;align=center;" value="耗时: ~385s  3次独立运行" vertex="1">
+          <mxGeometry height="12" width="130" x="460" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="c-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf7f0;strokeColor=#5a9e6f;strokeWidth=2;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="380" width="310" x="710" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="c-title" parent="1" style="text;html=1;strokeColor=none;fillColor=#5a9e6f;fontSize=9;fontColor=#ffffff;fontStyle=1;rounded=1;arcSize=4;align=center;" value="枚举验证 (辅助验证) — 遍历法" vertex="1">
+          <mxGeometry height="25" width="300" x="715" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#5a9e6f;fontSize=8;arcSize=4;" value="生成全部: ΣC(10,k)×3^k = 235,011种" vertex="1">
+          <mxGeometry height="28" width="260" x="735" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ec1" edge="1" parent="1" source="c1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#5a9e6f;fontSize=8;arcSize=4;" value="预算筛选 → 15,207可行解" vertex="1">
+          <mxGeometry height="28" width="260" x="735" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2" edge="1" parent="1" source="c2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#5a9e6f;fontSize=8;arcSize=4;" value="逐一评估(统一均衡求解器)→(C,S)" vertex="1">
+          <mxGeometry height="28" width="260" x="735" y="304" as="geometry" />
+        </mxCell>
+        <mxCell id="ec3" edge="1" parent="1" source="c3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="c4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#5a9e6f;fontSize=8;fontStyle=1;arcSize=4;" value="非支配排序 → Pareto前沿" vertex="1">
+          <mxGeometry height="28" width="260" x="735" y="346" as="geometry" />
+        </mxCell>
+        <mxCell id="ec4" edge="1" parent="1" source="c4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#999;" target="c5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f0e8;strokeColor=#5a9e6f;fontSize=8;fontStyle=1;arcSize=4;" value="验证: GA解是否在枚举Pareto前沿上?" vertex="1">
+          <mxGeometry height="28" width="260" x="735" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="c-out" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5a9e6f;strokeColor=#4a8e5f;fontSize=7;fontColor=#ffffff;arcSize=4;" value="→ 19个Pareto解  C:40.9%~85.7%  S:90.0%~98.6%&#xa;方案A 8/14命中前沿  方案B在前沿上" vertex="1">
+          <mxGeometry height="40" width="260" x="735" y="448" as="geometry" />
+        </mxCell>
+        <mxCell id="c-time" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=7;fontColor=#888;align=center;" value="耗时: ~89s  遍历全部  全局最优保证" vertex="1">
+          <mxGeometry height="12" width="190" x="770" y="492" as="geometry" />
+        </mxCell>
+        <mxCell id="common" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d3f;strokeColor=#2d2d3f;arcSize=4;" value="" vertex="1">
+          <mxGeometry height="16" width="560" x="270" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="common-t" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=6;fontColor=#cccccc;align=center;" value="统一评估引擎: 连续S₂(线性插值) + 阻尼固定点迭代 → 唯一均衡 → (覆盖率, 满意度)" vertex="1">
+          <mxGeometry height="16" width="540" x="280" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="merge" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D4A017;strokeColor=none;" value="" vertex="1">
+          <mxGeometry height="3" width="400" x="350" y="566" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="a-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#4a90d9;strokeWidth=2;" target="merge">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="185" y="568" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="b-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#e8a838;strokeWidth=2;" target="merge">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="525" y="568" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="c-box" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#5a9e6f;strokeWidth=2;" target="merge">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="865" y="568" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="merge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#D4A017;strokeWidth=2.5;" target="tbl">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#c0c0d0;strokeWidth=1.5;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="120" width="1000" x="50" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="h1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#2d2d3f;strokeColor=#2d2d3f;fontSize=8;fontColor=#ffffff;fontStyle=1;" value="指标" vertex="1">
+          <mxGeometry height="22" width="80" x="60" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4a90d9;strokeColor=#4a90d9;fontSize=8;fontColor=#ffffff;fontStyle=1;" value="方案A (主要) — NSGA-II" vertex="1">
+          <mxGeometry height="22" width="290" x="140" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e8a838;strokeColor=#e8a838;fontSize=8;fontColor=#ffffff;fontStyle=1;" value="方案B (次主要) — 分层GA" vertex="1">
+          <mxGeometry height="22" width="290" x="430" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="h4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#5a9e6f;strokeColor=#5a9e6f;fontSize=8;fontColor=#ffffff;fontStyle=1;" value="枚举 (辅助验证)" vertex="1">
+          <mxGeometry height="22" width="290" x="720" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="r1l" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f8;strokeColor=#e0e0e8;fontSize=8;" value="最高C" vertex="1">
+          <mxGeometry height="18" width="80" x="60" y="614" as="geometry" />
+        </mxCell>
+        <mxCell id="r1a" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ebf3fb;strokeColor=#e0e0e8;fontSize=8;fontStyle=1;" value="85.7% (全局最优)" vertex="1">
+          <mxGeometry height="18" width="290" x="140" y="614" as="geometry" />
+        </mxCell>
+        <mxCell id="r1b" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fef7ec;strokeColor=#e0e0e8;fontSize=8;" value="85.6%" vertex="1">
+          <mxGeometry height="18" width="290" x="430" y="614" as="geometry" />
+        </mxCell>
+        <mxCell id="r1c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#edf7f0;strokeColor=#e0e0e8;fontSize=8;fontStyle=1;" value="85.7% (全局最优)" vertex="1">
+          <mxGeometry height="18" width="290" x="720" y="614" as="geometry" />
+        </mxCell>
+        <mxCell id="r2l" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f8;strokeColor=#e0e0e8;fontSize=8;" value="最高S" vertex="1">
+          <mxGeometry height="18" width="80" x="60" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="r2a" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="&lt;span style=&quot;font-weight: 700;&quot;&gt;0.986 (全局最优)&lt;/span&gt;" vertex="1">
+          <mxGeometry height="18" width="290" x="140" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="r2b" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="0.947" vertex="1">
+          <mxGeometry height="18" width="290" x="430" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="r2c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#edf7f0;strokeColor=#e0e0e8;fontSize=8;fontStyle=1;" value="0.986 (全局最优)" vertex="1">
+          <mxGeometry height="18" width="290" x="720" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="r3l" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f8;strokeColor=#e0e0e8;fontSize=8;" value="0.6C+0.4S" vertex="1">
+          <mxGeometry height="18" width="80" x="60" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="r3a" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="0.874" vertex="1">
+          <mxGeometry height="18" width="290" x="140" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="r3b" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fef7ec;strokeColor=#e0e0e8;fontSize=8;fontStyle=1;fontColor=#e8a838;" value="0.882" vertex="1">
+          <mxGeometry height="18" width="290" x="430" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="r3c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="0.878" vertex="1">
+          <mxGeometry height="18" width="290" x="720" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="r4l" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f8;strokeColor=#e0e0e8;fontSize=8;" value="输出" vertex="1">
+          <mxGeometry height="18" width="80" x="60" y="668" as="geometry" />
+        </mxCell>
+        <mxCell id="r4a" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ebf3fb;strokeColor=#e0e0e8;fontSize=8;fontStyle=1;" value="14个Pareto解 (完整前沿)" vertex="1">
+          <mxGeometry height="18" width="290" x="140" y="668" as="geometry" />
+        </mxCell>
+        <mxCell id="r4b" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="1个最优解" vertex="1">
+          <mxGeometry height="18" width="290" x="430" y="668" as="geometry" />
+        </mxCell>
+        <mxCell id="r4c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#edf7f0;strokeColor=#e0e0e8;fontSize=8;fontStyle=1;" value="19个Pareto解 (全局前沿)" vertex="1">
+          <mxGeometry height="18" width="290" x="720" y="668" as="geometry" />
+        </mxCell>
+        <mxCell id="r5l" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f8;strokeColor=#e0e0e8;fontSize=8;" value="耗时" vertex="1">
+          <mxGeometry height="18" width="80" x="60" y="686" as="geometry" />
+        </mxCell>
+        <mxCell id="r5a" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ebf3fb;strokeColor=#e0e0e8;fontSize=8;fontColor=#4a90d9;fontStyle=1;" value="~68s" vertex="1">
+          <mxGeometry height="18" width="290" x="140" y="686" as="geometry" />
+        </mxCell>
+        <mxCell id="r5b" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="~385s" vertex="1">
+          <mxGeometry height="18" width="290" x="430" y="686" as="geometry" />
+        </mxCell>
+        <mxCell id="r5c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e8;fontSize=8;" value="~89s (全局保证)" vertex="1">
+          <mxGeometry height="18" width="290" x="720" y="686" as="geometry" />
+        </mxCell>
+        <mxCell id="9I_TBNozikPUTI_BwD2I-1" edge="1" parent="1" source="c3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.629;entryY=0.064;entryDx=0;entryDy=0;entryPerimeter=0;" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

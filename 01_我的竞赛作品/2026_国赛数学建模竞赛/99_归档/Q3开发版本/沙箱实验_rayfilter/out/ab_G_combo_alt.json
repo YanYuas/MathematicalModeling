@@ -1,0 +1,53 @@
+[
+  {
+    "seed": 11,
+    "ok": true,
+    "total": 13,
+    "cleared": 13,
+    "vt": 3944.403,
+    "move": 2797.4,
+    "switch": 174.0,
+    "measure": 905.0,
+    "clear": 68.0,
+    "move_m": 13987.0,
+    "uncleared": [],
+    "skips": [
+      26,
+      18
+    ]
+  },
+  {
+    "seed": 22,
+    "ok": true,
+    "total": 13,
+    "cleared": 13,
+    "vt": 3719.38,
+    "move": 2797.4,
+    "switch": 136.0,
+    "measure": 715.0,
+    "clear": 71.0,
+    "move_m": 13986.9,
+    "uncleared": [],
+    "skips": [
+      6,
+      34
+    ]
+  },
+  {
+    "seed": 33,
+    "ok": true,
+    "total": 13,
+    "cleared": 13,
+    "vt": 3690.896,
+    "move": 2786.9,
+    "switch": 139.0,
+    "measure": 700.0,
+    "clear": 65.0,
+    "move_m": 13934.5,
+    "uncleared": [],
+    "skips": [
+      8,
+      29
+    ]
+  }
+]

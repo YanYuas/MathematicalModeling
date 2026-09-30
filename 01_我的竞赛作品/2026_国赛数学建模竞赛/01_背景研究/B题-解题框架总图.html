@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B题 无线电干扰源快速自动定位与清除 · 解题框架总图</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#f2f4f7; color:#1f2937; font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; line-height:1.55; padding:24px 16px 40px; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  header { background:#0f2a43; color:#fff; border-radius:14px; padding:22px 26px; margin-bottom:18px; }
+  header h1 { font-size:22px; letter-spacing:.5px; }
+  header p { margin-top:8px; font-size:14.5px; color:#cfe0f0; }
+  .tag { display:inline-block; background:#1e3f5f; color:#cfe0f0; border:1px solid #35618a; border-radius:999px; padding:2px 12px; font-size:12.5px; margin:8px 6px 0 0; }
+  section { background:#fff; border:1px solid #e3e8ee; border-radius:14px; padding:18px 22px; margin-bottom:18px; }
+  h2 { font-size:16.5px; color:#0f2a43; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  h2 .no { background:#0e7490; color:#fff; width:24px; height:24px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:13px; flex:none; }
+  .chips { display:flex; flex-wrap:wrap; gap:10px; }
+  .chip { border:1px solid #d8dee6; border-radius:10px; padding:8px 12px; min-width:130px; flex:1 1 130px; background:#fafbfc; }
+  .chip b { display:block; font-size:19px; color:#0e7490; }
+  .chip span { font-size:12.5px; color:#4b5563; }
+  .flow { display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; }
+  .fbox { flex:1 1 170px; border-radius:10px; padding:12px 14px; border:1.5px solid; position:relative; }
+  .fbox .fn { font-size:15px; font-weight:700; }
+  .fbox .fd { font-size:12.5px; margin-top:4px; color:#374151; }
+  .fbox .fs { font-size:11.5px; margin-top:6px; color:#6b7280; }
+  .arrow { align-self:center; font-size:20px; color:#0e7490; font-weight:700; flex:none; }
+  .q1 { border-color:#0e7490; background:#f0f9fa; }
+  .q2 { border-color:#2563eb; background:#eff6ff; }
+  .q3 { border-color:#d97706; background:#fffaf0; }
+  .q4 { border-color:#dc2626; background:#fef2f2; }
+  .base { border-color:#64748b; background:#f8fafc; }
+  .two { display:flex; flex-wrap:wrap; gap:16px; }
+  .two > div { flex:1 1 340px; }
+  .figtitle { font-size:13.5px; font-weight:700; color:#0f2a43; margin-bottom:6px; }
+  .figtitle .warn { color:#dc2626; font-weight:700; }
+  .note { font-size:12px; color:#6b7280; margin-top:6px; }
+  .sm { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  .scard { border:1px solid #d8dee6; border-radius:10px; padding:10px 12px; background:#fafbfc; }
+  .scard b { font-size:13px; color:#0f2a43; display:block; margin-bottom:3px; }
+  .scard p { font-size:12.5px; color:#4b5563; }
+  .scard .hl { color:#dc2626; font-weight:700; }
+  .scard .ok { color:#0e7490; font-weight:700; }
+  .smbox { border:1px solid #d8dee6; border-radius:10px; padding:12px 14px; margin-bottom:10px; background:#fafbfc; }
+  .smbox .st { font-weight:700; font-size:13.5px; }
+  .smbox .cond { font-size:12.5px; color:#4b5563; margin-top:4px; }
+  .smbox .cond b { color:#0e7490; }
+  .smbox .cond .r { color:#dc2626; }
+  footer { font-size:12px; color:#6b7280; text-align:center; margin-top:6px; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th,td { border:1px solid #d8dee6; padding:7px 10px; text-align:left; }
+  th { background:#f0f4f8; color:#0f2a43; }
+  td b { color:#0e7490; }
+  @media (max-width:640px){ .arrow{ display:none; } .flow{ flex-direction:column; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>B题 · 无线电干扰源的快速自动定位与清除 —— 解题框架总图</h1>
+  <p>一句话定位：带固定地点误差（±1°）的几何交会定位（Q1/Q2）+ 未知环境下机器狗的在线搜索—定位—清除决策（Q3/Q4）。先保证 100% 清除，再压缩时间。</p>
+  <span class="tag">目标区域：半径 1800 米圆</span>
+  <span class="tag">频道：1–20，一源一频道</span>
+  <span class="tag">源数未知：10–16 个</span>
+  <span class="tag">示向度误差：±1°</span>
+  <span class="tag">接收半径未知：1000–1500 米</span>
+  <span class="tag">全向源 / 定向源（180°扇区）</span>
+</header>
+
+<section>
+  <h2><span class="no">1</span>四问联动链（整体路线图）</h2>
+  <div class="flow">
+    <div class="fbox base"><div class="fn">共同地基</div><div class="fd">1800米圆域 · 20频道 · 示向度±1° · 动作计时 · HTTP接口</div><div class="fs">题目+附录1/2 的全部规则</div></div>
+    <div class="arrow">→</div>
+    <div class="fbox q1"><div class="fn">Q1 交会定位</div><div class="fd">每条示向度=2°楔形角域，定位区域=楔形交集（凸多边形）</div><div class="fs">求直径（旋转卡壳）· 直径圆能否覆盖？——反例：不能</div></div>
+    <div class="arrow">→</div>
+    <div class="fbox q2"><div class="fn">Q2 第二检测点</div><div class="fd">用 Q1 直径度量精度，选垂直方向点，交会角≈90°</div><div class="fs">候选区域参数化 · 按最坏接收半径 1000 米约束</div></div>
+    <div class="arrow">→</div>
+    <div class="fbox q3"><div class="fn">Q3 全向源搜索</div><div class="fd">网格覆盖→频道发现→交叉定位→渐进逼近→near即clear</div><div class="fs">停止条件：所有频道 清除∪确认空</div></div>
+    <div class="arrow">→</div>
+    <div class="fbox q4"><div class="fn">Q4 混合源</div><div class="fd">Q3 框架 + 定向源盲区应对：多方位确认、巡逻兜底</div><div class="fs">完备性降级为概率论证 + 演练验证</div></div>
+    <div class="arrow">→</div>
+    <div class="fbox base"><div class="fn">交付</div><div class="fd">两套策略程序 · 各3次正式测试表1 · 不改名日志</div><div class="fs">Q3/Q4 各 3 次正式测试机会</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="no">2</span>机器狗动作与计时（虚拟时间口径）</h2>
+  <table>
+    <tr><th>动作</th><th>触发方式</th><th>耗时</th><th>备注</th></tr>
+    <tr><td>移动</td><td>/measure、/clear 的 position</td><td>直线距离 ÷ 5 米/秒</td><td>停稳才能检测</td></tr>
+    <tr><td>切换频道</td><td>/measure 的 channel</td><td><b>任意两频道之间 1 秒</b></td><td>与频道差无关</td></tr>
+    <tr><td>检测</td><td>/measure</td><td><b>固定 5 秒</b></td><td>direction / near / no_signal 都一样</td></tr>
+    <tr><td>清除成功</td><td>/clear</td><td>5 秒（光学3秒+激光2秒）</td><td>20 米内必成功；/clear 不切频道</td></tr>
+    <tr><td>清除未发现</td><td>/clear</td><td>3 秒</td><td>无效动作，尽量少发</td></tr>
+  </table>
+  <p class="note">注意：检测的 5 秒是虚拟时间，机器狗程序收到响应后可以立刻发下一条请求，现实中不用等。</p>
+</section>
+
+<section>
+  <h2><span class="no">3</span>Q1 几何示意（角度已放大，非真实比例）</h2>
+  <div class="two">
+    <div>
+      <div class="figtitle">交会定位：楔形交集 → 凸多边形 → 直径</div>
+      <svg viewBox="0 0 400 300" width="100%" style="background:#fafbfc;border:1px solid #e3e8ee;border-radius:10px;">
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0e7490"/></marker>
+        </defs>
+        <!-- 楔形角域（两条边界射线之间），半透明 -->
+        <polygon points="90,90 400,70 400,220" fill="#0e7490" opacity="0.08"/>
+        <polygon points="310,210 20,250 20,30" fill="#2563eb" opacity="0.08"/>
+        <!-- 边界射线 -->
+        <line x1="90" y1="90" x2="390" y2="122" stroke="#0e7490" stroke-width="1.6"/>
+        <line x1="90" y1="90" x2="390" y2="196" stroke="#0e7490" stroke-width="1.6"/>
+        <line x1="310" y1="210" x2="30" y2="30" stroke="#2563eb" stroke-width="1.6"/>
+        <line x1="310" y1="210" x2="30" y2="80" stroke="#2563eb" stroke-width="1.6"/>
+        <!-- 定位区域多边形 -->
+        <polygon points="166.6,98 214.2,135.2 266.5,154.2 227.8,104.5" fill="#d97706" opacity="0.45" stroke="#d97706" stroke-width="2"/>
+        <!-- 直径 -->
+        <line x1="166.6" y1="98" x2="266.5" y2="154.2" stroke="#dc2626" stroke-width="2.4" stroke-dasharray="6,4" marker-end="url(#ar)"/>
+        <!-- 检测点与目标 -->
+        <circle cx="90" cy="90" r="4.5" fill="#0f2a43"/><text x="76" y="82" font-size="13" fill="#0f2a43" font-weight="bold">S₁</text>
+        <circle cx="310" cy="210" r="4.5" fill="#0f2a43"/><text x="312" y="228" font-size="13" fill="#0f2a43" font-weight="bold">S₂</text>
+        <circle cx="220" cy="120" r="4.5" fill="#111827"/><text x="226" y="112" font-size="13" fill="#111827" font-weight="bold">G</text>
+        <text x="175" y="142" font-size="12" fill="#92400e" font-weight="bold">定位区域（四边形）</text>
+        <text x="208" y="176" font-size="12.5" fill="#dc2626" font-weight="bold">直径 = 最远点对</text>
+        <text x="300" y="130" font-size="11.5" fill="#0e7490">±1°楔形</text>
+        <text x="60" y="118" font-size="11.5" fill="#2563eb">±1°楔形</text>
+      </svg>
+      <p class="note">真实楔形只有 2°，上图把角度放大约 7 倍以便看清。定位区域 = 所有楔形角域的交集，一定是凸多边形；直径在顶点对上取到（旋转卡壳）。</p>
+    </div>
+    <div>
+      <div class="figtitle"><span class="warn">反例</span>：以直径为直径的圆，不一定能覆盖定位区域</div>
+      <svg viewBox="0 0 400 300" width="100%" style="background:#fafbfc;border:1px solid #e3e8ee;border-radius:10px;">
+        <!-- 等边三角形 -->
+        <polygon points="200,24.5 100,197.7 300,197.7" fill="#eef2ff" stroke="#2563eb" stroke-width="2.2"/>
+        <!-- 外接圆（半径 a/√3） -->
+        <circle cx="200" cy="140" r="115.5" fill="none" stroke="#0e7490" stroke-width="1.6" stroke-dasharray="7,5"/>
+        <!-- 直径圆（半径 a/2，以底边为直径） -->
+        <circle cx="200" cy="197.7" r="100" fill="none" stroke="#dc2626" stroke-width="2"/>
+        <line x1="100" y1="197.7" x2="300" y2="197.7" stroke="#dc2626" stroke-width="2"/>
+        <circle cx="200" cy="24.5" r="4.5" fill="#dc2626"/><text x="206" y="20" font-size="12.5" fill="#dc2626" font-weight="bold">第三个顶点在直径圆外</text>
+        <text x="96" y="212" font-size="11.5" fill="#0e7490">外接圆半径 a/√3 ≈ 0.577a</text>
+        <text x="208" y="240" font-size="11.5" fill="#dc2626">直径圆半径 a/2 = 0.5a ＜ 0.577a ⇒ 盖不住</text>
+        <text x="130" y="270" font-size="11.5" fill="#374151">等边三角形：直径 = 边长 a，直径圆盖不住第三个顶点</text>
+      </svg>
+      <p class="note">所以"直径相同就必覆盖"是陷阱。若要保证覆盖，应求最小包围圆（Welzl 算法），其直径 ≥ 定位区域直径。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="no">4</span>Q3 / Q4 机器狗主循环（状态机）</h2>
+  <div class="smbox" style="border-color:#0e7490;"><span class="st">① 侦察覆盖（网格）</span><div class="cond">正三角形格点，间距 1000–1200 米 → 圆内任意点到最近检测点 ≤ 693 米 ＜ 最坏接收半径 1000 米，<b>任何源都被"罩住"</b></div></div>
+  <div class="smbox" style="border-color:#0e7490;"><span class="st">② 频道发现</span><div class="cond">每个网格点扫 20 频道（成本 ≈ 换频19s + 检测100s = 119s/点），记录各频道的 direction / no_signal</div></div>
+  <div class="smbox" style="border-color:#d97706;"><span class="st">③ 交叉定位</span><div class="cond">某频道在 ≥2 个点测到 direction → 用 Q1 方法求定位区域 → 取中心为估计点</div></div>
+  <div class="smbox" style="border-color:#d97706;"><span class="st">④ 渐进逼近（homing）</span><div class="cond">沿示向度方向走 200–300 米 → 停下再测：<b>direction</b> → 继续沿新方向走；<b class="r">no_signal</b> → 回退重走；<b>near</b> → 目标已在 5 米内，直接原地 /clear</div></div>
+  <div class="smbox" style="border-color:#0e7490;"><span class="st">⑤ 收尾确认（保证 100%）</span><div class="cond">对"从未测到过信号"的频道，在全部网格点补测；全部 no_signal → 判定空频道</div></div>
+  <div class="smbox" style="border-color:#dc2626;"><span class="st">⑤′ Q4 专属：多方位确认</span><div class="cond">定向源有 180° 盲区，no_signal 不等于没源 → 绕圆心取 8–16 个不同方位补测；任一方向测到信号 → 转 ③ 定位清除；全部方位仍 no_signal → 才判空</div></div>
+  <div class="smbox" style="border-color:#2563eb;"><span class="st">⑥ 退出</span><div class="cond">全部 20 频道 ∈ 已清除 ∪ 已确认空 → POST /exit。Q3 的停止条件可以严格证明（完备）；Q4 因盲区死角只能概率完备 + 演练验证</div></div>
+</section>
+
+<section>
+  <h2><span class="no">5</span>时间约束与统计口径</h2>
+  <div class="sm">
+    <div class="scard"><b>25 分钟窗口</b><p>确认开始后倒计时 5 秒开启，最早截止之一</p></div>
+    <div class="scard"><b>20 分钟程序运行</b><p>/enter 成功后开始计现实时间，用 <b>remaining_real_duration_s</b> 控制（0–1200，别假设固定1200）</p></div>
+    <div class="scard"><b>100 小时虚拟时间</b><p>虚拟世界上限 360000 秒，防死循环；<span class="ok">几乎用不完</span></p></div>
+    <div class="scard"><b>平均定位清除时间</b><p>= 最终 <b>virtual_time_s</b> ÷ 被清除个数（分子=移动+换频+检测+定位+清除）</p></div>
+    <div class="scard"><b>清除比例</b><p>= 清除个数 ÷ 总数。演练会给总数；正式测试不给 → 按策略自判（完备策略=100%）</p></div>
+    <div class="scard"><b>表1 四列</b><p>测试案例编码 ｜ 清除个数 ｜ 平均定位清除时间 ｜ <span class="hl">程序运行时间（现实时间，另算）</span></p></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="no">6</span>最容易踩的坑（P0）</h2>
+  <div class="sm">
+    <div class="scard"><b>同点重复检测</b><p>同一地点误差固定不变，重复测是白费 5 秒</p></div>
+    <div class="scard"><b>no_signal ≠ 没源</b><p>可能超接收半径，或（Q4）在定向源盲区</p></div>
+    <div class="scard"><b>定位完直接 clear</b><p>±1° 在 1000 米外偏 17.5 米，逼近 20 米清除半径有风险 → 必须 homing 到 near</p></div>
+    <div class="scard"><b>/clear 不切频道</b><p>测向机频道只被 /measure 更新，别把状态搞错</p></div>
+    <div class="scard"><b>平均时间用现实时间算</b><p>分子是虚拟时间；程序运行时间单独一列</p></div>
+    <div class="scard"><b>提前退出</b><p>不知道总数，必须"清除∪确认空"才能放心 /exit</p></div>
+  </div>
+</section>
+
+<footer>依据：B题.pdf、题意逐句翻译、附件1（模拟器使用说明）、附件2（通信接口说明及编程指南）。示意图均经角度放大，标注"示意"。</footer>
+
+</div>
+</body>
+</html>

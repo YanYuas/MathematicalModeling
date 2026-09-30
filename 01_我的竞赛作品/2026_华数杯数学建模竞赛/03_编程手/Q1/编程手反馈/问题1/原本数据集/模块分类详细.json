@@ -1,0 +1,164 @@
+{
+  "n100": {
+    "total": 100,
+    "beta": 179501,
+    "sqrt_beta": 423.68,
+    "ceil_sqrt_beta": 424,
+    "alpha": 179776,
+    "deadspace_rate": 0.15,
+    "avg_aspect_ratio": 1.71,
+    "max_aspect_ratio": 3.94,
+    "square_like": {
+      "count": 20,
+      "ratio": 20.0,
+      "avg_aspect_ratio": 1.1,
+      "total_area": 48044
+    },
+    "strip_like": {
+      "count": 15,
+      "ratio": 15.0,
+      "avg_aspect_ratio": 3.03,
+      "max_aspect_ratio": 3.94,
+      "total_area": 17342,
+      "module_names": [
+        "b9",
+        "b10",
+        "b27",
+        "b29",
+        "b37",
+        "b54",
+        "b56",
+        "b57",
+        "b62",
+        "b71",
+        "b80",
+        "b84",
+        "b95",
+        "b97",
+        "b98"
+      ]
+    },
+    "middle": {
+      "count": 65,
+      "ratio": 65.0,
+      "avg_aspect_ratio": 1.6,
+      "total_area": 114115
+    }
+  },
+  "n200": {
+    "total": 200,
+    "beta": 175696,
+    "sqrt_beta": 419.16,
+    "ceil_sqrt_beta": 420,
+    "alpha": 176400,
+    "deadspace_rate": 0.4,
+    "avg_aspect_ratio": 1.67,
+    "max_aspect_ratio": 3.69,
+    "square_like": {
+      "count": 58,
+      "ratio": 29.0,
+      "avg_aspect_ratio": 1.08,
+      "total_area": 65968
+    },
+    "strip_like": {
+      "count": 27,
+      "ratio": 13.5,
+      "avg_aspect_ratio": 2.94,
+      "max_aspect_ratio": 3.69,
+      "total_area": 15243,
+      "module_names": [
+        "b3",
+        "b11",
+        "b29",
+        "b45",
+        "b46",
+        "b54",
+        "b55",
+        "b57",
+        "b70",
+        "b89",
+        "b107",
+        "b108",
+        "b112",
+        "b120",
+        "b123",
+        "b124",
+        "b147",
+        "b153",
+        "b157",
+        "b160",
+        "b166",
+        "b167",
+        "b175",
+        "b181",
+        "b182",
+        "b185",
+        "b186"
+      ]
+    },
+    "middle": {
+      "count": 115,
+      "ratio": 57.5,
+      "avg_aspect_ratio": 1.67,
+      "total_area": 94485
+    }
+  },
+  "n300": {
+    "total": 300,
+    "beta": 273170,
+    "sqrt_beta": 522.66,
+    "ceil_sqrt_beta": 523,
+    "alpha": 273529,
+    "deadspace_rate": 0.13,
+    "avg_aspect_ratio": 1.64,
+    "max_aspect_ratio": 3.92,
+    "square_like": {
+      "count": 84,
+      "ratio": 28.0,
+      "avg_aspect_ratio": 1.09,
+      "total_area": 101171
+    },
+    "strip_like": {
+      "count": 27,
+      "ratio": 9.0,
+      "avg_aspect_ratio": 3.05,
+      "max_aspect_ratio": 3.92,
+      "total_area": 15461,
+      "module_names": [
+        "b53",
+        "b70",
+        "b73",
+        "b78",
+        "b97",
+        "b98",
+        "b104",
+        "b106",
+        "b133",
+        "b135",
+        "b136",
+        "b140",
+        "b144",
+        "b145",
+        "b174",
+        "b189",
+        "b195",
+        "b198",
+        "b218",
+        "b221",
+        "b244",
+        "b261",
+        "b265",
+        "b277",
+        "b278",
+        "b285",
+        "b295"
+      ]
+    },
+    "middle": {
+      "count": 189,
+      "ratio": 63.0,
+      "avg_aspect_ratio": 1.69,
+      "total_area": 156538
+    }
+  }
+}

@@ -1,0 +1,16 @@
+被测目录: D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\MATLAB_Framework_v2.0
+mini Q4 sim ×1 就绪（端口 [20488]）
+
+启动 MATLAB（单次会话跑 1 局）...
+
+Traceback (most recent call last):
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验脚本\_run_mini_sim_q4.py", line 285, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验脚本\_run_mini_sim_q4.py", line 227, in main
+    sum(int(r_['n_homfb'] or 0) for r_ in ok)))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\核验脚本\_run_mini_sim_q4.py", line 227, in <genexpr>
+    sum(int(r_['n_homfb'] or 0) for r_ in ok)))
+            ~~^^^^^^^^^^^
+KeyError: 'n_homfb'

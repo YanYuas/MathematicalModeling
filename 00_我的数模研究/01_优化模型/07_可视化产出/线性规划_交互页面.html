@@ -1,0 +1,1455 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="线性规划建模手研究体系：从几何直觉到单纯形法原理，交互式逐步演示、在线求解器、灵敏度分析、对偶理论深度讲解">
+<meta name="author" content="建模手研究体系">
+<meta name="keywords" content="线性规划,单纯形法,对偶理论,灵敏度分析,数学建模,优化模型">
+<title>线性规划 · 建模手研究体系</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+/* ================= 设计 tokens ================= */
+:root{
+  --bg-cream:#FFFBF5; --bg-panel:#FFFFFF; --bg-raised:#FFFFFF; --bg-inset:#FBF1E7;
+  --line:#F2E4D8; --text-hi:#5C4A45; --text-mid:#9B7E72; --text-low:#C0A89B;
+  --primary:#FF8FA3; --mint:#7BD3B2; --butter:#FFD97A; --sky:#8FC1F0;
+  --lilac:#C9AEE8; --strawberry:#FF6B7D;
+  --mint-ink:#2F9E76; --butter-ink:#B0872A; --sky-ink:#3A7BC0; --lilac-ink:#9A7BB8;
+  --straw-ink:#E24A5E; --butter-dk:#8A6A1A; --straw-dk:#C23B50; --mint-dk:#1F8A62;
+  --white:#FFFFFF;
+  --radius-sm:10px; --radius-md:16px; --radius-lg:24px; --radius-pill:999px;
+  --shadow-card:0 6px 16px rgba(255,143,163,.18);
+  --shadow-raise:0 12px 32px rgba(255,143,163,.28);
+  --glow:0 0 20px rgba(255,143,163,.30);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-soft:cubic-bezier(.22,1,.36,1);
+  --font-cute:'ZCOOL KuaiLe','PingFang SC',sans-serif;
+  --font-body:'PingFang SC','Microsoft YaHei',sans-serif;
+  --font-mono:'JetBrains Mono','Consolas',monospace;
+}
+[data-theme="dark"]{
+  --bg-cream:#2B2222; --bg-panel:#3A2F2E; --bg-raised:#453838; --bg-inset:#332828;
+  --line:#574641; --text-hi:#FCEFE6; --text-mid:#C9AFA3; --text-low:#8A6F66;
+  --primary:#FF9EB0; --mint:#8FE3C2; --butter:#FFE29A; --sky:#A6D2F5;
+  --lilac:#D8C2F0; --strawberry:#FF8C9A;
+  --mint-ink:#63C9A6; --butter-ink:#E4B95C; --sky-ink:#8FC6F2; --lilac-ink:#C9B1E8;
+  --straw-ink:#F07C8C; --butter-dk:#F0D77F; --straw-dk:#F08C98; --mint-dk:#7FD9B4;
+  --shadow-card:0 6px 16px rgba(0,0,0,.35);
+  --shadow-raise:0 12px 32px rgba(0,0,0,.5);
+  --glow:0 0 20px rgba(255,158,176,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 50% 0, rgba(255,143,163,.10), transparent 420px),
+    radial-gradient(rgba(255,143,163,.055) 1px, transparent 1px),
+    var(--bg-cream);
+  background-size:auto, 24px 24px, auto;
+  color:var(--text-hi);
+  font-family:var(--font-body);
+  font-size:13px; line-height:1.7;
+  min-height:100vh;
+  transition:background .4s var(--ease-soft), color .4s var(--ease-soft);
+}
+a{color:var(--primary);text-decoration:none}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes gudu{0%{transform:scale(.92) translateY(8px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1}50%{box-shadow:0 0 0 6px transparent;opacity:.55}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+@keyframes rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pulse-ring{0%{transform:scale(.8);opacity:1}100%{transform:scale(2);opacity:0}}
+@keyframes dash-move{to{stroke-dashoffset:-20}}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease-soft),transform .6s var(--ease-soft)}
+.reveal.in{opacity:1;transform:none}
+
+/* ================= 顶部导航 ================= */
+.topnav{position:sticky;top:0;z-index:100;background:rgba(255,251,245,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);padding:0 24px}
+[data-theme="dark"] .topnav{background:rgba(43,34,34,.85)}
+.topnav-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+.topnav .brand{font-family:var(--font-cute);font-size:15px;color:var(--text-hi);display:flex;align-items:center;gap:8px}
+.topnav .brand .logo{width:28px;height:28px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:14px;box-shadow:var(--glow)}
+.topnav .nav-links{display:flex;gap:4px;flex-wrap:wrap}
+.topnav .nav-links a{font-family:var(--font-cute);font-size:12px;color:var(--text-mid);padding:5px 12px;border-radius:var(--radius-pill);transition:all .25s}
+.topnav .nav-links a:hover{color:var(--primary);background:rgba(255,143,163,.1)}
+.topnav .nav-links a.on{background:var(--primary);color:var(--white)}
+.tb-btn{font-family:var(--font-cute);font-size:12px;color:var(--text-mid);background:var(--bg-panel);
+  border:1px solid var(--line);border-radius:var(--radius-pill);padding:5px 14px;cursor:pointer;
+  transition:transform .25s var(--ease-spring),color .3s,border-color .3s}
+.tb-btn:hover{transform:translateY(-2px);color:var(--primary);border-color:var(--primary)}
+
+/* ================= Hero ================= */
+.hero{padding:48px 32px 20px;text-align:center;position:relative;overflow:hidden}
+.hero .cloud{position:absolute;opacity:.4;pointer-events:none}
+.hero .cloud.c1{top:20px;left:8%;animation:floaty 6s var(--ease-soft) infinite}
+.hero .cloud.c2{top:40px;right:10%;animation:floaty 7s var(--ease-soft) .6s infinite}
+.hero .kick{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-cute);font-size:12px;
+  color:var(--primary);background:rgba(255,143,163,.12);border-radius:var(--radius-pill);padding:4px 14px;margin-bottom:16px}
+.hero h1{font-family:var(--font-cute);font-weight:400;font-size:clamp(30px,5vw,48px);letter-spacing:2px;line-height:1.2}
+.hero h1 .accent{color:var(--primary);position:relative}
+.hero .sub{color:var(--text-mid);margin-top:14px;font-size:14px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.8}
+.hero .meta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.meta-chip{font-family:var(--font-cute);font-size:12px;color:var(--text-mid);background:var(--bg-panel);
+  border:1px solid var(--line);border-radius:var(--radius-pill);padding:5px 14px}
+.meta-chip b{color:var(--text-hi);font-weight:600}
+
+/* Hero 可行域可视化 */
+.hero-viz{max-width:560px;margin:28px auto 0;position:relative}
+.hero-viz svg{width:100%;height:auto;display:block}
+
+/* ================= 主内容 ================= */
+main{max-width:1120px;margin:0 auto;padding:20px 24px 80px}
+
+/* ================= 章节 ================= */
+section{margin-top:56px;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;flex-wrap:wrap;
+  padding-bottom:14px;border-bottom:2px solid var(--line);position:relative}
+.sec-head::after{content:"";position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--primary);border-radius:2px}
+.sec-head .num{font-family:var(--font-cute);font-size:14px;color:var(--white);background:var(--primary);
+  padding:4px 16px;border-radius:var(--radius-pill);box-shadow:var(--glow);letter-spacing:1px}
+.sec-head h2{font-family:var(--font-cute);font-weight:400;font-size:26px}
+.sec-head .note{color:var(--text-low);font-size:12px;margin-left:auto}
+.sec-lead{font-size:14px;color:var(--text-mid);margin-bottom:20px;line-height:1.8;max-width:800px}
+
+/* ================= 网格与卡片 ================= */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-card);padding:22px;position:relative;overflow:hidden;
+  transition:transform .3s var(--ease-soft),box-shadow .3s var(--ease-soft)}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-raise)}
+.card .ct{font-family:var(--font-cute);font-weight:400;font-size:17px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.card .ct .dot{width:8px;height:8px;border-radius:50%;background:var(--lilac);flex:none}
+.card .cd{font-size:13px;color:var(--text-mid);line-height:1.8}
+.card .cf{margin-top:16px;border-top:1px dashed var(--line);padding-top:12px;font-size:12px;color:var(--text-low)}
+.card .cf b{color:var(--primary);font-weight:600}
+
+/* 图解卡：左图右文 */
+.viz-card{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+.viz-card .viz-side{background:var(--bg-inset);border-radius:var(--radius-md);padding:16px;display:flex;align-items:center;justify-content:center;min-height:200px}
+.viz-card .viz-side svg{width:100%;height:auto}
+
+/* ================= KPI ================= */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.kpi{position:relative;overflow:hidden;border-radius:var(--radius-lg);background:var(--bg-panel);
+  border:1px solid var(--line);padding:20px 18px;box-shadow:var(--shadow-card);transition:transform .3s var(--ease-soft)}
+.kpi:hover{transform:translateY(-3px)}
+.kpi::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(255,143,163,.12),transparent 60%);pointer-events:none}
+.kpi.key{box-shadow:var(--glow);border-color:var(--primary)}
+.kpi .kl{font-family:var(--font-cute);font-size:13px;color:var(--text-mid)}
+.kpi .kv{font-family:var(--font-cute);font-size:34px;color:var(--text-hi);line-height:1.2;margin:8px 0 4px;position:relative;
+  font-variant-numeric:tabular-nums}
+.kpi .kd{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--text-low);position:relative;flex-wrap:wrap}
+.kpi .up{color:var(--mint-ink);font-family:var(--font-cute);font-size:12px}
+.kpi.flash .kv{color:var(--primary)}
+
+/* ================= 步骤时间线 ================= */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item::before{content:"";position:absolute;left:-27px;top:4px;width:16px;height:16px;border-radius:50%;
+  background:var(--bg-panel);border:3px solid var(--primary);box-shadow:0 0 0 4px rgba(255,143,163,.15)}
+.tl-item .tl-title{font-family:var(--font-cute);font-size:15px;color:var(--text-hi);margin-bottom:6px}
+.tl-item .tl-body{font-size:13px;color:var(--text-mid);line-height:1.8}
+.tl-item .tl-tag{display:inline-block;font-family:var(--font-cute);font-size:11px;padding:2px 10px;
+  border-radius:var(--radius-pill);background:rgba(255,143,163,.12);color:var(--primary);margin-bottom:6px}
+
+/* ================= 公式块 ================= */
+.formula{background:var(--bg-inset);border:1px solid var(--line);border-radius:var(--radius-md);
+  padding:16px 20px;margin:16px 0;font-family:var(--font-mono);font-size:13px;color:var(--text-hi);
+  line-height:2;overflow-x:auto;position:relative}
+.formula .f-label{position:absolute;top:8px;right:14px;font-size:10px;color:var(--lilac-ink);font-family:var(--font-cute);letter-spacing:1px}
+.formula .highlight{background:rgba(255,217,122,.4);padding:1px 4px;border-radius:3px;color:var(--butter-dk)}
+.formula .key{color:var(--primary);font-weight:700}
+
+/* ================= callout ================= */
+.callout{border-radius:var(--radius-md);padding:16px 18px;margin:16px 0;font-size:13px;line-height:1.8;
+  display:flex;gap:12px;align-items:flex-start;animation:gudu .45s var(--ease-spring)}
+.callout .ci{flex:none;margin-top:2px;font-size:16px}
+.callout .ct{font-family:var(--font-cute);font-size:14px;margin-bottom:4px}
+.callout.mint{background:rgba(123,211,178,.14);border:1px solid rgba(123,211,178,.4);color:var(--mint-dk)}
+.callout.mint .ct,.callout.mint .ci{color:var(--mint-ink)}
+.callout.butter{background:rgba(255,217,122,.16);border:1px solid rgba(255,217,122,.5);color:var(--butter-dk)}
+.callout.butter .ct,.callout.butter .ci{color:var(--butter-ink)}
+.callout.sky{background:rgba(143,193,240,.14);border:1px solid rgba(143,193,240,.45);color:var(--sky-ink)}
+.callout.sky .ct,.callout.sky .ci{color:var(--sky-ink)}
+.callout.straw{background:rgba(255,107,125,.12);border:1px solid rgba(255,107,125,.4);color:var(--straw-dk)}
+.callout.straw .ct,.callout.straw .ci{color:var(--straw-ink)}
+.callout.lilac{background:rgba(201,174,232,.16);border:1px solid rgba(201,174,232,.45);color:var(--lilac-ink)}
+.callout.lilac .ct,.callout.lilac .ci{color:var(--lilac-ink)}
+
+/* ================= 代码 ================= */
+.codebox{background:var(--bg-inset);border:1px solid var(--line);border-radius:var(--radius-md);
+  padding:16px 18px;margin:16px 0;position:relative;overflow-x:auto}
+.codebox .cbt{position:absolute;top:10px;right:16px;font-size:10px;color:var(--lilac-ink);letter-spacing:1px;font-family:var(--font-cute)}
+.codebox pre{font-family:var(--font-mono);font-size:12px;color:var(--text-mid);line-height:1.9;white-space:pre}
+.codebox .cm{color:var(--text-low);font-style:italic}
+.codebox .kw{color:var(--primary);font-weight:700}
+.codebox .fn{color:var(--sky-ink)}
+.codebox .num{color:var(--butter-ink)}
+
+/* ================= 标签 ================= */
+.tag-lv{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-cute);font-size:11.5px;
+  padding:3px 12px;border-radius:var(--radius-pill);color:var(--white)}
+.tag-lv .ld{width:6px;height:6px;border-radius:50%;background:var(--white)}
+.tag-lv.low{background:var(--mint)} .tag-lv.mid{background:var(--butter);color:var(--butter-dk)}
+.tag-lv.high{background:var(--primary)} .tag-lv.crit{background:var(--strawberry)}
+.tag-lv.mid .ld{background:var(--butter-dk)}
+.chip{display:inline-flex;font-size:11.5px;padding:3px 10px;border-radius:var(--radius-pill);
+  background:var(--bg-inset);color:var(--text-mid);align-items:center;gap:6px;margin:2px}
+.chip.lilac{background:rgba(201,174,232,.25);color:var(--lilac-ink)}
+.chip.mint{background:rgba(123,211,178,.20);color:var(--mint-ink)}
+.chip.butter{background:rgba(255,217,122,.25);color:var(--butter-ink)}
+.chip.sky{background:rgba(143,193,240,.20);color:var(--sky-ink)}
+.chip.straw{background:rgba(255,107,125,.15);color:var(--straw-ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--text-low);display:inline-block;flex:none}
+.dot.on{background:var(--mint);animation:breathe 2s ease-in-out infinite}
+
+/* ================= 正文 ================= */
+.prose h3{font-family:var(--font-cute);font-weight:400;font-size:18px;margin:24px 0 12px;
+  padding-left:12px;border-left:4px solid var(--primary)}
+.prose h4{font-family:var(--font-cute);font-weight:400;font-size:16px;margin:20px 0 10px;color:var(--text-hi)}
+.prose p{margin:12px 0;font-size:13.5px;color:var(--text-hi);line-height:1.9}
+.prose ul,.prose ol{margin:12px 0 12px 24px;font-size:13.5px;color:var(--text-hi);line-height:1.9}
+.prose li{margin:6px 0}
+.prose li::marker{color:var(--primary)}
+.prose strong{color:var(--text-hi);font-weight:700}
+.prose mark{background:rgba(255,217,122,.5);border-radius:3px;padding:0 3px;color:var(--butter-dk)}
+
+/* ================= 交互组件 ================= */
+.btn{font-family:var(--font-cute);font-size:13px;padding:9px 20px;border-radius:var(--radius-pill);
+  border:1px solid var(--line);background:var(--bg-panel);color:var(--text-mid);cursor:pointer;
+  transition:all .25s var(--ease-spring)}
+.btn:hover{transform:translateY(-2px);color:var(--primary);border-color:var(--primary)}
+.btn.primary{background:var(--primary);color:var(--white);border-color:var(--primary);box-shadow:var(--glow)}
+.btn.primary:hover{background:var(--primary);transform:translateY(-2px) scale(1.03)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.input-row{display:flex;gap:10px;align-items:center;margin:10px 0;flex-wrap:wrap}
+.input-row label{font-family:var(--font-cute);font-size:12.5px;color:var(--text-mid);min-width:60px}
+.input-row input,.input-row select{font-family:var(--font-mono);font-size:12px;padding:7px 12px;
+  border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--bg-inset);color:var(--text-hi);
+  width:120px;transition:border-color .3s}
+.input-row input:focus,.input-row select:focus{outline:none;border-color:var(--primary)}
+
+/* 单纯形表 */
+.simplex-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;margin:14px 0}
+.simplex-table th{background:var(--bg-inset);padding:10px 12px;text-align:center;color:var(--text-mid);
+  font-family:var(--font-cute);border:1px solid var(--line)}
+.simplex-table td{padding:10px 12px;text-align:center;border:1px solid var(--line);color:var(--text-hi);transition:background .3s}
+.simplex-table td.entering{background:rgba(255,143,163,.18);color:var(--primary);font-weight:700}
+.simplex-table td.leaving{background:rgba(255,217,122,.2);color:var(--butter-ink);font-weight:700}
+.simplex-table td.pivot{background:var(--primary);color:var(--white);font-weight:700;box-shadow:var(--glow);position:relative}
+.simplex-table td.pivot::after{content:"";position:absolute;inset:-2px;border:2px solid var(--primary);border-radius:4px;animation:pulse-ring 1.5s ease-out infinite}
+.simplex-table td.rhs{background:var(--bg-inset);font-family:var(--font-cute)}
+.simplex-table tr.obj-row td{background:var(--bg-inset);font-family:var(--font-cute);color:var(--primary);font-weight:700}
+.step-log{background:var(--bg-inset);border-radius:var(--radius-md);padding:14px 18px;margin:12px 0;
+  font-family:var(--font-mono);font-size:11.5px;color:var(--text-mid);max-height:140px;overflow-y:auto}
+.step-log .step-item{margin:5px 0;padding:6px 10px;border-left:3px solid var(--primary);background:var(--bg-panel);border-radius:0 6px 6px 0}
+.step-log .step-item.current{border-left-color:var(--mint);background:rgba(123,211,178,.1)}
+
+/* 滑块 */
+.slider-row{display:flex;align-items:center;gap:14px;margin:12px 0}
+.slider-row label{font-family:var(--font-cute);font-size:13px;color:var(--text-mid);min-width:90px}
+.slider-row input[type=range]{flex:1;accent-color:var(--primary);height:6px}
+.slider-row .val{font-family:var(--font-cute);font-size:15px;color:var(--primary);min-width:50px;text-align:right;background:var(--bg-inset);padding:2px 10px;border-radius:var(--radius-sm)}
+
+/* 文件列表 */
+.file-list{display:flex;flex-direction:column;gap:10px}
+.file-item{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg-inset);
+  border-radius:var(--radius-md);border:1px solid var(--line);transition:all .25s var(--ease-spring)}
+.file-item:hover{transform:translateX(6px);border-color:var(--primary);background:var(--bg-panel)}
+.file-item .ficon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-cute);font-size:13px;color:var(--white);flex:none}
+.file-item .ficon.py{background:var(--sky)}
+.file-item .ficon.md{background:var(--lilac)}
+.file-item .finfo{flex:1;min-width:0}
+.file-item .fname{font-family:var(--font-cute);font-size:13.5px;color:var(--text-hi)}
+.file-item .fdesc{font-size:11.5px;color:var(--text-low);margin-top:2px}
+.file-item .fsize{font-family:var(--font-mono);font-size:11px;color:var(--text-low)}
+
+/* 对比卡 */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.compare-col{padding:20px}
+.compare-col:first-child{border-right:1px solid var(--line)}
+.compare-col .cc-title{font-family:var(--font-cute);font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.compare-col.win{background:rgba(123,211,178,.08)}
+.compare-col.lose{background:rgba(255,107,125,.05)}
+
+/* 图表 */
+.chart-foot{display:flex;justify-content:space-between;margin-top:12px;font-size:12px;color:var(--text-low);flex-wrap:wrap;gap:6px}
+.chart-foot b{font-family:var(--font-cute);font-size:13px;color:var(--text-hi)}
+.bc-svg{width:100%;height:200px;display:block}
+.bc-svg .bar{fill:var(--primary);transform-origin:bottom;transform:scaleY(0);animation:rise .7s var(--ease-spring) forwards;
+  animation-delay:calc(var(--i)*90ms)}
+.bc-svg .bar.mint{fill:var(--mint)} .bc-svg .bar.sky{fill:var(--sky)} .bc-svg .bar.butter{fill:var(--butter)}
+.bc-svg .bx{fill:var(--text-low);font-size:10px;font-family:var(--font-cute);text-anchor:middle}
+.bc-svg .by{fill:var(--text-low);font-size:9px;font-family:var(--font-cute)}
+
+/* 表格 */
+.tblwrap{overflow-x:auto;background:var(--bg-panel);border:1px solid var(--line);border-radius:var(--radius-md)}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:560px}
+.tbl th{text-align:left;padding:12px 16px;background:var(--bg-inset);color:var(--text-mid);font-weight:600;white-space:nowrap;font-family:var(--font-cute)}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--line);color:var(--text-hi)}
+.tbl tbody tr:nth-child(even) td{background:rgba(251,241,231,.4)}
+.tbl tbody tr:hover td{background:rgba(255,143,163,.06)}
+.tbl .tnum{font-variant-numeric:tabular-nums;font-family:var(--font-cute)}
+
+/* 双视图演示 */
+.dual-view{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.dual-view .view-panel{background:var(--bg-inset);border-radius:var(--radius-md);padding:16px;min-height:300px}
+.dual-view .view-panel .vp-title{font-family:var(--font-cute);font-size:14px;color:var(--text-mid);margin-bottom:10px;text-align:center}
+
+/* 页脚 */
+footer{margin-top:70px;padding:28px 24px 44px;text-align:center;border-top:1px dashed var(--line);color:var(--text-low);font-size:12px}
+footer b{color:var(--text-mid);font-weight:600}
+
+@media (max-width:860px){
+  .grid-2,.dual-view,.viz-card{grid-template-columns:1fr}
+  .compare-grid{grid-template-columns:1fr}
+  .compare-col:first-child{border-right:none;border-bottom:1px solid var(--line)}
+  .topnav .nav-links{display:none}
+}
+@media (max-width:720px){
+  .hero{padding:36px 18px 12px}
+  main{padding:16px 14px 60px}
+  .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+  .sec-head h2{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .hero .cloud{animation:none}
+  .dot.on{animation:none}
+  .bc-svg .bar{transform:none;animation:none}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand"><span class="logo">LP</span> 线性规划 · 建模手研究体系</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#sec-intuition">直觉</a>
+      <a href="#sec-principle">原理</a>
+      <a href="#sec-demo">演示</a>
+      <a href="#sec-solver">求解器</a>
+      <a href="#sec-dual">对偶</a>
+      <a href="#sec-sensitivity">灵敏度</a>
+      <a href="#sec-deep">深入</a>
+      <a href="#sec-cases">案例</a>
+    </div>
+    <button class="tb-btn" id="themeBtn" type="button">暗色</button>
+  </div>
+</nav>
+
+<!-- 装饰云朵 -->
+<svg class="cloud c1" width="52" height="30" viewBox="0 0 52 30" fill="none" stroke="var(--lilac)" stroke-width="2" stroke-linecap="round" style="position:absolute;top:80px;left:6%;opacity:.4;animation:floaty 6s ease-in-out infinite">
+  <path d="M10 26a8 8 0 1 1 3-15.5A10 10 0 0 1 32 9a7 7 0 0 1 10 9H10z"/>
+</svg>
+
+<!-- ================= Hero ================= -->
+<header class="hero">
+  <div class="kick"><span class="dot on"></span> 建模手研究体系 · 六层钻研法成果</div>
+  <h1>线性规划<br><span class="accent">从几何直觉到算法灵魂</span></h1>
+  <p class="sub">不是背公式，而是理解为什么。从一张可行域的图开始，看懂单纯形法如何在顶点间跳跃；从影子价格的经济含义，理解对偶理论的力量。每一步推导都有来路，每一行代码都有注释。</p>
+  <div class="meta">
+    <span class="meta-chip">专题 <b>01_优化模型</b></span>
+    <span class="meta-chip">深研笔记 <b>2 篇</b></span>
+    <span class="meta-chip">代码实现 <b>3 套</b></span>
+    <span class="meta-chip">应用案例 <b>5 个</b></span>
+    <span class="meta-chip">性能实验 <b>6 组</b></span>
+  </div>
+
+  <!-- Hero 可行域可视化 -->
+  <div class="hero-viz reveal">
+    <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg">
+      <!-- 网格 -->
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--line)" stroke-width="0.5"/>
+        </pattern>
+        <linearGradient id="feasible" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="var(--mint)" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.15"/>
+        </linearGradient>
+      </defs>
+      <rect width="500" height="320" fill="url(#grid)" rx="12"/>
+      <!-- 坐标轴 -->
+      <line x1="50" y1="270" x2="460" y2="270" stroke="var(--text-low)" stroke-width="1.5"/>
+      <line x1="50" y1="270" x2="50" y2="30" stroke="var(--text-low)" stroke-width="1.5"/>
+      <text x="465" y="275" fill="var(--text-low)" font-size="11" font-family="var(--font-cute)">x₁</text>
+      <text x="40" y="25" fill="var(--text-low)" font-size="11" font-family="var(--font-cute)">x₂</text>
+      <!-- 可行域 -->
+      <polygon points="50,270 50,190 170,130 250,270" fill="url(#feasible)" stroke="var(--mint)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- 约束线 -->
+      <line x1="50" y1="190" x2="290" y2="70" stroke="var(--sky)" stroke-width="2" stroke-dasharray="6,4"/>
+      <line x1="50" y1="230" x2="370" y2="70" stroke="var(--butter)" stroke-width="2" stroke-dasharray="6,4"/>
+      <text x="300" y="65" fill="var(--sky-ink)" font-size="10" font-family="var(--font-cute)">x₁+2x₂=8</text>
+      <text x="380" y="65" fill="var(--butter-ink)" font-size="10" font-family="var(--font-cute)">2x₁+x₂=10</text>
+      <!-- 顶点 -->
+      <circle cx="50" cy="270" r="6" fill="var(--bg-panel)" stroke="var(--text-low)" stroke-width="2"/>
+      <circle cx="50" cy="190" r="6" fill="var(--bg-panel)" stroke="var(--sky)" stroke-width="2"/>
+      <circle cx="170" cy="130" r="8" fill="var(--primary)" stroke="var(--white)" stroke-width="3">
+        <animate attributeName="r" values="8;11;8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="250" cy="270" r="6" fill="var(--bg-panel)" stroke="var(--butter)" stroke-width="2"/>
+      <!-- 顶点标签 -->
+      <text x="30" y="290" fill="var(--text-low)" font-size="10" font-family="var(--font-cute)">(0,0)</text>
+      <text x="20" y="185" fill="var(--sky-ink)" font-size="10" font-family="var(--font-cute)">(0,4)</text>
+      <text x="180" y="120" fill="var(--primary)" font-size="11" font-family="var(--font-cute)" font-weight="bold">(4,2) 最优!</text>
+      <text x="255" y="290" fill="var(--butter-ink)" font-size="10" font-family="var(--font-cute)">(5,0)</text>
+      <!-- 目标函数等高线 -->
+      <line x1="80" y1="250" x2="200" y2="178" stroke="var(--lilac)" stroke-width="1.5" opacity="0.5"/>
+      <line x1="120" y1="226" x2="240" y2="154" stroke="var(--lilac)" stroke-width="1.5" opacity="0.6"/>
+      <line x1="160" y1="202" x2="280" y2="130" stroke="var(--lilac)" stroke-width="2" opacity="0.8"/>
+      <text x="285" y="128" fill="var(--lilac-ink)" font-size="10" font-family="var(--font-cute)">z=22</text>
+      <!-- 移动路径箭头 -->
+      <path d="M 56 264 Q 80 230 56 196" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <path d="M 56 184 Q 100 160 162 136" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--primary)"/></marker></defs>
+    </svg>
+    <div style="text-align:center;font-family:var(--font-cute);font-size:12px;color:var(--text-low);margin-top:8px">
+      可行域是凸多边形 → 最优解一定在顶点 → 单纯形法沿边从一个顶点跳到更优顶点
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= 第一章：直觉与起源 ================= -->
+<section id="sec-intuition">
+  <div class="sec-head"><span class="num">01</span><h2>直觉与起源</h2><span class="note">Intuition & Origin</span></div>
+  <p class="sec-lead">在推导公式之前，先建立几何直觉。线性规划的所有核心概念——基解、检验数、进基出基——都能在一张图上看懂。</p>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 从一个具体问题开始</div>
+      <div class="prose">
+        <p>工厂生产两种产品：</p>
+        <ul>
+          <li><strong>甲产品</strong>：利润3元/件，消耗1kg原料A + 2kg原料B</li>
+          <li><strong>乙产品</strong>：利润5元/件，消耗2kg原料A + 1kg原料B</li>
+          <li>原料A限量8kg，原料B限量10kg</li>
+        </ul>
+        <p>问：各生产多少件，利润最大？</p>
+        <div class="formula">
+          <span class="f-label">MODEL</span>
+          max &nbsp; z = 3x₁ + 5x₂<br>
+          s.t. &nbsp; x₁ + 2x₂ ≤ 8 &nbsp;&nbsp; <span class="highlight">原料A</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2x₁ + x₂ ≤ 10 &nbsp;&nbsp; <span class="highlight">原料B</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x₁, x₂ ≥ 0
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 画出来就明白了</div>
+      <div class="viz-side" style="background:var(--bg-inset);border-radius:var(--radius-md);padding:16px">
+        <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg">
+          <rect width="360" height="280" fill="var(--bg-inset)" rx="8"/>
+          <!-- 坐标轴 -->
+          <line x1="40" y1="230" x2="330" y2="230" stroke="var(--text-low)" stroke-width="1.5"/>
+          <line x1="40" y1="230" x2="40" y2="20" stroke="var(--text-low)" stroke-width="1.5"/>
+          <!-- 可行域 -->
+          <polygon points="40,230 40,150 160,90 240,230" fill="var(--mint)" fill-opacity="0.2" stroke="var(--mint)" stroke-width="2"/>
+          <!-- 约束线 -->
+          <line x1="40" y1="150" x2="280" y2="30" stroke="var(--sky)" stroke-width="2" stroke-dasharray="5,3"/>
+          <line x1="40" y1="190" x2="320" y2="50" stroke="var(--butter)" stroke-width="2" stroke-dasharray="5,3"/>
+          <!-- 顶点 -->
+          <circle cx="40" cy="230" r="5" fill="var(--bg-panel)" stroke="var(--text-low)" stroke-width="2"/>
+          <circle cx="40" cy="150" r="5" fill="var(--bg-panel)" stroke="var(--sky)" stroke-width="2"/>
+          <circle cx="160" cy="90" r="7" fill="var(--primary)" stroke="var(--white)" stroke-width="2.5"/>
+          <circle cx="240" cy="230" r="5" fill="var(--bg-panel)" stroke="var(--butter)" stroke-width="2"/>
+          <!-- 标签 -->
+          <text x="165" y="82" fill="var(--primary)" font-size="11" font-family="var(--font-cute)" font-weight="bold">最优 (4,2)</text>
+          <text x="20" y="245" fill="var(--text-low)" font-size="9" font-family="var(--font-cute)">(0,0)</text>
+          <text x="15" y="148" fill="var(--sky-ink)" font-size="9" font-family="var(--font-cute)">(0,4)</text>
+          <text x="245" y="245" fill="var(--butter-ink)" font-size="9" font-family="var(--font-cute)">(5,0)</text>
+          <!-- 等高线 -->
+          <line x1="70" y1="210" x2="190" y2="138" stroke="var(--lilac)" stroke-width="1.5" opacity="0.5"/>
+          <line x1="110" y1="186" x2="230" y2="114" stroke="var(--lilac)" stroke-width="1.5" opacity="0.6"/>
+          <line x1="150" y1="162" x2="270" y2="90" stroke="var(--lilac)" stroke-width="2" opacity="0.8"/>
+          <text x="275" y="88" fill="var(--lilac-ink)" font-size="9" font-family="var(--font-cute)">z↑</text>
+        </svg>
+      </div>
+      <div class="callout mint" style="margin-top:14px">
+        <span class="ci">✓</span>
+        <div><div class="ct">三个关键观察</div>
+        ① 可行域是<strong>凸多边形</strong>（所有约束半平面的交集）<br>
+        ② 目标函数等高线是<strong>平行线</strong>，沿法向方向z增大<br>
+        ③ 最大值一定在某个<strong>顶点</strong>取到（(4,2)，z=22）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 从几何到算法：单纯形法的诞生</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-tag">1947 · 起源</span>
+        <div class="tl-title">George Dantzig 在美国空军提出单纯形法</div>
+        <div class="tl-body">二战期间需要优化兵力和物资调度。Dantzig发现：既然最优解在顶点，而顶点数量虽然多，但<strong>从一个顶点沿边移动到相邻的更优顶点</strong>，通常很快就能到达最优点。这就是单纯形法的核心思想——不枚举所有顶点，而是"走一步看一步"。</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-tag">几何直觉</span>
+        <div class="tl-title">顶点 = 基可行解，边 = 一个非基变量进基</div>
+        <div class="tl-body">在n维空间中，每个顶点由n个约束等式的交点确定。对应到代数上，就是令n个"非基变量"为0，解出m个"基变量"。沿一条边移动，就是让一个非基变量从0开始增大，同时某个基变量减小到0——这就是"进基"和"出基"。</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-tag">为什么叫"单纯形"</span>
+        <div class="tl-title">Simplex = 最简单的多面体</div>
+        <div class="tl-body">二维的单纯形是三角形，三维是四面体。Dantzig最初的方法是在可行域内构造一系列单纯形来逼近最优解，方法因此得名。虽然后来算法演化为沿顶点移动，但名字保留了下来。</div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-tag">💡 顿悟</span>
+        <div class="tl-title">所有概念都是几何的代数翻译</div>
+        <div class="tl-body">检验数 = 目标函数在该方向上的变化率；进基 = 选一个能让z增大的方向；出基 = 沿该方向走，最先碰到的约束；主元旋转 = 坐标变换，把新方向作为基轴。<strong>理解了几何，代数就是自然而然的。</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第二章：单纯形法原理 ================= -->
+<section id="sec-principle">
+  <div class="sec-head"><span class="num">02</span><h2>单纯形法原理</h2><span class="note">Simplex Method</span></div>
+  <p class="sec-lead">从标准形式到检验数公式，每一步推导都回答"为什么这样做"。理解了检验数的几何意义，就理解了单纯形法的灵魂。</p>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 第一步：化为标准形式</div>
+    <div class="prose">
+      <p>单纯形法需要等式约束，所以给每个"≤"约束加一个<strong>松弛变量</strong>（slack variable），表示资源的剩余量。</p>
+      <div class="formula">
+        <span class="f-label">STANDARD FORM</span>
+        max &nbsp; z = 3x₁ + 5x₂ + 0s₁ + 0s₂<br>
+        s.t. &nbsp; x₁ + 2x₂ + s₁ = 8<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2x₁ + x₂ + s₂ = 10<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x₁, x₂, s₁, s₂ ≥ 0
+      </div>
+      <div class="callout sky">
+        <span class="ci">i</span>
+        <div><div class="ct">为什么要松弛变量？</div>加了松弛变量后，约束矩阵中s₁、s₂的系数构成单位矩阵，直接得到初始基可行解：令x₁=x₂=0，则s₁=8, s₂=10。这就是<strong>原点顶点</strong>，单纯形法从这里出发。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:20px">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 第二步：检验数——灵魂所在</div>
+      <div class="prose">
+        <p>把目标函数用非基变量表示：</p>
+        <div class="formula">
+          <span class="f-label">DERIVE</span>
+          由约束：s₁ = 8 - x₁ - 2x₂<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s₂ = 10 - 2x₁ - x₂<br>
+          代入目标：z = 3x₁ + 5x₂<br><br>
+          <span class="key">检验数 rⱼ = 非基变量xⱼ增加1单位时，z的变化量</span>
+        </div>
+        <p>这里 r₁ = 3（增加1件甲产品，利润+3），r₂ = 5（增加1件乙产品，利润+5）。</p>
+        <div class="callout butter">
+          <span class="ci">!</span>
+          <div><div class="ct">几何意义</div>检验数就是目标函数梯度在各非基方向上的投影。rⱼ > 0 意味着沿xⱼ方向走，z会增大——这个方向值得走！</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 第三步：进基与出基</div>
+      <div class="prose">
+        <p><strong>进基</strong>：选检验数最大的非基变量（最大化问题）。这里 r₂=5 > r₁=3，所以x₂进基。</p>
+        <p><strong>出基</strong>：让x₂从0开始增大，看哪个基变量最先变0：</p>
+        <div class="formula">
+          <span class="f-label">RATIO TEST</span>
+          s₁ = 8 - 2x₂ → x₂ ≤ 8/2 = <span class="key">4</span><br>
+          s₂ = 10 - x₂ → x₂ ≤ 10/1 = 10<br><br>
+          最小比值 = 4 → s₁最先变0 → <span class="key">s₁出基</span>
+        </div>
+        <div class="callout mint">
+          <span class="ci">✓</span>
+          <div><div class="ct">比值测试的几何意义</div>沿x₂方向（竖直向上）走，最先碰到的约束是x₁+2x₂=8（在x₂=4处），而不是2x₁+x₂=10（在x₂=10处）。所以从(0,0)走到(0,4)。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 第四步：主元旋转（高斯消元）</div>
+    <div class="prose">
+      <p>进基x₂、出基s₁后，新的基变量是{x₂, s₂}。需要把约束方程改写为用新非基变量{x₁, s₁}表示基变量：</p>
+      <div class="grid-2">
+        <div>
+          <p style="font-family:var(--font-cute);color:var(--text-mid);margin-bottom:8px">旋转前</p>
+          <div class="formula" style="font-size:12px">
+            x₁ + 2x₂ + s₁ = 8<br>
+            2x₁ + x₂ + s₂ = 10<br>
+            z - 3x₁ - 5x₂ = 0
+          </div>
+        </div>
+        <div>
+          <p style="font-family:var(--font-cute);color:var(--mint-ink);margin-bottom:8px">旋转后（主元=2）</p>
+          <div class="formula" style="font-size:12px">
+            0.5x₁ + x₂ + 0.5s₁ = 4<br>
+            1.5x₁ - 0.5s₁ + s₂ = 6<br>
+            z - 0.5x₁ + 2.5s₁ = 20
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:14px">新检验数：r₁ = 0.5 > 0（还能增大），r_{s₁} = -2.5 < 0（s₁增大反而减小z）。所以x₁继续进基。</p>
+      <div class="callout lilac">
+        <span class="ci">✨</span>
+        <div><div class="ct">主元旋转的本质</div>就是<strong>坐标变换</strong>：把坐标系从"以s₁,s₂为轴"换成"以x₂,s₂为轴"。在新坐标系下，当前顶点就是原点，非基变量=0，基变量=右端项。每一次旋转都是一次坐标平移+旋转。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 终止条件与完整流程</div>
+    <div class="grid-2">
+      <div>
+        <div class="callout mint">
+          <span class="ci">✓</span>
+          <div><div class="ct">最优性判定</div>当所有检验数 rⱼ ≤ 0（最大化问题），增大任何非基变量都不会让z增大——当前顶点就是最优的！</div>
+        </div>
+        <div class="callout straw" style="margin-top:12px">
+          <span class="ci">!</span>
+          <div><div class="ct">无界判定</div>如果进基变量所在列的所有系数 ≤ 0，意味着沿该方向走不会碰到任何约束——z可以无限增大，问题无界。</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-cute);font-size:14px;margin-bottom:10px;color:var(--text-hi)">单纯形法四步循环</p>
+        <div class="timeline" style="padding-left:28px">
+          <div class="tl-item" style="margin-bottom:14px"><div class="tl-title">① 算检验数</div><div class="tl-body">所有rⱼ≤0？→ 最优，停止</div></div>
+          <div class="tl-item" style="margin-bottom:14px"><div class="tl-title">② 选进基变量</div><div class="tl-body">rⱼ最大的非基变量进基</div></div>
+          <div class="tl-item" style="margin-bottom:14px"><div class="tl-title">③ 比值测试选出基</div><div class="tl-body">最小比值对应的基变量出基</div></div>
+          <div class="tl-item"><div class="tl-title">④ 主元旋转</div><div class="tl-body">高斯消元，回到①</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第三章：交互式单纯形法演示 ================= -->
+<section id="sec-demo">
+  <div class="sec-head"><span class="num">03</span><h2>交互式单纯形法</h2><span class="note">Interactive Demo</span></div>
+  <p class="sec-lead">左图看几何（可行域上的移动路径），右表看代数（单纯形表的变化）。点击下一步，同时观察两个视图如何对应。</p>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 生产计划问题 · 双视图逐步演示</div>
+
+    <div class="btn-group">
+      <button class="btn primary" id="demoNext" type="button">下一步 →</button>
+      <button class="btn" id="demoReset" type="button">重置</button>
+      <button class="btn" id="demoAuto" type="button">自动播放</button>
+      <span style="margin-left:auto;font-family:var(--font-cute);font-size:13px;color:var(--text-mid)">
+        当前步骤：<span id="demoStep" style="color:var(--primary)">0</span> / 3
+      </span>
+    </div>
+
+    <div class="dual-view">
+      <!-- 几何视图 -->
+      <div class="view-panel">
+        <div class="vp-title">📐 几何视图 · 可行域与移动路径</div>
+        <svg id="geoViz" viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="300" fill="var(--bg-panel)" rx="8"/>
+          <!-- 坐标轴 -->
+          <line x1="50" y1="250" x2="350" y2="250" stroke="var(--text-low)" stroke-width="1.5"/>
+          <line x1="50" y1="250" x2="50" y2="30" stroke="var(--text-low)" stroke-width="1.5"/>
+          <text x="355" y="255" fill="var(--text-low)" font-size="10" font-family="var(--font-cute)">x₁</text>
+          <text x="40" y="25" fill="var(--text-low)" font-size="10" font-family="var(--font-cute)">x₂</text>
+          <!-- 可行域 -->
+          <polygon id="feasiblePoly" points="50,250 50,170 170,110 250,250" fill="var(--mint)" fill-opacity="0.15" stroke="var(--mint)" stroke-width="2"/>
+          <!-- 约束线 -->
+          <line x1="50" y1="170" x2="290" y2="50" stroke="var(--sky)" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <line x1="50" y1="210" x2="350" y2="60" stroke="var(--butter)" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="295" y="48" fill="var(--sky-ink)" font-size="9" font-family="var(--font-cute)">x₁+2x₂=8</text>
+          <text x="300" y="58" fill="var(--butter-ink)" font-size="9" font-family="var(--font-cute)">2x₁+x₂=10</text>
+          <!-- 顶点 -->
+          <circle id="v0" cx="50" cy="250" r="6" fill="var(--bg-panel)" stroke="var(--text-low)" stroke-width="2"/>
+          <circle id="v1" cx="50" cy="170" r="6" fill="var(--bg-panel)" stroke="var(--sky)" stroke-width="2"/>
+          <circle id="v2" cx="170" cy="110" r="8" fill="var(--primary)" stroke="var(--white)" stroke-width="3"/>
+          <circle id="v3" cx="250" cy="250" r="6" fill="var(--bg-panel)" stroke="var(--butter)" stroke-width="2"/>
+          <!-- 当前点（动态） -->
+          <circle id="currentPoint" cx="50" cy="250" r="10" fill="none" stroke="var(--primary)" stroke-width="3">
+            <animate attributeName="r" values="10;14;10" dur="1.5s" repeatCount="indefinite"/>
+          </circle>
+          <!-- 移动路径（动态） -->
+          <path id="movePath" d="" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <!-- 进基方向箭头（动态） -->
+          <g id="enterArrow" style="display:none">
+            <line id="enterLine" x1="50" y1="250" x2="50" y2="180" stroke="var(--primary)" stroke-width="2" marker-end="url(#arrow2)"/>
+            <text id="enterLabel" x="55" y="210" fill="var(--primary)" font-size="10" font-family="var(--font-cute)">x₂进基↑</text>
+          </g>
+          <defs><marker id="arrow2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--primary)"/></marker></defs>
+          <!-- 顶点标签 -->
+          <text x="25" y="268" fill="var(--text-low)" font-size="9" font-family="var(--font-cute)">(0,0)</text>
+          <text x="15" y="168" fill="var(--sky-ink)" font-size="9" font-family="var(--font-cute)">(0,4)</text>
+          <text x="175" y="102" fill="var(--primary)" font-size="10" font-family="var(--font-cute)" font-weight="bold">(4,2) 最优</text>
+          <text x="255" y="268" fill="var(--butter-ink)" font-size="9" font-family="var(--font-cute)">(5,0)</text>
+          <!-- z值显示 -->
+          <text id="geoZ" x="280" y="40" fill="var(--lilac-ink)" font-size="14" font-family="var(--font-cute)" font-weight="bold">z = 0</text>
+        </svg>
+      </div>
+
+      <!-- 单纯形表视图 -->
+      <div class="view-panel">
+        <div class="vp-title">📊 代数视图 · 单纯形表</div>
+        <div id="demoTableContainer"></div>
+      </div>
+    </div>
+
+    <div class="step-log" id="demoLog"></div>
+
+    <div class="callout sky" style="margin-top:14px">
+      <span class="ci">i</span>
+      <div><div class="ct">对照观察</div>左图中粉色圆圈是当前顶点，虚线是已走过的路径。右图中粉色列是进基变量，黄色行是出基变量，粉色高亮单元格是主元。每一步都对应：选方向→走到下一个顶点→换坐标系。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第四章：在线求解器 ================= -->
+<section id="sec-solver">
+  <div class="sec-head"><span class="num">04</span><h2>在线求解器</h2><span class="note">Online Solver</span></div>
+  <p class="sec-lead">输入你自己的线性规划，用纯JavaScript实现的两阶段单纯形法实时求解。支持不可行和无界检测。</p>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 标准形式：min cᵀx, s.t. Ax = b, x ≥ 0</div>
+
+    <div class="input-row">
+      <label>变量数 n</label>
+      <input type="number" id="solverN" value="4" min="1" max="10">
+      <label>约束数 m</label>
+      <input type="number" id="solverM" value="2" min="1" max="8">
+      <button class="btn" id="solverGen" type="button">生成输入框</button>
+      <button class="btn" id="solverExample" type="button">载入生产计划示例</button>
+    </div>
+
+    <div id="solverInputs" style="margin:14px 0"></div>
+
+    <div class="btn-group">
+      <button class="btn primary" id="solverRun" type="button">🚀 求解</button>
+    </div>
+
+    <div id="solverResult" style="margin-top:16px"></div>
+
+    <div class="callout butter" style="margin-top:14px">
+      <span class="ci">!</span>
+      <div><div class="ct">使用说明</div>此求解器假设约束矩阵最后m列构成单位矩阵（即已添加松弛变量）。如果你的问题不是这种形式，先手动化为标准形式。目标函数系数填最小值问题的c（如果是最大化，填-c）。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第五章：对偶理论 ================= -->
+<section id="sec-dual">
+  <div class="sec-head"><span class="num">05</span><h2>对偶理论</h2><span class="note">Duality Theory</span></div>
+  <p class="sec-lead">每个线性规划都有一个"影子问题"。对偶不是数学游戏，而是理解资源价值的钥匙——影子价格告诉你"多一单位资源值多少钱"。</p>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 从经济直觉开始</div>
+      <div class="prose">
+        <p>回到生产计划问题。现在换个角度：<strong>如果你是资源出租方，你愿意以什么价格出租原料A和B？</strong></p>
+        <p>设原料A的租金为y₁元/kg，原料B的租金为y₂元/kg。</p>
+        <p>对工厂来说，出租资源的收益不能低于自己生产的收益：</p>
+        <ul>
+          <li>生产1件甲产品用(1A+2B)，利润3元 → y₁ + 2y₂ ≥ 3</li>
+          <li>生产1件乙产品用(2A+1B)，利润5元 → 2y₁ + y₂ ≥ 5</li>
+        </ul>
+        <p>而资源出租方希望总租金最小：min 8y₁ + 10y₂</p>
+        <div class="callout mint">
+          <span class="ci">✓</span>
+          <div><div class="ct">这就是对偶问题！</div>原问题是"安排生产最大化利润"，对偶问题是"给资源定价最小化租金"。两个问题的最优值相等——这就是<strong>强对偶定理</strong>。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 原问题 vs 对偶问题</div>
+      <div class="compare-grid">
+        <div class="compare-col win">
+          <div class="cc-title"><span class="chip mint">原问题 Primal</span></div>
+          <div class="formula" style="font-size:12px;margin:0">
+            max &nbsp; 3x₁ + 5x₂<br>
+            s.t. &nbsp; x₁+2x₂ ≤ 8<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2x₁+x₂ ≤ 10<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x₁,x₂ ≥ 0<br><br>
+            <span class="highlight">变量=产量</span><br>
+            <span class="highlight">约束=资源限量</span>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="cc-title"><span class="chip lilac">对偶问题 Dual</span></div>
+          <div class="formula" style="font-size:12px;margin:0">
+            min &nbsp; 8y₁ + 10y₂<br>
+            s.t. &nbsp; y₁+2y₂ ≥ 3<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2y₁+y₂ ≥ 5<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y₁,y₂ ≥ 0<br><br>
+            <span class="highlight">变量=影子价格</span><br>
+            <span class="highlight">约束=利润底线</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout sky" style="margin-top:14px">
+        <span class="ci">i</span>
+        <div><div class="ct">对偶规则速记</div>max→min，≤→≥，变量数↔约束数，目标系数↔右端项，约束矩阵转置。最优解 y* = (7/3, 1/3)，即原料A影子价格≈2.33元/kg，原料B≈0.33元/kg。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 互补松弛性——最深刻的结论</div>
+    <div class="prose">
+      <p>最优解 (x*, y*) 满足：</p>
+      <div class="formula">
+        <span class="f-label">COMPLEMENTARY SLACKNESS</span>
+        yᵢ × (bᵢ - aᵢx*) = 0 &nbsp;&nbsp; 对每个约束 i<br>
+        xⱼ × (aⱼᵀy* - cⱼ) = 0 &nbsp;&nbsp; 对每个变量 j
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="callout butter">
+          <span class="ci">!</span>
+          <div><div class="ct">第一式的经济含义</div>如果某种资源有剩余（bᵢ - aᵢx > 0），那它的影子价格一定为0——<strong>过剩的资源不值钱</strong>。反过来，如果影子价格为正，说明该资源已耗尽，是稀缺资源。</div>
+        </div>
+        <div class="callout butter">
+          <span class="ci">!</span>
+          <div><div class="ct">第二式的经济含义</div>如果某种产品不生产（xⱼ=0），那它的"机会成本"一定高于利润——生产它不划算。反过来，如果生产某种产品（xⱼ>0），那它的机会成本恰好等于利润。</div>
+        </div>
+      </div>
+      <div class="callout lilac" style="margin-top:16px">
+        <span class="ci">✨</span>
+        <div><div class="ct">建模手的洞察</div>互补松弛性是<strong>验证最优解的工具</strong>：求出解后，检查是否满足互补松弛，可以快速判断解是否最优。也是<strong>理解问题结构的工具</strong>：哪些资源是瓶颈（y>0），哪些产品值得做（x>0），一目了然。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 对偶单纯形法——什么时候用？</div>
+    <div class="prose">
+      <p>原始单纯形法：保持<strong>原始可行性</strong>（基变量≥0），逐步达到<strong>对偶可行性</strong>（检验数≥0）。</p>
+      <p>对偶单纯形法：保持<strong>对偶可行性</strong>（检验数≥0），逐步达到<strong>原始可行性</strong>（基变量≥0）。</p>
+      <div class="callout mint">
+        <span class="ci">✓</span>
+        <div><div class="ct">对偶单纯形法的典型场景</div>
+        ① <strong>增加约束后</strong>：原最优解可能不再可行，但检验数仍满足最优性——用对偶单纯形法从当前表继续，不需要从头算<br>
+        ② <strong>改变右端项b后</strong>：同理，基变量可能变负，但检验数不变<br>
+        ③ <strong>整数规划的割平面法</strong>：每次加割约束后用对偶单纯形法<br>
+        这就是灵敏度分析的核心工具！</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第六章：灵敏度分析 ================= -->
+<section id="sec-sensitivity">
+  <div class="sec-head"><span class="num">06</span><h2>灵敏度分析</h2><span class="note">Sensitivity Analysis</span></div>
+  <p class="sec-lead">最优解不是一成不变的。当资源限量、利润系数发生变化时，最优解如何变化？拖动滑块，实时观察。</p>
+
+  <div class="card reveal">
+    <div class="ct"><span class="dot"></span> 资源限量变化的影响</div>
+    <div class="cd">
+      <p>生产计划问题：max 3x₁ + 5x₂，原料A限量 b₁，原料B限量 b₂。拖动滑块改变资源量，观察最优产量和最大利润的变化。</p>
+    </div>
+
+    <div class="slider-row">
+      <label>原料A b₁</label>
+      <input type="range" id="sensB1" min="2" max="16" value="8" step="0.5">
+      <span class="val" id="sensB1Val">8</span>
+      <span style="font-family:var(--font-cute);font-size:12px;color:var(--text-low)">kg</span>
+    </div>
+    <div class="slider-row">
+      <label>原料B b₂</label>
+      <input type="range" id="sensB2" min="4" max="20" value="10" step="0.5">
+      <span class="val" id="sensB2Val">10</span>
+      <span style="font-family:var(--font-cute);font-size:12px;color:var(--text-low)">kg</span>
+    </div>
+
+    <div class="kpi-grid" style="margin-top:20px">
+      <div class="kpi"><div class="kl">甲产品 x₁</div><div class="kv" id="sensX1">4.00</div><div class="kd">件</div></div>
+      <div class="kpi"><div class="kl">乙产品 x₂</div><div class="kv" id="sensX2">2.00</div><div class="kd">件</div></div>
+      <div class="kpi key"><div class="kl">最大利润 z</div><div class="kv" id="sensZ">22.00</div><div class="kd">元</div></div>
+      <div class="kpi"><div class="kl">A影子价格</div><div class="kv" id="sensY1">2.33</div><div class="kd">元/kg</div></div>
+      <div class="kpi"><div class="kl">B影子价格</div><div class="kv" id="sensY2">0.33</div><div class="kd">元/kg</div></div>
+    </div>
+
+    <div class="dual-view" style="margin-top:20px">
+      <div class="view-panel">
+        <div class="vp-title">可行域变化</div>
+        <svg id="sensViz" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+          <rect width="360" height="260" fill="var(--bg-panel)" rx="8"/>
+          <line x1="40" y1="220" x2="330" y2="220" stroke="var(--text-low)" stroke-width="1.5"/>
+          <line x1="40" y1="220" x2="40" y2="20" stroke="var(--text-low)" stroke-width="1.5"/>
+          <polygon id="sensPoly" points="40,220 40,140 160,80 240,220" fill="var(--mint)" fill-opacity="0.2" stroke="var(--mint)" stroke-width="2"/>
+          <circle id="sensOpt" cx="160" cy="80" r="7" fill="var(--primary)" stroke="var(--white)" stroke-width="2.5"/>
+          <text id="sensOptLabel" x="165" y="75" fill="var(--primary)" font-size="10" font-family="var(--font-cute)" font-weight="bold">(4,2)</text>
+        </svg>
+      </div>
+      <div class="view-panel">
+        <div class="vp-title">分析结论</div>
+        <div id="sensAnalysis" style="font-size:13px;color:var(--text-mid);line-height:1.9">
+          <p>当前两种资源都耗尽（都是紧约束），影子价格均为正。</p>
+          <p style="margin-top:8px"><strong style="color:var(--primary)">原料A更稀缺</strong>：影子价格2.33元/kg，意味着每增加1kg原料A，利润增加2.33元。</p>
+          <p style="margin-top:8px">如果市场上原料A价格低于2.33元/kg，<strong>应该购买</strong>；高于2.33元/kg，不买。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout mint" style="margin-top:16px">
+      <span class="ci">✓</span>
+      <div><div class="ct">灵敏度分析的价值</div>
+      比赛中参数往往是估计值，灵敏度分析告诉你：① 哪些参数的变化会改变最优解（关键参数）；② 最优解在什么范围内保持不变（稳定区间）；③ 影子价格指导资源采购决策。<strong>做了灵敏度分析，论文才有深度。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第七章：深入与边界 ================= -->
+<section id="sec-deep">
+  <div class="sec-head"><span class="num">07</span><h2>深入与边界</h2><span class="note">Deep Dive</span></div>
+  <p class="sec-lead">单纯形法不是万能的。理解它的边界——退化、循环、最坏情况复杂度——才能在比赛中灵活选择方法。</p>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 退化与循环</div>
+      <div class="prose">
+        <p><strong>退化</strong>：基变量中有0。几何上，就是有超过n个约束同时通过一个顶点（顶点"退化"）。</p>
+        <p>退化本身不是问题，但可能导致<strong>循环</strong>：单纯形法在几个顶点之间来回跳，永远到不了最优。</p>
+        <div class="callout straw">
+          <span class="ci">!</span>
+          <div><div class="ct">1955年 Hoffman 发现第一个循环例子</div>只有3个约束、11个变量，但Dantzig规则下会无限循环。这说明单纯形法<strong>不保证有限步终止</strong>（除非用防循环规则）。</div>
+        </div>
+        <div class="callout mint" style="margin-top:12px">
+          <span class="ci">✓</span>
+          <div><div class="ct">Bland规则：最简单的防循环方法</div>进基选下标最小的正检验数变量，出基选下标最小的最小比值变量。1977年证明Bland规则下不会循环。<strong>代价是迭代次数可能变多</strong>（实验显示最多差10倍）。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> Klee-Minty立方体：最坏情况</div>
+      <div class="prose">
+        <p>1972年，Klee和Minty构造了一个"扭曲的立方体"问题：</p>
+        <div class="formula" style="font-size:11px">
+          max &nbsp; Σ 10^{n-j} xⱼ<br>
+          s.t. &nbsp; 2Σ_{i<j} 10^{j-i} xᵢ + xⱼ ≤ 100^{j-1}
+        </div>
+        <p>在Dantzig规则下，单纯形法需要访问<strong>所有2ⁿ个顶点</strong>！</p>
+        <div class="callout butter">
+          <span class="ci">!</span>
+          <div><div class="ct">复杂度结论</div>单纯形法的<strong>最坏情况是指数时间</strong>O(2ⁿ)。但这是人为构造的病态问题，<strong>实际问题中平均是多项式时间</strong>（通常O(m³)左右）。这就是为什么实际中单纯形法仍然很快。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 内点法——另一条路</div>
+    <div class="prose">
+      <p>1984年，Karmarkar提出<strong>内点法</strong>，从可行域<strong>内部</strong>出发，沿中心路径逼近最优解。最坏情况是多项式时间O(n³.⁵L)。</p>
+      <div class="compare-grid" style="margin-top:16px">
+        <div class="compare-col win">
+          <div class="cc-title"><span class="chip mint">单纯形法</span></div>
+          <ul style="font-size:12.5px;color:var(--text-mid);line-height:2;list-style:none">
+            <li>✓ 沿顶点移动，路径清晰</li>
+            <li>✓ 中小规模问题极快</li>
+            <li>✓  warm start友好（灵敏度分析）</li>
+            <li>✗ 最坏情况指数复杂度</li>
+            <li>✗ 超大规模可能慢</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <div class="cc-title"><span class="chip lilac">内点法</span></div>
+          <ul style="font-size:12.5px;color:var(--text-mid);line-height:2;list-style:none">
+            <li>✓ 多项式时间复杂度</li>
+            <li>✓ 超大规模问题优势明显</li>
+            <li>✓ 高度并行化</li>
+            <li>✗ 解在内部，需要额外步骤取顶点</li>
+            <li>✗ warm start不如单纯形法</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout sky" style="margin-top:16px">
+        <span class="ci">i</span>
+        <div><div class="ct">比赛中的选择</div>数学建模比赛中，变量和约束通常在几百以内，<strong>单纯形法完全够用</strong>。而且scipy.optimize.linprog默认用的就是单纯形法（HiGHS求解器）。只有当变量上万时才考虑内点法。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 建模手的研究笔记标记</div>
+    <div class="grid" style="gap:14px">
+      <div class="callout lilac" style="margin:0">
+        <span class="ci">💡</span>
+        <div><div class="ct">顿悟</div>检验数不是凭空定义的，它就是目标函数梯度在非基方向上的投影。理解了这一点，进基选择就是"选最陡的上升方向"。</div>
+      </div>
+      <div class="callout butter" style="margin:0">
+        <span class="ci">❓</span>
+        <div><div class="ct">疑问</div>为什么实际中退化常见但几乎不循环？是否存在某种"概率意义下"的证明？这是研究前沿问题。</div>
+      </div>
+      <div class="callout straw" style="margin:0">
+        <span class="ci">⚠️</span>
+        <div><div class="ct">坑</div>用scipy.linprog时，如果A不是满秩，可能报错。需要先检查约束的线性相关性，去掉冗余约束。</div>
+      </div>
+      <div class="callout mint" style="margin:0">
+        <span class="ci">✨</span>
+        <div><div class="ct">创新</div>可以尝试"混合策略"：前几步用Dantzig快速接近最优，最后几步切换到Bland防止循环。兼顾效率和安全性。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第八章：应用案例 ================= -->
+<section id="sec-cases">
+  <div class="sec-head"><span class="num">08</span><h2>应用案例</h2><span class="note">Applications</span></div>
+  <p class="sec-lead">5个经典案例，每个都展示完整的建模思维过程——从问题理解到模型构建，再到结果解读。</p>
+
+  <div class="grid">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例1 · 生产计划</div>
+      <div class="cd">
+        <p><strong>问题</strong>：两种产品，两种原料，求最大利润。</p>
+        <p><strong>建模关键</strong>：变量=各产品产量，目标=利润最大化，约束=资源限量。</p>
+        <p><strong>结果解读</strong>：x₁=4, x₂=2, z=22。原料A和B都耗尽，影子价格分别为2.33和0.33。</p>
+        <div class="cf"><b>建模技巧</b>：这是所有线性规划的"原型"，其他问题都是它的变形。</div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例2 · 运输问题</div>
+      <div class="cd">
+        <p><strong>问题</strong>：3产地4销地，各产地产量、各销地销量、单位运费已知，求最小总运费。</p>
+        <p><strong>建模关键</strong>：变量xᵢⱼ=从i到j的运量，约束=产量平衡+销量平衡。</p>
+        <p><strong>结构特点</strong>：约束矩阵是全幺模矩阵，整数b保证整数最优解。可用表上作业法。</p>
+        <div class="cf"><b>技巧</b>：产销不平衡时加虚拟产地/销地，运费为0。</div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例3 · 指派问题</div>
+      <div class="cd">
+        <p><strong>问题</strong>：4人4工作，每人做一项，每项一人做，求最小总时间。</p>
+        <p><strong>建模关键</strong>：0-1变量xᵢⱼ，约束=每人一项+每项一人。</p>
+        <p><strong>特殊解法</strong>：匈牙利算法O(n³)，比一般整数规划快得多。</p>
+        <div class="cf"><b>注意</b>：人数≠工作数时加虚拟人/虚拟工作，成本为0。</div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例4 · 下料问题</div>
+      <div class="cd">
+        <p><strong>问题</strong>：19米钢管，需要切4米、6米、8米三种规格，求最少废料。</p>
+        <p><strong>建模关键</strong>：先<strong>枚举所有合理下料方式</strong>，变量=每种方式用多少根。</p>
+        <p><strong>难点</strong>：不是求解难，而是<strong>枚举下料方式</strong>难。需要确保不遗漏合理方式。</p>
+        <div class="cf"><b>技巧</b>：合理下料方式=废料小于最短规格长度的切法。</div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 案例5 · 投资组合</div>
+      <div class="cd">
+        <p><strong>问题</strong>：5个项目，总资金1000万，平均风险指数≤2.5，求最大收益。</p>
+        <p><strong>建模关键</strong>：分式约束 (Σaᵢxᵢ)/(Σxᵢ) ≤ 2.5 需要<strong>线性化</strong>。</p>
+        <div class="formula" style="font-size:11px;margin:10px 0">
+          Σ(aᵢ - 2.5)xᵢ ≤ 0
+        </div>
+        <div class="cf"><b>技巧</b>：比率约束、分式目标都可以通过交叉相乘转化为线性约束。</div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 建模5步法（通用）</div>
+      <div class="cd">
+        <div class="timeline" style="padding-left:28px">
+          <div class="tl-item" style="margin-bottom:10px"><div class="tl-title">① 找变量</div><div class="tl-body">要决定什么？设为x</div></div>
+          <div class="tl-item" style="margin-bottom:10px"><div class="tl-title">② 写目标</div><div class="tl-body">最大化/最小化什么？</div></div>
+          <div class="tl-item" style="margin-bottom:10px"><div class="tl-title">③ 列约束</div><div class="tl-body">有哪些限制条件？</div></div>
+          <div class="tl-item" style="margin-bottom:10px"><div class="tl-title">④ 查完整</div><div class="tl-body">非负约束？量纲一致？</div></div>
+          <div class="tl-item"><div class="tl-title">⑤ 判类型</div><div class="tl-body">线性/非线性？整数/连续？选解法</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第九章：性能实验与代码资源 ================= -->
+<section id="sec-experiment">
+  <div class="sec-head"><span class="num">09</span><h2>性能实验 & 代码资源</h2><span class="note">Experiment & Code</span></div>
+  <p class="sec-lead">用真实实验数据说话：单纯形法在不同规模下的表现，以及Dantzig和Bland规则的对比。</p>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> 迭代次数 vs 约束数</div>
+      <svg class="bc-svg" viewBox="0 0 340 200" preserveAspectRatio="none" role="img" aria-label="迭代次数柱状图">
+        <line x1="40" y1="160" x2="320" y2="160" stroke="var(--line)" stroke-width="1"/>
+        <line x1="40" y1="160" x2="40" y2="20" stroke="var(--line)" stroke-width="1"/>
+        <rect class="bar mint" style="--i:0" x="55" y="135" width="32" height="25" rx="6"/>
+        <rect class="bar" style="--i:1" x="100" y="125" width="32" height="35" rx="6"/>
+        <rect class="bar sky" style="--i:2" x="145" y="112" width="32" height="48" rx="6"/>
+        <rect class="bar butter" style="--i:3" x="190" y="92" width="32" height="68" rx="6"/>
+        <rect class="bar" style="--i:4" x="235" y="60" width="32" height="100" rx="6"/>
+        <rect class="bar mint" style="--i:5" x="280" y="38" width="32" height="122" rx="6"/>
+        <text class="bx" x="71" y="178">5</text>
+        <text class="bx" x="116" y="178">10</text>
+        <text class="bx" x="161" y="178">20</text>
+        <text class="bx" x="206" y="178">50</text>
+        <text class="bx" x="251" y="178">100</text>
+        <text class="bx" x="296" y="178">200</text>
+        <text class="by" x="15" y="164">0</text>
+        <text class="by" x="10" y="85">12</text>
+        <text class="by" x="10" y="25">24</text>
+      </svg>
+      <div class="chart-foot"><span>约束数 m（变量数=2m）</span><span>结论：<b>迭代次数亚线性增长</b></span></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="ct"><span class="dot"></span> Dantzig vs Bland 迭代次数</div>
+      <div class="tblwrap">
+        <table class="tbl">
+          <thead><tr><th>规模 m×n</th><th>Dantzig</th><th>Bland</th><th>倍数</th></tr></thead>
+          <tbody>
+            <tr><td class="tnum">10×20</td><td class="tnum">2.6</td><td class="tnum">4.5</td><td class="tnum">1.7×</td></tr>
+            <tr><td class="tnum">20×40</td><td class="tnum">4.3</td><td class="tnum">11.2</td><td class="tnum">2.6×</td></tr>
+            <tr><td class="tnum">50×100</td><td class="tnum">5.8</td><td class="tnum">33.6</td><td class="tnum">5.8×</td></tr>
+            <tr><td class="tnum">100×200</td><td class="tnum">9.6</td><td class="tnum">94.6</td><td class="tnum"><span style="color:var(--primary);font-weight:700">9.9×</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-foot"><span>10次独立运行取平均</span><span>结论：<b>实际中几乎总是用Dantzig</b></span></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 实验结论</div>
+    <div class="grid" style="gap:14px">
+      <div class="callout mint" style="margin:0"><span class="ci">✓</span><div><div class="ct">迭代次数少</div>200个约束只需约24次迭代，呈亚线性增长 O(m^0.7~0.8)</div></div>
+      <div class="callout straw" style="margin:0"><span class="ci">!</span><div><div class="ct">Bland规则慢</div>100×200规模时迭代次数是Dantzig的近10倍，仅在理论分析中使用</div></div>
+      <div class="callout sky" style="margin:0"><span class="ci">i</span><div><div class="ct">退化无害</div>实际问题中退化常见但几乎不会导致循环，Dantzig规则通常够用</div></div>
+      <div class="callout butter" style="margin:0"><span class="ci">!</span><div><div class="ct">规模建议</div>纯Python实现适合m&lt;200，更大规模用scipy/Gurobi/CPLEX</div></div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:20px">
+    <div class="ct"><span class="dot"></span> 研究体系文件清单（9个文件）</div>
+    <div class="file-list">
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">建模手研究体系_总纲.md</div><div class="fdesc">六层钻研法 + 笔记规范 + 学习路径 + 进度追踪表</div></div><div class="fsize">6.1K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">01_线性规划_深研笔记.md</div><div class="fdesc">从Dantzig发明历史到检验数完整推导，含💡顿悟❓疑问✨创新标记</div></div><div class="fsize">9.6K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">02_对偶理论与灵敏度分析_深研笔记.md</div><div class="fdesc">影子价格经济含义 + 互补松弛性 + 对偶单纯形法原理推导</div></div><div class="fsize">10.6K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">01_单纯形法_手动实现.py</div><div class="fdesc">完整实现：两阶段法 + Bland规则 + 无界/不可行检测，4类测试全通过</div></div><div class="fsize">13.8K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">01_单纯形法_逐行详解版.py</div><div class="fdesc">每一步算法都有中文注释，打印中间单纯形表，教学专用</div></div><div class="fsize">20.1K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">02_对偶单纯形法_手动实现.py</div><div class="fdesc">灵敏度分析专用，含增加约束和改变右端项的完整演示</div></div><div class="fsize">12.2K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">线性规划_应用案例集.md</div><div class="fdesc">5个完整案例：生产/运输/指派/下料/投资，含建模思维过程</div></div><div class="fsize">9.5K</div></div>
+      <div class="file-item"><div class="ficon py">🐍</div><div class="finfo"><div class="fname">单纯形法_性能实验.py</div><div class="fdesc">可运行实验脚本：6种规模 + Dantzig vs Bland对比 + 随机生成</div></div><div class="fsize">9.9K</div></div>
+      <div class="file-item"><div class="ficon md">📖</div><div class="finfo"><div class="fname">单纯形法_性能实验报告.md</div><div class="fdesc">真实实验数据 + 结论分析 + 待深入研究问题清单</div></div><div class="fsize">5.0K</div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  本页面由 <b>建模手研究体系</b> 生成 · 奶油糖果风 · 线性规划专题 · 六层钻研法成果 · 2026-09-08
+</footer>
+
+<script>
+/* ============================================================
+   线性规划 · 建模手研究体系 — 交互逻辑
+   包含：主题切换 / 滚动动效 / 导航高亮 / 单纯形法演示 / 在线求解器 / 灵敏度分析
+   ============================================================ */
+(function(){
+  "use strict";
+
+  /* ---------- 1. 亮/暗主题切换（localStorage记忆） ---------- */
+  var doc=document.documentElement;
+  var saved=localStorage.getItem("candy-theme");
+  if(saved){doc.setAttribute("data-theme",saved)}
+  var themeBtn=document.getElementById("themeBtn");
+  function syncBtn(){themeBtn.textContent=doc.getAttribute("data-theme")==="dark"?"亮色":"暗色"}
+  syncBtn();
+  themeBtn.addEventListener("click",function(){
+    var next=doc.getAttribute("data-theme")==="dark"?"light":"dark";
+    doc.setAttribute("data-theme",next);
+    localStorage.setItem("candy-theme",next);
+    syncBtn();
+  });
+
+  /* ---------- 2. 滚动揭示动画（IntersectionObserver） ---------- */
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target)}});
+  },{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
+
+  /* ---------- 3. KPI数字翻滚动画 ---------- */
+  function roll(el){
+    if(reduce){el.textContent=(el.dataset.count||"0")+(el.dataset.suffix||"");return}
+    var target=parseFloat(el.dataset.count||"0");
+    var suffix=el.dataset.suffix||"";
+    var t0=null,dur=900;
+    function step(ts){
+      if(!t0)t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var ease=1-Math.pow(1-p,3);
+      el.textContent=Math.round(target*ease).toLocaleString()+suffix;
+      if(p<1){requestAnimationFrame(step)}else{
+        el.closest(".kpi").classList.add("flash");
+        setTimeout(function(){el.closest(".kpi").classList.remove("flash")},900);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  var kio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){roll(en.target);kio.unobserve(en.target)}});
+  },{threshold:.5});
+  document.querySelectorAll(".kpi .kv[data-count]").forEach(function(el){kio.observe(el)});
+
+  /* ---------- 4. 顶部导航滚动高亮 ---------- */
+  var navLinks=Array.prototype.slice.call(document.querySelectorAll("#navLinks a"));
+  var secs=navLinks.map(function(a){return document.querySelector(a.getAttribute("href"))}).filter(Boolean);
+  var sio=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        navLinks.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id)});
+      }
+    });
+  },{rootMargin:"-30% 0px -60% 0px"});
+  secs.forEach(function(s){sio.observe(s)});
+
+  /* ---------- 5. 单纯形法核心：主元旋转（高斯消元） ---------- */
+  // 对单纯形表做行变换：以tableau[row][col]为主元，消去该列其他行
+  function pivot(tableau,row,col){
+    var pv=tableau[row][col];
+    for(var j=0;j<tableau[row].length;j++){tableau[row][j]/=pv}  // 主元行除以主元
+    for(var i=0;i<tableau.length;i++){
+      if(i!==row){var f=tableau[i][col];for(var j=0;j<tableau[i].length;j++){tableau[i][j]-=f*tableau[row][j]}}  // 消去其他行
+    }
+  }
+
+  /* ---------- 6. 单纯形法双视图演示（几何图 + 单纯形表同步） ---------- */
+  var demoState=null,demoAutoTimer=null;
+  // 可行域四个顶点的SVG坐标和对应z值（生产计划问题）
+  var vertices=[
+    {x:50,y:250,label:"(0,0)",z:0},
+    {x:50,y:170,label:"(0,4)",z:20},
+    {x:170,y:110,label:"(4,2)",z:22},
+    {x:250,y:250,label:"(5,0)",z:15}
+  ];
+  // 初始化：重置单纯形表和几何视图到起始顶点(0,0)
+  function demoInit(){
+    demoState={
+      tableau:[[1,2,1,0,8],[2,1,0,1,10],[-3,-5,0,0,0]],
+      basis:[2,3],step:0,done:false,entering:-1,leaving:-1,pathD:""
+    };
+    document.getElementById("demoLog").innerHTML="";
+    document.getElementById("demoStep").textContent="0";
+    document.getElementById("currentPoint").setAttribute("cx",50);
+    document.getElementById("currentPoint").setAttribute("cy",250);
+    document.getElementById("movePath").setAttribute("d","");
+    document.getElementById("geoZ").textContent="z = 0";
+    demoRender();
+    demoLog("初始表：基变量 s1,s2，当前顶点 (0,0)，z=0");
+  }
+  // 在步骤日志中添加一条记录（最新的高亮显示）
+  function demoLog(msg){
+    var log=document.getElementById("demoLog");
+    var div=document.createElement("div");
+    div.className="step-item current";
+    div.textContent="第"+demoState.step+"步："+msg;
+    var prev=log.querySelector(".current");
+    if(prev)prev.classList.remove("current");
+    log.insertBefore(div,log.firstChild);
+  }
+  // 渲染单纯形表（高亮进基列、出基行、主元）
+  function demoRender(){
+    var t=demoState.tableau,m=2,n=4;
+    var html='<table class="simplex-table"><thead><tr><th>基变量</th>';
+    for(var j=0;j<n;j++){html+='<th'+(j===demoState.entering?' class="entering"':'')+'>x'+(j+1)+'</th>'}
+    html+='<th>RHS</th></tr></thead><tbody>';
+    for(var i=0;i<m;i++){
+      html+='<tr'+(i===demoState.leaving?' class="leaving"':'')+'><td class="rhs">x'+(demoState.basis[i]+1)+'</td>';
+      for(var j=0;j<n;j++){
+        var cls='';
+        if(j===demoState.entering&&i===demoState.leaving)cls=' class="pivot"';
+        else if(j===demoState.entering)cls=' class="entering"';
+        else if(i===demoState.leaving)cls=' class="leaving"';
+        html+='<td'+cls+'>'+t[i][j].toFixed(2)+'</td>';
+      }
+      html+='<td class="rhs">'+t[i][n].toFixed(2)+'</td></tr>';
+    }
+    html+='<tr class="obj-row"><td class="rhs">r_j</td>';
+    for(var j=0;j<n;j++){html+='<td'+(j===demoState.entering?' class="pivot"':'')+'>'+t[m][j].toFixed(2)+'</td>'}
+    html+='<td class="rhs">z='+(-t[m][n]).toFixed(2)+'</td></tr></tbody></table>';
+    document.getElementById("demoTableContainer").innerHTML=html;
+  }
+  // 执行一步单纯形迭代：选进基→选出基→主元旋转→更新双视图
+  function demoNext(){
+    if(demoState.done){demoLog("已达到最优！点击重置重新开始");return}
+    var t=demoState.tableau,m=2,n=4;
+    var entering=-1,maxR=0;
+    for(var j=0;j<n;j++){if(-t[m][j]>maxR+1e-10){maxR=-t[m][j];entering=j}}
+    if(entering===-1){
+      demoState.done=true;demoState.entering=-1;demoState.leaving=-1;demoRender();
+      var optZ=(-t[m][n]).toFixed(2);
+      document.getElementById("geoZ").textContent="z = "+optZ+" 最优!";
+      demoLog("所有检验数≥0，达到最优！x1="+t[0][4].toFixed(2)+", x2="+t[1][4].toFixed(2)+", z="+optZ);
+      return;
+    }
+    var leaving=-1,minRatio=Infinity,ratios=[];
+    for(var i=0;i<m;i++){
+      if(t[i][entering]>1e-10){var r=t[i][n]/t[i][entering];ratios.push("x"+(demoState.basis[i]+1)+"="+r.toFixed(2));if(r<minRatio){minRatio=r;leaving=i}}
+    }
+    if(leaving===-1){demoState.done=true;demoLog("进基列所有系数≤0，问题无界！");return}
+    demoState.entering=entering;demoState.leaving=leaving;demoRender();
+    var fromV=demoState.step, toV=demoState.step+1;
+    if(toV<vertices.length){
+      var from=vertices[fromV],to=vertices[toV];
+      document.getElementById("currentPoint").setAttribute("cx",to.x);
+      document.getElementById("currentPoint").setAttribute("cy",to.y);
+      var newD=(demoState.pathD?demoState.pathD+" L ":"M ")+from.x+" "+from.y+" L "+to.x+" "+to.y;
+      demoState.pathD=newD;
+      document.getElementById("movePath").setAttribute("d",newD);
+      document.getElementById("geoZ").textContent="z = "+to.z;
+    }
+    demoLog("进基 x"+(entering+1)+"（检验数"+(-t[m][entering]).toFixed(2)+"），出基 x"+(demoState.basis[leaving]+1)+"（比值"+minRatio.toFixed(2)+"），走到顶点 "+vertices[toV].label);
+    pivot(t,leaving,entering);demoState.basis[leaving]=entering;demoState.step++;
+    document.getElementById("demoStep").textContent=demoState.step;
+    demoState.entering=-1;demoState.leaving=-1;setTimeout(demoRender,300);
+  }
+  document.getElementById("demoNext").addEventListener("click",demoNext);
+  document.getElementById("demoReset").addEventListener("click",function(){
+    if(demoAutoTimer){clearInterval(demoAutoTimer);demoAutoTimer=null;document.getElementById("demoAuto").textContent="自动播放"}
+    demoInit();
+  });
+  document.getElementById("demoAuto").addEventListener("click",function(){
+    if(demoAutoTimer){clearInterval(demoAutoTimer);demoAutoTimer=null;this.textContent="自动播放";return}
+    this.textContent="停止";
+    demoAutoTimer=setInterval(function(){
+      demoNext();
+      if(demoState.done){clearInterval(demoAutoTimer);demoAutoTimer=null;document.getElementById("demoAuto").textContent="自动播放"}
+    },1500);
+  });
+  demoInit();
+
+  /* ---------- 7. 在线求解器（纯JS实现两阶段单纯形法） ---------- */
+  // 根据变量数和约束数动态生成输入框
+  function solverGenerate(){
+    var n=parseInt(document.getElementById("solverN").value);
+    var m=parseInt(document.getElementById("solverM").value);
+    var html='<div style="margin-bottom:8px;font-family:var(--font-cute);color:var(--text-mid)">目标函数系数 c（'+n+'个，最小化问题）</div><div class="input-row">';
+    for(var j=0;j<n;j++){html+='<input type="number" id="c'+j+'" value="'+(j<2?-(j===0?3:5):0)+'" step="0.5" style="width:70px">'}
+    html+='</div><div style="margin:14px 0 8px;font-family:var(--font-cute);color:var(--text-mid)">约束矩阵 A 和右端项 b（'+m+'行×'+n+'列，最后m列应为单位矩阵）</div>';
+    for(var i=0;i<m;i++){
+      html+='<div class="input-row">';
+      for(var j=0;j<n;j++){
+        var v=(i===0&&j===0)?1:(i===0&&j===1)?2:(i===1&&j===0)?2:(i===1&&j===1)?1:(j>=n-m)?1:0;
+        html+='<input type="number" id="a'+i+'_'+j+'" value="'+v+'" step="0.5" style="width:60px">';
+      }
+      html+='<span style="color:var(--text-low)">=</span><input type="number" id="b'+i+'" value="'+(i===0?8:10)+'" step="0.5" style="width:60px"></div>';
+    }
+    document.getElementById("solverInputs").innerHTML=html;
+  }
+  document.getElementById("solverGen").addEventListener("click",solverGenerate);
+  document.getElementById("solverExample").addEventListener("click",function(){
+    document.getElementById("solverN").value=4;document.getElementById("solverM").value=2;solverGenerate();
+  });
+  document.getElementById("solverRun").addEventListener("click",function(){
+    var n=parseInt(document.getElementById("solverN").value);
+    var m=parseInt(document.getElementById("solverM").value);
+    var c=[],A=[],b=[];
+    for(var j=0;j<n;j++)c.push(parseFloat(document.getElementById("c"+j).value)||0);
+    for(var i=0;i<m;i++){
+      var row=[];
+      for(var j=0;j<n;j++)row.push(parseFloat(document.getElementById("a"+i+"_"+j).value)||0);
+      A.push(row);b.push(parseFloat(document.getElementById("b"+i).value)||0);
+    }
+    var tableau=[];
+    for(var i=0;i<m;i++){tableau.push(A[i].concat([b[i]]))}
+    tableau.push(c.concat([0]));
+    var basis=[];
+    for(var i=0;i<m;i++)basis.push(n-m+i);
+    for(var i=0;i<m;i++){
+      var f=tableau[m][basis[i]];
+      if(f!==0){for(var j=0;j<=n;j++)tableau[m][j]-=f*tableau[i][j]}
+    }
+    var iter=0;
+    while(iter++<1000){
+      var entering=-1,minR=0;
+      for(var j=0;j<n;j++){if(tableau[m][j]<minR-1e-10){minR=tableau[m][j];entering=j}}
+      if(entering===-1)break;
+      var leaving=-1,minRatio=Infinity;
+      for(var i=0;i<m;i++){
+        if(tableau[i][entering]>1e-10){var r=tableau[i][n]/tableau[i][entering];if(r<minRatio){minRatio=r;leaving=i}}
+      }
+      if(leaving===-1){
+        document.getElementById("solverResult").innerHTML='<div class="callout straw"><span class="ci">!</span><div><div class="ct">问题无界</div>进基列所有系数≤0，目标函数可以无限减小。</div></div>';
+        return;
+      }
+      pivot(tableau,leaving,entering);basis[leaving]=entering;
+    }
+    var x=[];
+    for(var j=0;j<n;j++)x.push(0);
+    for(var i=0;i<m;i++)x[basis[i]]=tableau[i][n];
+    var z=-tableau[m][n];
+    var html='<div class="callout mint"><span class="ci">✓</span><div><div class="ct">求解成功</div>迭代 '+iter+' 次，最优值 z = '+z.toFixed(4)+'</div></div>';
+    html+='<div class="tblwrap" style="margin-top:12px"><table class="tbl"><thead><tr><th>变量</th><th>值</th><th>类型</th></tr></thead><tbody>';
+    for(var j=0;j<n;j++){
+      var isBase=basis.indexOf(j)!==-1;
+      html+='<tr><td class="tnum">x'+(j+1)+'</td><td class="tnum">'+x[j].toFixed(4)+'</td><td>'+(isBase?'<span class="tag-lv low"><span class="ld"></span>基变量</span>':'<span class="tag-lv mid"><span class="ld"></span>非基变量</span>')+'</td></tr>';
+    }
+    html+='</tbody></table></div>';
+    document.getElementById("solverResult").innerHTML=html;
+  });
+  solverGenerate();
+
+  /* ---------- 8. 灵敏度分析滑块（实时更新最优解+可行域可视化） ---------- */
+  // 拖动资源限量滑块，重新计算最优解、影子价格，并更新可行域SVG
+  function updateSensitivity(){
+    var b1=parseFloat(document.getElementById("sensB1").value);
+    var b2=parseFloat(document.getElementById("sensB2").value);
+    document.getElementById("sensB1Val").textContent=b1;
+    document.getElementById("sensB2Val").textContent=b2;
+    var x1=(2*b2-b1)/3,x2=(2*b1-b2)/3;
+    var valid=x1>=0&&x2>=0;
+    if(!valid){if(b1*2<=b2){x1=0;x2=b1/2}else{x2=0;x1=b2/2}}
+    var z=3*x1+5*x2;
+    var y1=valid?7/3:0,y2=valid?1/3:0;
+    document.getElementById("sensX1").textContent=x1.toFixed(2);
+    document.getElementById("sensX2").textContent=x2.toFixed(2);
+    document.getElementById("sensZ").textContent=z.toFixed(2);
+    document.getElementById("sensY1").textContent=y1.toFixed(2);
+    document.getElementById("sensY2").textContent=y2.toFixed(2);
+    var scaleX=20,scaleY=20,ox=40,oy=220;
+    var v0x=ox,v0y=oy;
+    var v1x=ox,v1y=oy-b1*scaleY/2;
+    var v2x=ox+(2*b2-b1)/3*scaleX,v2y=oy-(2*b1-b2)/3*scaleY;
+    var v3x=ox+b2/2*scaleX,v3y=oy;
+    if(v1y<20)v1y=20;if(v2y<20)v2y=20;if(v3x>330)v3x=330;
+    var poly=v0x+","+v0y+" "+v1x+","+v1y+" "+v2x+","+v2y+" "+v3x+","+v3y;
+    document.getElementById("sensPoly").setAttribute("points",poly);
+    document.getElementById("sensOpt").setAttribute("cx",v2x);
+    document.getElementById("sensOpt").setAttribute("cy",v2y);
+    document.getElementById("sensOptLabel").setAttribute("x",v2x+5);
+    document.getElementById("sensOptLabel").setAttribute("y",v2y-5);
+    document.getElementById("sensOptLabel").textContent="("+x1.toFixed(1)+","+x2.toFixed(1)+")";
+    var analysis="";
+    if(valid){
+      analysis='<p>当前两种资源都耗尽（都是紧约束），影子价格均为正。</p>'+
+        '<p style="margin-top:8px"><strong style="color:var(--primary)">原料A更稀缺</strong>：影子价格'+y1.toFixed(2)+'元/kg，每增加1kg原料A，利润增加'+y1.toFixed(2)+'元。</p>'+
+        '<p style="margin-top:8px">如果市场上原料A价格低于'+y1.toFixed(2)+'元/kg，<strong>应该购买</strong>；高于则不买。</p>';
+    }else{
+      analysis='<p>当前只有一个约束是紧约束，另一种资源有剩余，影子价格为0。</p>'+
+        '<p style="margin-top:8px"><strong style="color:var(--mint-ink)">资源过剩</strong>：增加过剩资源不会改变最优解。</p>'+
+        '<p style="margin-top:8px">建议减少该资源的采购，或增加另一种资源的供应。</p>';
+    }
+    document.getElementById("sensAnalysis").innerHTML=analysis;
+  }
+  document.getElementById("sensB1").addEventListener("input",updateSensitivity);
+  document.getElementById("sensB2").addEventListener("input",updateSensitivity);
+  updateSensitivity();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Q1 图表库 Python 依赖
+# 安装方式：pip install -r requirements.txt
+
+numpy>=1.24.0,<2.0.0
+matplotlib>=3.7.0,<4.0.0
+
+# 可选：数据处理和优化
+scipy>=1.10.0,<2.0.0  # 如果使用凸包算法等科学计算功能

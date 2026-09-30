@@ -1,0 +1,43 @@
+# Q3 候选版 v1.1.0 · 冻结快照清单
+# 来源: 03_编程手/MATLAB_Framework/  （未提交的工作树状态）
+# 相对 q3-v1.0.0 的改动:
+#   [功能] main_Q3Q4.m 加声线过滤免测集；optimize_route.m 接 Or-opt；ray_can_see.m 新
+#   [测试] 新增 test_ray_filter.m（6000 例正确性回归）
+#   [去味] 26 个文件仅改注释与输出字符串，逻辑与结构逐位不变
+# 冻结: 2026-09-13
+# 校验: py -3.11 _verify_baseline.py [--live]
+
+03ceac2e1f0728112ee692139ed977aa  *ChannelStateMachine.m
+e84ebfc2a81c4bac990d874df23b8129  *Q1_geometry.m
+0d96a06825fe3f8b5459bac58bcf7e3b  *Q3正式测试操作手册.md
+661d9e29e9841eb39e356100d01fa72e  *Q4_extensions.m
+ecd38ad5d9e56a006c7fe09268150bf4  *README_MATLAB_Framework.md
+a6d3527ba7a34b9635db540e998c1cb0  *SimulatorClient.m
+e208c5691251391bfecbbd5680176e54  *check_coverage.m
+b92dc461f7b7fd14c2670ca6af7aa2bb  *clear_source.m
+5dbac21baffea8f96ba04cf339b11712  *cmp_grid_second_nearest.m
+af7c9d9fdeefce568e2fa133f03a1517  *crossval_q1_geom.m
+f0971dac38e46421add915a65253118c  *design_constants.m
+5ff862d9973b130b57d2d79083a85d3c  *generate_radial_grid.m
+2eeb97b85db6da85b3f20dc0eec69939  *generate_triangular_grid.m
+ced5873ceca2e5c2dfc29c4f298da533  *main_Q3Q4.m
+557c796feaea66e4b2a90cbce31aefe5  *main_batch_Q3Q4.m
+41c225f477a1cddf5053b7df86b812ec  *optimize_route.m
+10a242032e4e2d50456ced96a3efddee  *ray_can_see.m
+f7170bb2aea254f49ab3ec3130630d73  *run_assertions.m
+b646e10a6c07415165e7b268932d3037  *sweep_clear_exact.m
+6897810061daec2cea8e0f41d6fed0a8  *test_Q1_geometry.m
+9deab3d22e4e78fdb527892087f387d5  *test_Q4_extensions.m
+b8b1ff84b6783d823c7f8487799bdf11  *test_SimulatorClient_logging.m
+a409d68c52ffa1151769c66ef6c66c05  *test_clear_source_homing.m
+74d217a2d1c8635acc9a149b7e5e1364  *test_clip_to_domain.m
+e945c165eb03ffcdaacc8e58b1966e8f  *test_homing_convergence.m
+b85a63f4e82f8197186e48fcee0e631a  *test_optimize_route.m
+502214afc1650fc9fdf1d545ea43e920  *test_phaseC_homing.m
+dd027d14f58fa68cf74dbfee4d6adac3  *test_ray_filter.m
+fdb6f3d6a799d641cc571d9761344bb3  *test_sweep_clear.m
+9718de75cf8df85024fd2ae6862718d6  *triangulate_source.m
+237a60f833ca6b66be5b14e00bab4e68  *visualization_tools.m
+3c61416e361249a3e995eae9cb038ae1  *一键_跑Q3.bat
+b383d6cbb670be463578d7ff432e85c8  *文档_历史/MATLAB框架交付说明书.md
+251d6467bed76ef69b76766f30233c03  *文档_历史/Phase1_完成报告.md

@@ -1,0 +1,8 @@
+=== Q2 可视化（四要素）===
+  [可视化] n100 现场贪心 seed=2 n_iter=20000
+  [q2_layout_n100] HPWL=224,451 454x449 → q2_layout_n100.png
+  [可视化] n200 现场贪心 seed=2 n_iter=20000
+  [q2_layout_n200] HPWL=446,292 448x448 → q2_layout_n200.png
+  [可视化] n300 现场贪心 seed=2 n_iter=20000
+  [q2_layout_n300] HPWL=687,493 559x560 → q2_layout_n300.png
+完成

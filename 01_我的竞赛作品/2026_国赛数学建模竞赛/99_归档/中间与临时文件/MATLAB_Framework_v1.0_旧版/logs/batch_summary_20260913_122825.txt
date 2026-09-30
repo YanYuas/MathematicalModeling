@@ -1,0 +1,18 @@
+# Q3 批量连跑汇总（⚠️ 不含队号）
+# 生成时间: 2026-09-13 12:28:25 ｜ 局数 3 ｜ 成功 3 ｜ 失败 0
+
+局	状态	清除个数	虚拟时间s	均摊s每源	程序运行s	清除比	日志
+1	OK	16	3571.33	223.21	2.01	1.0000	D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\MATLAB_Framework\logs\robot_202623005040_20260913_122752.jsonl
+2	OK	11	3909.05	355.37	2.09	1.0000	D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\MATLAB_Framework\logs\robot_202623005040_20260913_122800.jsonl
+3	OK	16	3438.72	214.92	1.38	1.0000	D:\YanYuas\MathematicalModeling\HelloMathModeling\03_编程手\MATLAB_Framework\logs\robot_202623005040_20260913_122815.jsonl
+
+# 总体（成功 3 局）
+均摊 均值	264.50
+均摊 中位	223.21
+均摊 最小	214.92
+均摊 最大	355.37
+虚拟时间 均值	3639.7
+程序运行 均值	1.83
+清除比例 最小	1.0000
+320 达标局数	2
+达到 320 的最小清除个数	16

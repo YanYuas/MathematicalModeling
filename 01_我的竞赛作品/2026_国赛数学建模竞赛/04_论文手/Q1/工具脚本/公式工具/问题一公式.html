@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>问题一公式清单 · 定位区域直径计算与覆盖判定</title>
+<style>
+  :root {
+    --accent: #2F6F9F;
+    --accent-soft: #E8F1F8;
+    --bg: #F4F3EE;
+    --card: #FFFFFF;
+    --text: #1A1B1C;
+    --text2: #6B7280;
+    --border: #E4E3DD;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Songti SC", "SimSun", "Noto Serif CJK SC", serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  .page-head {
+    text-align: center; padding: 20px 16px 8px; margin-bottom: 18px;
+  }
+  .page-head h1 {
+    font-size: 26px; margin: 0 0 6px; letter-spacing: 1px;
+    font-family: "SimHei", "Heiti SC", "Microsoft YaHei", sans-serif;
+    color: var(--accent);
+  }
+  .page-head p { margin: 0; color: var(--text2); font-size: 14px; }
+  .legend {
+    display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+    margin: 14px 0 22px; font-size: 13px; color: var(--text2);
+  }
+  .legend span b { color: var(--text); }
+  .group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 14px 10px;
+    margin-bottom: 18px;
+  }
+  .group h2 {
+    font-size: 17px; margin: 0 0 4px; color: var(--accent);
+    font-family: "SimHei", "Heiti SC", "Microsoft YaHei", sans-serif;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .group .gdesc { font-size: 13px; color: var(--text2); margin: 0 0 10px; }
+  .frow {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; margin: 6px 0;
+    border-radius: 10px;
+    background: #FBFBFA;
+    border: 1px solid transparent;
+  }
+  .frow:hover { border-color: var(--accent-soft); background: #FDFEFE; }
+  .fnum {
+    flex: 0 0 46px; text-align: center;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13.5px; color: var(--text2);
+  }
+  .fbody {
+    flex: 1; text-align: center; min-width: 0;
+    font-family: "Cambria Math", "Times New Roman", "STIX Two Math", serif;
+    font-size: 19px;
+    padding: 2px 4px;
+    overflow-x: auto; overflow-y: hidden;
+  }
+  .fnote {
+    flex: 0 0 auto; max-width: 170px;
+    font-size: 12.5px; color: var(--text2);
+    text-align: left; line-height: 1.45;
+  }
+  /* 数学排版 */
+  .v { font-style: italic; }                 /* 变量斜体 */
+  .fn { font-style: normal; }                /* 函数/算子正体 */
+  sub, sup { font-size: 0.70em; line-height: 1; }
+  sub { vertical-align: -0.28em; }
+  sup { vertical-align: 0.32em; }
+  .frac {
+    display: inline-flex; flex-direction: column; vertical-align: middle;
+    text-align: center; margin: 0 2px; line-height: 1.15;
+  }
+  .frac .num { padding: 0 3px 1px; border-bottom: 1.1px solid var(--text); }
+  .frac .den { padding: 1px 3px 0; }
+  .bigop {
+    display: inline-flex; flex-direction: column; align-items: center;
+    vertical-align: middle; margin: 0 3px; line-height: 1.1;
+  }
+  .bigop .sym { font-size: 1.35em; line-height: 1; padding: 1px 0; }
+  .bigop .lim { font-size: 0.62em; color: var(--text); }
+  .tag { display: inline-block; background: var(--accent-soft); color: var(--accent);
+         border-radius: 5px; padding: 0 6px; font-size: 12px; }
+  .foot { text-align: center; color: var(--text2); font-size: 12.5px; margin-top: 10px; }
+  @media (max-width: 640px) {
+    .frow { flex-wrap: wrap; }
+    .fnum { flex: 0 0 100%; text-align: left; font-size: 12.5px; }
+    .fbody { font-size: 17px; }
+    .fnote { flex: 1 1 100%; max-width: none; margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-head">
+    <h1>问题一公式清单</h1>
+    <p>无线电干扰源交会定位 · 定位区域直径计算与覆盖判定</p>
+    <div class="legend">
+      <span><b>共 23 个公式</b>，按论文 5.1 小节顺序编号</span>
+      <span><b>斜体</b>为变量</span>
+      <span>角域 / 定理 / Jung 界验证全覆盖</span>
+    </div>
+  </div>
+
+  <!-- 5.1.0 -->
+  <section class="group">
+    <h2>5.1.0 · 数据与坐标约定</h2>
+    <p class="gdesc">角度差、方向向量、误差放大与参数影响</p>
+
+    <div class="frow">
+      <span class="fnum">(1)</span>
+      <div class="fbody">angdiff(<i>φ</i>, <i>θ</i>) = ((<i>φ</i> − <i>θ</i> + 180°) mod 360°) − 180° ∈ (−180°, 180°]</div>
+      <span class="fnote">角度差函数：避免角度跨越 0°/360° 时的环绕错误</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(2)</span>
+      <div class="fbody"><i>u</i>(<i>φ</i>) = (cos <i>φ</i>, sin <i>φ</i>)　，　<i>ε</i> = 1°</div>
+      <span class="fnote">单位方向向量与示向度误差半角</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(3)</span>
+      <div class="fbody">Δ = <i>d</i> · tan 1°</div>
+      <span class="fnote">1° 误差的横向位置偏移（表 5-2）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(4)</span>
+      <div class="fbody"><i>D</i> ∝ <i>ε</i>（小角近似），　<i>D</i> ∝ <span class="frac"><span class="num">1</span><span class="den">sin <i>φ</i></span></span>（<i>φ</i> → 90° 时最优）</div>
+      <span class="fnote">参数对定位区域直径的影响（表 5-1）</span>
+    </div>
+  </section>
+
+  <!-- 5.1.3 -->
+  <section class="group">
+    <h2>5.1.3 · 角域与定位区域的表示</h2>
+    <p class="gdesc">示向度升格为 2° 角域（有界不确定性模型）</p>
+
+    <div class="frow">
+      <span class="fnum">(5)</span>
+      <div class="fbody"><i>W</i>(<i>S</i>, <i>θ</i>, <i>ε</i>) = { <i>S</i> + <i>t</i>·<i>u</i>(<i>φ</i>) : <i>t</i> ≥ 0，|angdiff(<i>φ</i>, <i>θ</i>)| ≤ <i>ε</i> }</div>
+      <span class="fnote">定义 5.1.1 角域（楔形）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(6)</span>
+      <div class="fbody"><i>u</i><sub>−</sub> = <i>u</i>(<i>θ</i> − <i>ε</i>)　，　<i>u</i><sub>+</sub> = <i>u</i>(<i>θ</i> + <i>ε</i>)</div>
+      <span class="fnote">角域的两条边界方向</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(7)</span>
+      <div class="fbody"><i>W</i> = { <i>X</i> : cross(<i>u</i><sub>−</sub>, <i>X</i> − <i>S</i>) ≥ 0 } ∩ { <i>X</i> : cross(<i>u</i><sub>+</sub>, <i>X</i> − <i>S</i>) ≤ 0 }</div>
+      <span class="fnote">命题 5.1 角域的两半平面形式</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(8)</span>
+      <div class="fbody">cross(<i>a</i>, <i>b</i>) = <i>a</i><sub><i>x</i></sub><i>b</i><sub><i>y</i></sub> − <i>a</i><sub><i>y</i></sub><i>b</i><sub><i>x</i></sub></div>
+      <span class="fnote">二维叉积（半平面判定）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(9)</span>
+      <div class="fbody"><i>L</i> = <span class="bigop"><span class="lim"><i>n</i></span><span class="sym">⋂</span><span class="lim"><i>i</i>=1</span></span> <i>W</i><sub><i>i</i></sub></div>
+      <span class="fnote">定义 5.1.2 定位区域 = 各角域之交</span>
+    </div>
+  </section>
+
+  <!-- 5.1.4 -->
+  <section class="group">
+    <h2>5.1.4 · 定位区域的三个定理</h2>
+    <p class="gdesc">凸性、顶点枚举与过滤、有界性判据</p>
+
+    <div class="frow">
+      <span class="fnum">(10)</span>
+      <div class="fbody"><i>P</i> 是 <i>L</i> 的顶点 ⟺ <i>t</i> ≥ 0 ∧ <i>s</i> ≥ 0 ∧ ∀<i>k</i>：<i>P</i> ∈ <i>W</i><sub><i>k</i></sub></div>
+      <span class="fnote">定理 5.2 顶点枚举与过滤（<i>t</i>、<i>s</i> 为交点参数）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(11)</span>
+      <div class="fbody"><i>L</i> 有界 ⟺ <span class="bigop"><span class="lim"><i>n</i></span><span class="sym">⋂</span><span class="lim"><i>i</i>=1</span></span> [<i>θ</i><sub><i>i</i></sub> − <i>ε</i>, <i>θ</i><sub><i>i</i></sub> + <i>ε</i>] = ∅</div>
+      <span class="fnote">定理 5.3 有界性判据（退化情形判定）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(12)</span>
+      <div class="fbody">rec(<i>W</i>) = { <i>d</i> : <i>W</i> + <i>td</i> ⊆ <i>W</i>，∀<i>t</i> ≥ 0 }　，　rec(<span class="bigop"><span class="sym">⋂</span><span class="lim"><i>i</i></span></span><i>W</i><sub><i>i</i></sub>) = <span class="bigop"><span class="sym">⋂</span><span class="lim"><i>i</i></span></span> rec(<i>W</i><sub><i>i</i></sub>)</div>
+      <span class="fnote">定理 5.3 证明中的回收锥性质</span>
+    </div>
+  </section>
+
+  <!-- 5.1.7 -->
+  <section class="group">
+    <h2>5.1.7 · 覆盖判定与 Jung 界验证</h2>
+    <p class="gdesc">反例 → Thales 充要判据 → 最小包围圆与 Jung 夹逼</p>
+
+    <div class="frow">
+      <span class="fnum">(13)</span>
+      <div class="fbody">|<i>CM</i>| = <span class="frac"><span class="num">√3</span><span class="den">2</span></span>·<i>a</i> ≈ 0.866<i>a</i> &gt; 0.5<i>a</i> = <span class="frac"><span class="num"><i>D</i></span><span class="den">2</span></span></div>
+      <span class="fnote">命题 5.2 等边三角形反例（<i>D</i> = <i>a</i>）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(14)</span>
+      <div class="fbody"><i>X</i> 在以 <i>PQ</i> 为直径的圆内（含边界） ⟺ ∠<i>PXQ</i> ≥ 90°</div>
+      <span class="fnote">定理 5.4 Thales 圆内判据</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(15)</span>
+      <div class="fbody">‖<i>X</i> − <i>M</i>‖<sup>2</sup> − (<span class="frac"><span class="num"><i>D</i></span><span class="den">2</span></span>)<sup>2</sup> = (<i>X</i> − <i>P</i>)·(<i>X</i> − <i>Q</i>) = ‖<i>P</i> − <i>X</i>‖·‖<i>Q</i> − <i>X</i>‖·cos∠<i>PXQ</i></div>
+      <span class="fnote">定理 5.4 证明恒等式（<i>M</i> = (<i>P</i>+<i>Q</i>)/2）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(16)</span>
+      <div class="fbody">以 <i>PQ</i> 为直径的圆覆盖 <i>L</i> ⟺ ∀<i>X</i> ∈ <i>V</i>(<i>L</i>)：∠<i>PXQ</i> ≥ 90°</div>
+      <span class="fnote">推论 5.3 可计算判据（<i>V</i>(<i>L</i>) 为顶点集）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(17)</span>
+      <div class="fbody"><i>R</i><sub>MEC</sub> ≤ <span class="frac"><span class="num"><i>D</i></span><span class="den">√3</span></span></div>
+      <span class="fnote">定理 5.5 Jung 定理</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(18)</span>
+      <div class="fbody"><i>D</i> ≥ <i>s</i> = 2<i>R</i>·sin <i>α</i> ≥ 2<i>R</i>·sin 60° = √3·<i>R</i> ⟹ <i>R</i> ≤ <span class="frac"><span class="num"><i>D</i></span><span class="den">√3</span></span></div>
+      <span class="fnote">Jung 定理证明（正弦定理，<i>α</i> 为最大角）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(19)</span>
+      <div class="fbody"><span class="frac"><span class="num"><i>D</i></span><span class="den">2</span></span> ≤ <i>R</i><sub>MEC</sub> ≤ <span class="frac"><span class="num"><i>D</i></span><span class="den">√3</span></span> ≈ 0.5774·<i>D</i></div>
+      <span class="fnote">最小包围圆半径的双侧夹逼</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(20)</span>
+      <div class="fbody"><i>γ</i> = <span class="frac"><span class="num"><i>R</i><sub>MEC</sub></span><span class="den"><i>D</i>/2</span></span> ∈ [1, <span class="frac"><span class="num">2</span><span class="den">√3</span></span> ≈ 1.1547]</div>
+      <span class="fnote">覆盖缺口比（基准算例 γ = 1.000）</span>
+    </div>
+  </section>
+
+  <!-- 5.1.8 -->
+  <section class="group">
+    <h2>5.1.8 · 与问题二的联系</h2>
+    <p class="gdesc">Fisher 信息矩阵与均方根位置误差</p>
+
+    <div class="frow">
+      <span class="fnum">(21)</span>
+      <div class="fbody"><i>M</i> = <i>J</i><sup>T</sup><i>J</i></div>
+      <span class="fnote">Fisher 信息矩阵（<i>J</i> 为方位观测雅可比）</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(22)</span>
+      <div class="fbody">det <i>M</i> = <span class="frac"><span class="num">sin²<i>φ</i></span><span class="den"><i>σ</i><sup>4</sup><i>d</i><sub>1</sub><sup>2</sup><i>d</i><sub>2</sub><sup>2</sup></span></span></div>
+      <span class="fnote">两站情形的闭式行列式</span>
+    </div>
+
+    <div class="frow">
+      <span class="fnum">(23)</span>
+      <div class="fbody"><i>E</i> = <i>ε</i>·√(tr <i>M</i><sup>−1</sup>)</div>
+      <span class="fnote">均方根位置误差（RMS，线性化口径）</span>
+    </div>
+  </section>
+
+  <div class="foot">公式编号与论文 5.1.0–5.1.8 小节一一对应 · 变量以斜体标识，上下标与分数均为结构化排版</div>
+
+</div>
+</body>
+</html>

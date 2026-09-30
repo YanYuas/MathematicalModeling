@@ -1,0 +1,167 @@
+Q1 几何跨实现交叉验证报告（第二版：真实案例 + 对齐截断）
+MATLAB：Q1_geometry.intersect_wedges（polyshape 布尔求交，自带 5000 m 边界）
+Python：q1_main（射线两两求交 + 角域过滤 + Andrew 凸包，不截断）
+案例 79 ｜ 相对容差 1e-06 ｜ 圆域 R_domain=1800 m
+
+
+===== ① 原始交（raw_*）=====
+baseline_2wedge        [raw] ✅ nv 4/4 ｜ R 5.7e-14 ｜ D 5.7e-14 ｜ area 1.6e-09 ｜ 最差相对 3.3e-12
+real_00_n2             [raw] ✅ nv 4/4 ｜ R 7.4e-12 ｜ D 1.5e-11 ｜ area 8.7e-10 ｜ 最差相对 1.7e-13
+real_01_n2             [raw] ✅ nv 4/4 ｜ R 7.5e-11 ｜ D 1.5e-10 ｜ area 1.4e-08 ｜ 最差相对 4.2e-13
+real_02_n3             [raw] ✅ nv 5/5 ｜ R 5.9e-11 ｜ D 1.2e-10 ｜ area 1.2e-08 ｜ 最差相对 3.2e-12
+real_03_n3             [raw] ✅ nv 5/5 ｜ R 3.4e-12 ｜ D 6.7e-12 ｜ area 2.2e-09 ｜ 最差相对 1.1e-12
+real_04_n2             [raw] ❌ nv 2/34 ｜ R 1.8e+03 ｜ D 3.7e+03 ｜ area 2.4e+05 ｜ 最差相对 2.4e+17
+real_05_n4             [raw] ✅ nv 5/5 ｜ R 3.7e-11 ｜ D 7.3e-11 ｜ area 2.3e-10 ｜ 最差相对 3.3e-12
+real_06_n5             [raw] ✅ nv 4/4 ｜ R 3.4e-13 ｜ D 6.8e-13 ｜ area 1.0e-09 ｜ 最差相对 7.2e-12
+real_07_n2             [raw] ✅ nv 4/4 ｜ R 3.9e-11 ｜ D 7.7e-11 ｜ area 3.2e-08 ｜ 最差相对 9.0e-13
+real_08_n2             [raw] ✅ nv 4/4 ｜ R 7.5e-11 ｜ D 1.5e-10 ｜ area 4.7e-09 ｜ 最差相对 1.6e-13
+real_09_n4             [raw] ✅ nv 5/5 ｜ R 2.5e-11 ｜ D 5.1e-11 ｜ area 5.8e-10 ｜ 最差相对 1.7e-12
+real_10_n5             [raw] ✅ nv 6/6 ｜ R 7.4e-12 ｜ D 1.5e-11 ｜ area 2.0e-09 ｜ 最差相对 2.7e-12
+real_11_n5             [raw] ✅ nv 6/6 ｜ R 9.8e-11 ｜ D 2.0e-10 ｜ area 1.5e-10 ｜ 最差相对 1.4e-12
+real_12_n2             [raw] ✅ nv 4/4 ｜ R 2.2e-11 ｜ D 4.4e-11 ｜ area 1.7e-10 ｜ 最差相对 1.9e-13
+real_13_n5             [raw] ✅ nv 5/5 ｜ R 4.5e-11 ｜ D 7.3e-11 ｜ area 9.6e-10 ｜ 最差相对 2.0e-12
+real_14_n5             [raw] ✅ nv 4/4 ｜ R 5.4e-11 ｜ D 1.1e-10 ｜ area 2.8e-09 ｜ 最差相对 1.1e-11
+real_15_n3             [raw] ✅ nv 4/4 ｜ R 2.7e-11 ｜ D 5.5e-11 ｜ area 1.2e-09 ｜ 最差相对 9.6e-13
+real_16_n2             [raw] ✅ nv 4/4 ｜ R 2.8e-11 ｜ D 5.7e-11 ｜ area 1.2e-09 ｜ 最差相对 2.7e-13
+real_17_n5             [raw] ✅ nv 5/5 ｜ R 1.8e-12 ｜ D 3.8e-12 ｜ area 2.6e-10 ｜ 最差相对 9.2e-13
+real_18_n4             [raw] ✅ nv 5/5 ｜ R 4.4e-12 ｜ D 8.6e-12 ｜ area 8.7e-10 ｜ 最差相对 5.7e-13
+real_19_n3             [raw] ✅ nv 5/5 ｜ R 5.3e-12 ｜ D 1.1e-11 ｜ area 3.6e-09 ｜ 最差相对 3.2e-13
+real_20_n3             [raw] ✅ nv 5/5 ｜ R 3.1e-11 ｜ D 6.2e-11 ｜ area 6.3e-09 ｜ 最差相对 1.8e-12
+real_21_n2             [raw] ✅ nv 4/4 ｜ R 4.2e-11 ｜ D 8.4e-11 ｜ area 7.3e-09 ｜ 最差相对 7.3e-13
+real_22_n5             [raw] ✅ nv 5/5 ｜ R 3.4e-11 ｜ D 6.7e-11 ｜ area 6.4e-10 ｜ 最差相对 1.4e-12
+real_23_n4             [raw] ✅ nv 5/5 ｜ R 2.0e-11 ｜ D 4.1e-11 ｜ area 2.1e-09 ｜ 最差相对 1.8e-12
+real_24_n5             [raw] ✅ nv 4/4 ｜ R 8.8e-11 ｜ D 1.8e-10 ｜ area 2.5e-09 ｜ 最差相对 1.7e-11
+real_25_n4             [raw] ✅ nv 4/4 ｜ R 3.2e-11 ｜ D 7.8e-11 ｜ area 1.1e-09 ｜ 最差相对 2.0e-12
+real_26_n2             [raw] ✅ nv 4/4 ｜ R 2.5e-12 ｜ D 5.1e-12 ｜ area 1.1e-09 ｜ 最差相对 2.0e-13
+real_27_n2             [raw] ✅ nv 4/4 ｜ R 5.5e-12 ｜ D 1.1e-11 ｜ area 2.4e-09 ｜ 最差相对 4.2e-13
+real_28_n3             [raw] ✅ nv 4/4 ｜ R 1.6e-13 ｜ D 3.6e-13 ｜ area 1.4e-09 ｜ 最差相对 3.0e-12
+real_29_n2             [raw] ✅ nv 4/4 ｜ R 1.3e-11 ｜ D 2.7e-11 ｜ area 2.1e-09 ｜ 最差相对 8.6e-13
+real_30_n2             [raw] ✅ nv 4/4 ｜ R 2.5e-11 ｜ D 5.0e-11 ｜ area 2.7e-09 ｜ 最差相对 1.3e-12
+real_31_n2             [raw] ✅ nv 4/4 ｜ R 3.4e-11 ｜ D 6.7e-11 ｜ area 3.1e-09 ｜ 最差相对 2.0e-12
+real_32_n2             [raw] ✅ nv 4/4 ｜ R 1.6e-12 ｜ D 3.2e-12 ｜ area 8.1e-10 ｜ 最差相对 2.2e-13
+real_33_n2             [raw] ✅ nv 4/4 ｜ R 4.0e-11 ｜ D 8.1e-11 ｜ area 1.8e-09 ｜ 最差相对 7.5e-13
+real_34_n5             [raw] ✅ nv 4/4 ｜ R 4.2e-11 ｜ D 8.5e-11 ｜ area 1.9e-09 ｜ 最差相对 3.5e-11
+real_35_n2             [raw] ✅ nv 4/4 ｜ R 5.4e-11 ｜ D 1.1e-10 ｜ area 4.9e-09 ｜ 最差相对 8.9e-14
+real_36_n5             [raw] ✅ nv 4/4 ｜ R 1.4e-10 ｜ D 2.9e-10 ｜ area 1.8e-09 ｜ 最差相对 1.2e-11
+real_37_n4             [raw] ✅ nv 3/3 ｜ R 3.6e-11 ｜ D 7.1e-11 ｜ area 2.6e-09 ｜ 最差相对 3.3e-12
+real_38_n4             [raw] ✅ nv 4/4 ｜ R 1.0e-10 ｜ D 2.0e-10 ｜ area 2.4e-09 ｜ 最差相对 1.4e-11
+real_39_n5             [raw] ✅ nv 5/5 ｜ R 1.0e-11 ｜ D 2.1e-11 ｜ area 2.9e-09 ｜ 最差相对 2.5e-12
+real_40_n3             [raw] ✅ nv 4/4 ｜ R 2.2e-11 ｜ D 4.7e-11 ｜ area 2.1e-09 ｜ 最差相对 1.9e-12
+real_41_n2             [raw] ✅ nv 4/4 ｜ R 4.7e-11 ｜ D 9.4e-11 ｜ area 3.9e-09 ｜ 最差相对 1.1e-12
+real_42_n4             [raw] ✅ nv 5/5 ｜ R 5.0e-12 ｜ D 1.2e-11 ｜ area 4.6e-10 ｜ 最差相对 8.1e-13
+real_43_n2             [raw] ✅ nv 4/4 ｜ R 2.6e-11 ｜ D 5.1e-11 ｜ area 1.0e-09 ｜ 最差相对 4.1e-13
+real_44_n3             [raw] ✅ nv 5/5 ｜ R 3.8e-11 ｜ D 7.6e-11 ｜ area 2.6e-09 ｜ 最差相对 7.5e-13
+real_45_n4             [raw] ✅ nv 5/5 ｜ R 1.9e-11 ｜ D 3.7e-11 ｜ area 1.0e-09 ｜ 最差相对 2.4e-12
+real_46_n5             [raw] ✅ nv 5/5 ｜ R 8.1e-11 ｜ D 1.6e-10 ｜ area 6.3e-09 ｜ 最差相对 6.7e-12
+real_47_n3             [raw] ✅ nv 5/5 ｜ R 1.8e-11 ｜ D 3.5e-11 ｜ area 5.8e-11 ｜ 最差相对 2.4e-12
+real_48_n3             [raw] ✅ nv 5/5 ｜ R 4.6e-11 ｜ D 9.2e-11 ｜ area 1.7e-09 ｜ 最差相对 2.7e-12
+real_49_n4             [raw] ✅ nv 5/5 ｜ R 9.3e-12 ｜ D 1.9e-11 ｜ area 1.3e-09 ｜ 最差相对 1.6e-12
+real_50_n2             [raw] ✅ nv 4/4 ｜ R 4.3e-11 ｜ D 8.5e-11 ｜ area 3.5e-10 ｜ 最差相对 1.3e-12
+real_51_n5             [raw] ✅ nv 6/6 ｜ R 5.1e-11 ｜ D 1.0e-10 ｜ area 1.5e-09 ｜ 最差相对 2.9e-12
+real_52_n2             [raw] ✅ nv 4/4 ｜ R 2.4e-11 ｜ D 4.7e-11 ｜ area 1.3e-09 ｜ 最差相对 4.3e-13
+real_53_n3             [raw] ✅ nv 4/4 ｜ R 4.1e-11 ｜ D 8.2e-11 ｜ area 4.0e-09 ｜ 最差相对 1.9e-12
+real_54_n2             [raw] ✅ nv 4/4 ｜ R 4.1e-12 ｜ D 1.3e-11 ｜ area 1.7e-09 ｜ 最差相对 4.0e-13
+real_55_n4             [raw] ✅ nv 5/5 ｜ R 5.0e-11 ｜ D 1.0e-10 ｜ area 1.7e-09 ｜ 最差相对 2.1e-12
+real_56_n3             [raw] ✅ nv 4/4 ｜ R 4.4e-11 ｜ D 8.8e-11 ｜ area 4.7e-09 ｜ 最差相对 4.0e-12
+real_57_n3             [raw] ✅ nv 6/6 ｜ R 3.0e-11 ｜ D 6.1e-11 ｜ area 2.2e-09 ｜ 最差相对 4.4e-13
+real_58_n3             [raw] ✅ nv 4/4 ｜ R 3.5e-11 ｜ D 7.1e-11 ｜ area 2.3e-09 ｜ 最差相对 2.1e-11
+real_59_n2             [raw] ✅ nv 4/4 ｜ R 3.7e-12 ｜ D 7.6e-12 ｜ area 4.9e-10 ｜ 最差相对 1.4e-13
+worst_00_n2            [raw] ✅ nv 4/4 ｜ R 2.0e-11 ｜ D 4.0e-11 ｜ area 1.8e-09 ｜ 最差相对 4.5e-13
+worst_01_n4            [raw] ✅ nv 4/4 ｜ R 2.1e-10 ｜ D 3.0e-11 ｜ area 7.1e-08 ｜ 最差相对 5.4e-11
+worst_02_n3            [raw] ✅ nv 4/4 ｜ R 6.1e-11 ｜ D 1.2e-10 ｜ area 5.2e-09 ｜ 最差相对 8.7e-13
+worst_03_n2            [raw] ✅ nv 4/4 ｜ R 4.5e-11 ｜ D 9.1e-11 ｜ area 1.2e-09 ｜ 最差相对 2.8e-13
+worst_04_n2            [raw] ✅ nv 4/4 ｜ R 4.9e-11 ｜ D 9.8e-11 ｜ area 9.4e-09 ｜ 最差相对 6.0e-13
+worst_05_n3            [raw] ✅ nv 4/4 ｜ R 1.3e-11 ｜ D 2.5e-11 ｜ area 6.0e-09 ｜ 最差相对 2.1e-12
+worst_06_n4            [raw] ✅ nv 4/4 ｜ R 3.7e-11 ｜ D 7.4e-11 ｜ area 5.8e-11 ｜ 最差相对 9.5e-13
+worst_07_n2            [raw] ✅ nv 4/4 ｜ R 2.1e-11 ｜ D 4.1e-11 ｜ area 5.7e-09 ｜ 最差相对 9.9e-13
+worst_08_n2            [raw] ✅ nv 4/4 ｜ R 3.7e-12 ｜ D 7.4e-12 ｜ area 1.4e-09 ｜ 最差相对 2.8e-13
+worst_09_n2            [raw] ✅ nv 4/4 ｜ R 2.6e-11 ｜ D 5.1e-11 ｜ area 9.3e-10 ｜ 最差相对 4.7e-13
+thin_00                [raw] ❌ nv 2/19 ｜ R 1.9e+03 ｜ D 3.8e+03 ｜ area 1.2e+05 ｜ 最差相对 1.2e+17
+thin_01                [raw] ❌ nv 2/31 ｜ R 1.8e+03 ｜ D 3.6e+03 ｜ area 2.0e+05 ｜ 最差相对 2.0e+17
+thin_02                [raw] ❌ nv 2/29 ｜ R 1.9e+03 ｜ D 3.7e+03 ｜ area 1.9e+05 ｜ 最差相对 1.9e+17
+thin_03                [raw] ❌ nv 2/33 ｜ R 1.7e+03 ｜ D 3.4e+03 ｜ area 2.2e+05 ｜ 最差相对 2.2e+17
+thin_04                [raw] ❌ nv 2/17 ｜ R 2.0e+03 ｜ D 4.0e+03 ｜ area 9.9e+04 ｜ 最差相对 9.9e+16
+thin_05                [raw] ❌ nv 2/32 ｜ R 1.9e+03 ｜ D 3.9e+03 ｜ area 2.0e+05 ｜ 最差相对 2.0e+17
+thin_06                [raw] ❌ nv 3/17 ｜ R 1.6e+03 ｜ D 3.2e+03 ｜ area 1.0e+05 ｜ 最差相对 6.9e+01
+thin_07                [raw] ❌ nv 2/19 ｜ R 1.8e+03 ｜ D 3.6e+03 ｜ area 1.2e+05 ｜ 最差相对 1.2e+17
+
+===== ② 按 Q3 实际做法截断到 r=1800（clip_*）=====
+baseline_2wedge        [clip] ✅ nv 4/4 ｜ R 5.7e-14 ｜ D 5.7e-14 ｜ 最差相对 2.9e-15
+real_00_n2             [clip] ✅ nv 4/4 ｜ R 7.4e-12 ｜ D 1.5e-11 ｜ 最差相对 1.0e-13
+real_01_n2             [clip] ✅ nv 1/1 ｜ R 0.0e+00 ｜ D 0.0e+00 ｜ 最差相对 0.0e+00
+real_02_n3             [clip] ✅ nv 5/5 ｜ R 5.9e-11 ｜ D 1.2e-10 ｜ 最差相对 7.9e-13
+real_03_n3             [clip] ✅ nv 5/5 ｜ R 3.4e-12 ｜ D 6.7e-12 ｜ 最差相对 8.3e-14
+real_04_n2             [clip] ✅ nv 2/2 ｜ R 3.2e-09 ｜ D 6.5e-09 ｜ 最差相对 1.1e-11
+real_05_n4             [clip] ✅ nv 5/5 ｜ R 3.7e-11 ｜ D 7.3e-11 ｜ 最差相对 3.3e-12
+real_06_n5             [clip] ✅ nv 4/4 ｜ R 3.4e-13 ｜ D 6.8e-13 ｜ 最差相对 1.5e-14
+real_07_n2             [clip] ✅ nv 3/3 ｜ R 7.7e-11 ｜ D 1.5e-10 ｜ 最差相对 4.4e-13
+real_08_n2             [clip] ✅ nv 3/3 ｜ R 1.9e-11 ｜ D 3.9e-11 ｜ 最差相对 8.0e-14
+real_09_n4             [clip] ✅ nv 5/5 ｜ R 2.5e-11 ｜ D 5.1e-11 ｜ 最差相对 8.8e-13
+real_10_n5             [clip] ✅ nv 6/6 ｜ R 7.4e-12 ｜ D 1.5e-11 ｜ 最差相对 2.5e-13
+real_11_n5             [clip] ✅ nv 5/5 ｜ R 5.1e-11 ｜ D 1.0e-10 ｜ 最差相对 9.2e-13
+real_12_n2             [clip] ✅ nv 4/4 ｜ R 2.2e-11 ｜ D 4.4e-11 ｜ 最差相对 1.9e-13
+real_13_n5             [clip] ✅ nv 5/5 ｜ R 4.8e-11 ｜ D 7.3e-11 ｜ 最差相对 2.1e-12
+real_14_n5             [clip] ✅ nv 4/4 ｜ R 5.4e-11 ｜ D 1.1e-10 ｜ 最差相对 2.1e-12
+real_15_n3             [clip] ✅ nv 4/4 ｜ R 2.7e-11 ｜ D 5.5e-11 ｜ 最差相对 9.3e-13
+real_16_n2             [clip] ✅ nv 4/4 ｜ R 2.8e-11 ｜ D 5.7e-11 ｜ 最差相对 2.2e-13
+real_17_n5             [clip] ✅ nv 5/5 ｜ R 1.8e-12 ｜ D 3.8e-12 ｜ 最差相对 1.1e-13
+real_18_n4             [clip] ✅ nv 5/5 ｜ R 4.4e-12 ｜ D 8.6e-12 ｜ 最差相对 1.0e-13
+real_19_n3             [clip] ✅ nv 5/5 ｜ R 5.3e-12 ｜ D 1.1e-11 ｜ 最差相对 4.8e-14
+real_20_n3             [clip] ✅ nv 5/5 ｜ R 3.1e-11 ｜ D 6.2e-11 ｜ 最差相对 5.4e-13
+real_21_n2             [clip] ✅ nv 4/4 ｜ R 4.2e-11 ｜ D 8.4e-11 ｜ 最差相对 3.2e-13
+real_22_n5             [clip] ✅ nv 5/5 ｜ R 3.4e-11 ｜ D 6.7e-11 ｜ 最差相对 1.4e-12
+real_23_n4             [clip] ✅ nv 5/5 ｜ R 2.0e-11 ｜ D 4.1e-11 ｜ 最差相对 3.5e-13
+real_24_n5             [clip] ✅ nv 4/4 ｜ R 8.8e-11 ｜ D 1.8e-10 ｜ 最差相对 5.7e-12
+real_25_n4             [clip] ✅ nv 4/4 ｜ R 3.1e-11 ｜ D 7.8e-11 ｜ 最差相对 2.0e-12
+real_26_n2             [clip] ✅ nv 4/4 ｜ R 2.5e-12 ｜ D 5.1e-12 ｜ 最差相对 3.9e-14
+real_27_n2             [clip] ✅ nv 4/4 ｜ R 5.5e-12 ｜ D 1.1e-11 ｜ 最差相对 6.9e-14
+real_28_n3             [clip] ✅ nv 4/4 ｜ R 1.6e-13 ｜ D 3.6e-13 ｜ 最差相对 5.1e-15
+real_29_n2             [clip] ✅ nv 4/4 ｜ R 1.3e-11 ｜ D 2.7e-11 ｜ 最差相对 2.7e-13
+real_30_n2             [clip] ✅ nv 4/4 ｜ R 2.5e-11 ｜ D 5.0e-11 ｜ 最差相对 4.0e-13
+real_31_n2             [clip] ✅ nv 4/4 ｜ R 3.4e-11 ｜ D 6.7e-11 ｜ 最差相对 5.8e-13
+real_32_n2             [clip] ✅ nv 4/4 ｜ R 1.6e-12 ｜ D 3.2e-12 ｜ 最差相对 2.5e-14
+real_33_n2             [clip] ✅ nv 4/4 ｜ R 4.0e-11 ｜ D 8.1e-11 ｜ 最差相对 5.2e-13
+real_34_n5             [clip] ✅ nv 4/4 ｜ R 4.2e-11 ｜ D 8.5e-11 ｜ 最差相对 3.7e-12
+real_35_n2             [clip] ✅ nv 2/2 ｜ R 2.4e-11 ｜ D 4.7e-11 ｜ 最差相对 1.3e-13
+real_36_n5             [clip] ✅ nv 4/4 ｜ R 1.4e-10 ｜ D 2.9e-10 ｜ 最差相对 1.0e-11
+real_37_n4             [clip] ✅ nv 3/3 ｜ R 3.6e-11 ｜ D 7.1e-11 ｜ 最差相对 9.1e-13
+real_38_n4             [clip] ✅ nv 4/4 ｜ R 8.3e-11 ｜ D 2.0e-10 ｜ 最差相对 5.8e-12
+real_39_n5             [clip] ✅ nv 5/5 ｜ R 1.0e-11 ｜ D 2.1e-11 ｜ 最差相对 2.4e-13
+real_40_n3             [clip] ✅ nv 4/4 ｜ R 2.2e-11 ｜ D 4.7e-11 ｜ 最差相对 8.5e-13
+real_41_n2             [clip] ✅ nv 4/4 ｜ R 4.7e-11 ｜ D 9.4e-11 ｜ 最差相对 5.4e-13
+real_42_n4             [clip] ✅ nv 5/5 ｜ R 5.0e-12 ｜ D 1.2e-11 ｜ 最差相对 2.8e-13
+real_43_n2             [clip] ✅ nv 4/4 ｜ R 2.6e-11 ｜ D 5.1e-11 ｜ 最差相对 4.1e-13
+real_44_n3             [clip] ✅ nv 5/5 ｜ R 3.8e-11 ｜ D 7.6e-11 ｜ 最差相对 5.5e-13
+real_45_n4             [clip] ✅ nv 5/5 ｜ R 1.9e-11 ｜ D 3.7e-11 ｜ 最差相对 9.9e-13
+real_46_n5             [clip] ✅ nv 5/5 ｜ R 8.1e-11 ｜ D 1.6e-10 ｜ 最差相对 3.4e-12
+real_47_n3             [clip] ✅ nv 5/5 ｜ R 1.8e-11 ｜ D 3.5e-11 ｜ 最差相对 2.4e-12
+real_48_n3             [clip] ✅ nv 5/5 ｜ R 4.6e-11 ｜ D 9.2e-11 ｜ 最差相对 1.7e-12
+real_49_n4             [clip] ✅ nv 5/5 ｜ R 9.3e-12 ｜ D 1.9e-11 ｜ 最差相对 3.2e-13
+real_50_n2             [clip] ✅ nv 4/4 ｜ R 4.3e-11 ｜ D 8.5e-11 ｜ 最差相对 1.3e-12
+real_51_n5             [clip] ✅ nv 6/6 ｜ R 5.1e-11 ｜ D 1.0e-10 ｜ 最差相对 2.2e-12
+real_52_n2             [clip] ✅ nv 4/4 ｜ R 2.4e-11 ｜ D 4.7e-11 ｜ 最差相对 4.3e-13
+real_53_n3             [clip] ✅ nv 4/4 ｜ R 4.1e-11 ｜ D 8.2e-11 ｜ 最差相对 8.5e-13
+real_54_n2             [clip] ✅ nv 4/4 ｜ R 2.4e-13 ｜ D 1.3e-11 ｜ 最差相对 1.4e-13
+real_55_n4             [clip] ✅ nv 5/5 ｜ R 5.0e-11 ｜ D 1.0e-10 ｜ 最差相对 1.5e-12
+real_56_n3             [clip] ✅ nv 4/4 ｜ R 4.4e-11 ｜ D 8.8e-11 ｜ 最差相对 1.1e-12
+real_57_n3             [clip] ✅ nv 6/6 ｜ R 3.0e-11 ｜ D 6.1e-11 ｜ 最差相对 3.7e-13
+real_58_n3             [clip] ✅ nv 4/4 ｜ R 3.5e-11 ｜ D 7.1e-11 ｜ 最差相对 2.8e-12
+real_59_n2             [clip] ✅ nv 4/4 ｜ R 3.7e-12 ｜ D 7.6e-12 ｜ 最差相对 8.4e-14
+worst_00_n2            [clip] ✅ nv 4/4 ｜ R 2.0e-11 ｜ D 4.0e-11 ｜ 最差相对 4.3e-13
+worst_01_n4            [clip] ✅ nv 4/4 ｜ R 2.1e-10 ｜ D 3.0e-11 ｜ 最差相对 7.1e-12
+worst_02_n3            [clip] ✅ nv 4/4 ｜ R 6.1e-11 ｜ D 1.2e-10 ｜ 最差相对 6.7e-13
+worst_03_n2            [clip] ✅ nv 4/4 ｜ R 4.5e-11 ｜ D 9.1e-11 ｜ 最差相对 2.8e-13
+worst_04_n2            [clip] ✅ nv 4/4 ｜ R 4.9e-11 ｜ D 9.8e-11 ｜ 最差相对 2.5e-13
+worst_05_n3            [clip] ✅ nv 4/4 ｜ R 1.3e-11 ｜ D 2.5e-11 ｜ 最差相对 2.2e-13
+worst_06_n4            [clip] ✅ nv 4/4 ｜ R 3.7e-11 ｜ D 7.4e-11 ｜ 最差相对 9.5e-13
+worst_07_n2            [clip] ✅ nv 4/4 ｜ R 2.1e-11 ｜ D 4.1e-11 ｜ 最差相对 2.6e-13
+worst_08_n2            [clip] ✅ nv 4/4 ｜ R 3.7e-12 ｜ D 7.4e-12 ｜ 最差相对 7.0e-14
+worst_09_n2            [clip] ✅ nv 4/4 ｜ R 2.6e-11 ｜ D 5.1e-11 ｜ 最差相对 4.7e-13
+thin_00                [clip] ✅ nv 2/2 ｜ R 1.2e-09 ｜ D 2.5e-09 ｜ 最差相对 1.4e-11
+thin_01                [clip] ✅ nv 2/2 ｜ R 2.4e-09 ｜ D 4.8e-09 ｜ 最差相对 1.1e-11
+thin_02                [clip] ✅ nv 2/2 ｜ R 3.9e-11 ｜ D 7.7e-11 ｜ 最差相对 2.7e-13
+thin_03                [clip] ✅ nv 1/1 ｜ R 0.0e+00 ｜ D 0.0e+00 ｜ 最差相对 0.0e+00
+thin_04                [clip] ✅ nv 2/2 ｜ R 2.9e-10 ｜ D 5.8e-10 ｜ 最差相对 3.1e-11
+thin_05                [clip] ✅ nv 2/2 ｜ R 1.9e-09 ｜ D 3.9e-09 ｜ 最差相对 3.5e-11
+thin_06                [clip] ✅ nv 3/3 ｜ R 1.4e-09 ｜ D 2.7e-09 ｜ 最差相对 3.3e-12
+thin_07                [clip] ✅ nv 2/2 ｜ R 5.7e-10 ｜ D 1.1e-09 ｜ 最差相对 3.2e-12

@@ -1,0 +1,526 @@
+found: ['C:\\Users\\21722\\Desktop\\2026年第七届华数杯数学建模竞赛赛题\\B题 VLSI布图规划设计\\Modern Floorplanning Based on B ∗ -Tree and Fast Simulated.pdf']
+pages 14
+============================== page 0 ==============================
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 25, NO. 4, APRIL 2006
+637
+Modern Floorplanning Based on B∗-Tree and
+Fast Simulated Annealing
+Tung-Chieh Chen, Student Member, IEEE, and Yao-Wen Chang, Member, IEEE
+Abstract—Unlike classical ﬂoorplanning that usually handles
+only block packing to minimize silicon area, modern very large
+scale integration (VLSI) ﬂoorplanning typically needs to pack
+blocks within a ﬁxed die (outline), and additionally considers
+the packing with block positions and interconnect constraints.
+Floorplanning with bus planning is one of the most challenging
+modern ﬂoorplanning problems because it needs to consider the
+constraints with interconnect and block positions simultaneously.
+In this paper, the authors study two types of modern ﬂoorplan-
+ning problems: 1) ﬁxed-outline ﬂoorplanning and 2) bus-driven
+ﬂoorplanning (BDF). This ﬂoorplanner uses B∗-tree ﬂoorplan
+representation based on fast three-stage simulated annealing (SA)
+scheme called Fast-SA. For ﬁxed-outline ﬂoorplanning, the au-
+thors present an adaptive Fast-SA that can dynamically change
+the weights in the cost function to optimize the wirelength under
+the outline constraint. Experimental results show that this ﬂoor-
+planner can achieve 100% success rates efﬁciently for ﬁxed-outline
+ﬂoorplanning with various aspect ratios. For the BDF, the authors
+explore the feasibility conditions of the B∗-tree with the bus con-
+straints, and develop a BDF algorithm based on the conditions and
+Fast-SA. Experimental results show that this ﬂoorplanner obtains
+much smaller dead space for the ﬂoorplanning with hard/soft
+macro blocks, compared with the most recent work. In particular,
+this ﬂoorplanner is more efﬁcient than the previous works.
+Index Terms—Floorplanning, physical design.
+I. INTRODUCTION
+A
+S THE DESIGN complexity increases dramatically, mod-
+ern very large scale integration (VLSI) ﬂoorplanning
+incurs more sophisticated constraints with the die outline,
+interconnect planning, and block positions. As pointed out
+by Kahng in [10], modern VLSI design is based on a ﬁxed-
+die (ﬁxed-outline) ﬂoorplan, rather than a variable-die one.
+A ﬂoorplan with pure area minimization without any ﬁxed-
+outline constraints may be useless because it cannot ﬁt into
+the given outline. Unlike classical ﬂoorplanning that usually
+handles only block packing to minimize silicon area, therefore,
+Manuscript received June 23, 2005; revised September 22, 2005. This work
+was supported in part by MediaTek Inc., by the National Science Council
+of Taiwan under Grants NSC 93-2215-E-002-009, NSC 93-2220-E-002-001,
+and NSC 93-2752-E-002-008-PAE, and by SpringSoft Inc. This paper was
+presented in part at the 2005 Association of Computing Machinery (ACM)
+International Symposium on Physical Design (ISPD’05), San Francisco, CA,
+April 2005. This paper was recommended by Associate Editor P. H. Madden.
+T.-C. Chen is with the Graduate Institute of Electronics Engineering,
+National Taiwan University, Taipei 106, Taiwan, R.O.C. (e-mail: tungchieh@
+ntu.edu.tw).
+Y.-W. Chang is with the Department of Electrical Engineering and Graduate
+Institute of Electronics Engineering, National Taiwan University, Taipei 106,
+Taiwan, R.O.C. (e-mail: ywchang@cc.ee.ntu.edu.tw).
+Digital Object Identiﬁer 10.1109/TCAD.2006.870076
+modern ﬂoorplanning should be formulated as a ﬁxed-outline
+ﬂoorplanning.
+The ﬁxed-outline ﬂoorplanning has been shown to be much
+more difﬁcult than the outline-free ﬂoorplanning [2]. Based
+on the sequence pair (SP) representation [14], Adya and
+Markov [2], [3] ﬁrst present new objective functions to drive
+simulated annealing (SA) and new types of moves that better
+guide local search for ﬁxed-outline ﬂoorplanning. Lin et al. [13]
+apply evolutionary search to handle ﬁxed-outline ﬂoorplanning
+based on the normalized polish expression [24].
+Floorplanning with position constraints is also prevailing in
+modern ﬂoorplan designs. There are many types of position
+constraints in modern ﬂoorplanning, such as range, symmetry,
+alignment, and bus constraints. Among these position con-
+straints, bus-driven ﬂoorplanning (BDF) is one of the most
+challenging modern ﬂoorplanning problems because it needs to
+consider the constraints with interconnect and block positions
+simultaneously. In particular, the interconnection on the chip
+becomes more congested as technology advances and, thus,
+bus routing becomes a challenging task. Since buses have
+different widths and go through multiple blocks, the positions
+of the blocks greatly affect the bus routing. To make the bus
+routing easier, we shall consider the bus planning earlier in the
+ﬂoorplanning stage [26].
+Floorplanning with the alignment constraint is closely re-
+lated to BDF. The alignment constraint is considered in [23]
+and [25]. For the constraint, the alignment blocks are required
+to be aligned in a row and abut one by one. However, blocks
+involved in a bus do not need to be placed adjacent to each other.
+Raﬁq et al. [16], [17] proposed a BDF. The bus deﬁned in their
+works is composed of wires connecting only two blocks, which
+is not general enough to capture real bus designs. The general
+BDF that allows a bus to connect multiple blocks is ﬁrst studied
+in [26]. In this work, the buses are placed in the top two layers
+and go either horizontally or vertically in one layer. For this
+problem, Xiang et al. [26] proposed an algorithm based on the
+SP representation. Nevertheless, the SP representation incurs a
+larger solution space, and thus it is less efﬁcient to ﬁnd a high-
+quality solution. Note that the solution space for SP is (n!)2,
+and the solution space for B∗-tree that we used in this paper is
+only O(n!22n/n1.5) [5].
+We study in this paper two types of modern ﬂoorplanning
+problems: 1) ﬁxed-outline ﬂoorplanning and 2) BDF. Our
+ﬂoorplanner uses the B∗-tree ﬂoorplan representation [5] and
+is based on a fast three-stage SA scheme, called Fast-SA. The
+Fast-SA is signiﬁcantly different from the existing SA schemes
+that try to speed up the annealing process, e.g., the well-
+known TimberWolf [19]–[21] that uses a two-stage technique
+0278-0070/$20.00 © 2006 IEEE
+
+
+============================== page 1 ==============================
+638
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 25, NO. 4, APRIL 2006
+to control the temperature updating function to reduce the
+iterations. Our Fast-SA consists of three stages of temperature
+modiﬁcation. Experimental results show that Fast-SA is suit-
+able for block ﬂoorplanning; it is more efﬁcient than the clas-
+sical and TimberWolf SA to obtain high-quality ﬂoorplans.
+For ﬁxed-outline ﬂoorplanning, we present an adaptive
+Fast-SA that can dynamically change the weights in the cost
+function under the outline constraint. The adaptive Fast-SA
+controls the parameters of the cost function dynamically
+according to a set of the most recent ﬂoorplan solutions.
+Experimental results show that our method achieves a
+success rate of 100% for the ﬁxed-outline ﬂoorplanning
+with a dead space of 10% and various aspect ratios,
+compared to the average success rates of 30.3%, 65.5%,
+and 99.4% obtained by genetic ﬂoorplan algorithm (GFA) [13],
+Parquet-4.5 [15] using SP, and Parquet-4.5 using B∗-tree,
+respectively. Further, the wirelength with the ﬁxed-outline
+constraint is reduced by 6% on average, compared with
+Parquet-4.5.
+For BDF, we explore the feasibility conditions of the B∗-tree
+with the bus constraints, and develop a BDF algorithm based
+on the conditions and Fast-SA. Compared with the most recent
+work by Xiang et al. [26], our method based on Fast-SA obtains
+much smaller dead space for the ﬂoorplanning with hard/soft
+blocks. In particular, our ﬂoorplanner is more efﬁcient than the
+previous works.
+The rest of this paper is organized as follows. Section II
+reviews the B∗-tree ﬂoorplanning representation. Section III
+presents the Fast-SA scheme. Section IV copes with the ﬁxed-
+outline ﬂoorplanning based on adaptive Fast-SA. Section V
+deals with BDF based on Fast-SA. The experimental results
+are reported in Section VI. Finally, we give the conclusion in
+Section VII.
+II. B∗-TREE REPRESENTATION
+A B∗-tree [5] is an ordered binary tree for modeling
+nonslicing or slicing ﬂoorplans. Given an admissible placement
+[9] (in which no blocks can move left or down), we can
+construct a unique B∗-tree in linear time to model the
+placement. Further, given a B∗-tree, we can also obtain a legal
+placement by packing the blocks in amortized linear time with
+a contour structure [5].
+Fig. 1 shows an admissible placement and its corresponding
+B∗-tree. A B∗-tree is an ordered binary tree with its root
+corresponding to the block on the bottom-left corner. Similar to
+the depth-ﬁrst search (DFS) procedure, we construct a B∗-tree
+T for an admissible placement in a recursive fashion. Starting
+from the root, we ﬁrst recursively construct the left subtree and
+then the right subtree. Let Ri be the set of blocks located on
+the right-hand side and adjacent to bi. The left child of the node
+ni corresponds to the lowest unvisited block in Ri. The right
+child of ni represents the lowest block located above and with
+its x-coordinate equal to that of bi.
+Given a B∗-tree T, its root represents the block on the
+bottom-left corner, and thus the coordinate of the block is
+(xroot, yroot) = (0, 0). If node nj is the left child of node ni,
+block bj is placed on the right-hand side and adjacent to block
+Fig. 1.
+(a) Admissible placement and (b) B∗-tree representing placement.
+bi; i.e., xj = xi + wi. Otherwise, if node nj is the right child
+of ni, block bj is placed above block bi, with the x-coordinate
+of bj equal to that of bi; i.e., xj = xi. Therefore, given a
+B∗-tree, the x-coordinates of all blocks can be determined
+by traversing the tree once in linear time. Further, each
+y-coordinate can be computed by a contour data structure in
+amortized constant time [5], making the overall evaluation an
+amortized linear-time process.
+III. FAST SA
+SA [11] is widely used for ﬂoorplanning. It is an optimization
+scheme with nonzero probability for accepting inferior (uphill)
+solutions. The probability depends on the difference of the so-
+lution quality and the temperature. The probability is typically
+deﬁned by
+Prob = min
+
+1, e
+−∆C
+T
+
+(1)
+where ∆C is the difference of the cost of the neighboring state
+and that of the current state, and T is the current temperature.
+In the classical annealing schedule, the temperature is reduced
+by a ﬁxed ratio λ (say, 0.85 as recommended by most previous
+works) for each iteration of annealing.
+The excessive running time, however, is a signiﬁcant draw-
+back of the classical SA process. To reduce the running time
+of SA for searching for the desired solutions more efﬁciently,
+several annealing schemes of controlling the temperature
+changes during the annealing process have been proposed. The
+annealing schedule used in TimberWolf [19]–[21] is probably
+the most successful scheme reported in the literature. It in-
+creases λ gradually from its lowest value (0.8) to its highest
+value (approximately 0.95), and then gradually decreases λ
+back to its lowest value. (See Fig. 2(a) and (b) for the respective
+temperature changes for classical SA and TimberWolf SA as the
+search time goes by.)
+We propose a Fast-SA scheme. The motivation is that we
+try to reduce the number of uphill moves in the beginning.
+We observe that it is not efﬁcient and effective to accept too
+many uphill moves in the beginning since most of the solutions
+are inferior. We resort to greedy search to ﬁnd a local optimal
+faster. Starting with the local optimal, we then switch to normal
+SA. By doing so, we can save time for searching for good
+
+
+============================== page 10 ==============================
+CHEN AND CHANG: MODERN FLOORPLANNING BASED ON B∗-TREE AND FAST SIMULATED ANNEALING
+647
+TABLE IV
+AVERAGE SUCCESS RATES AND RUNTIMES FOR GFA, PARQUET, AND OUR ALGORITHM UNDER DIFFERENT ASPECT RATIOS ON n100
+TABLE V
+COMPARISON OF WIRELENGTH UNDER FIXED-OUTLINE CONSTRAINT
+FOR n100, n200, AND n300 WITH ASPECT RATIO R∗= 1, 2, 3, 4
+and 10%. The expected aspect ratios R∗of the ﬂoorplans are
+chosen from the range [1], [3] with interval 0.5. Experiments
+were performed on a 1.6-GHz Intel Pentium 4 PC using the
+GSRC benchmark circuit n100. The results were averaged for
+50 runs for each aspect ratio. We compared with GFA [13] and
+Parquet-4.5 [15] based on the same platform. We have tested
+Parquet-4.5 with two ﬂoorplan representations, SP, and B∗-tree.
+Table IV lists the average success rates for GFA, Parquet-4.5
+using SP, Parquet-4.5 using B∗-tree, and ours. Our method ob-
+tained 100% success rates of ﬁtting into the given ﬁxed outlines
+for all runs with dead space Γ = 15% and Γ = 10%. In con-
+trast, the success rates when Γ = 10% for GFA, Parquet using
+SP, and Parquet using B∗-tree were 30.3%, 65.5%, and 99.4%,
+respectively. The dramatic differences reveal the effectiveness
+of our approach. Also, our method required the least running
+time on average.
+Wirelength Optimization for Fixed-Outline Floorplanning:
+Since the chip outline is given, the ﬁxed-outline ﬂoorplanning
+problem should focus more on wirelength. Since GFA does not
+have wirelength-optimization mode, we cannot compare with
+GFA. We used the default wirelength-optimization parameters
+for Parquet. We compared with Parquet using SP representation
+since Parquet obtains better results with the SP-representation
+mode [4]. For fair comparison, the I/O pads for all circuits are
+ﬁxed at the given coordinates in the benchmark. Table V shows
+the best wirelength for Parquet and our program. We used the
+GSRC benchmarks n100, n200, and n300, which contain 885,
+1585, and 1893 nets, respectively, and reported the best results
+among ten runs. All the results listed in Table V can ﬁt into
+the given outline (i.e., feasible solutions); thus, the dead spaces
+are not reported here. Our program can obtain better ﬂoorplan
+solutions than Parquet for all test cases; our program, on the
+average, can reduce the wirelength by about 6% using 11% less
+running time compared with Parquet.
+All the above results show the efﬁciency and effectiveness
+of Fast-SA. Our method results in very stable and high-quality
+ﬂoorplan solutions. Fig. 16 shows the resulting ﬂoorplans for
+n100 with various aspect ratios.
+C. BDF
+We also performed experiments on BDF. The benchmarks
+are provided by Xiang et al. [26]; they are modiﬁed from
+the MCNC benchmark suite. The number of bus constraints
+ranges from 5 to 18. Each bus needs to go through 2–7 blocks
+according to the constraints. Our platform is a 2.8-GHz Intel
+Pentium 4 PC while the work [26] is on a 2.4-GHz Xeon PC;
+the speed difference between the two machines is marginal. The
+work [26] only reported dead spaces for the set of benchmarks.
+For fair comparisons, we optimized the same cost metric with
+area optimization alone.
+We also implemented the soft-block resizing algorithm. The
+soft-macro-block adjustment is based on a simple, yet effective
+approach presented in [7]. Given M blocks, we assume that
+block b’s bottom-left coordinate is (b.x1, b.y1) and its top-right
+coordinate is (b.x2, b.y2). Each soft block has four candidates
+for the block dimensions (i.e., shapes). The candidates are
+deﬁned as follows:
+1) Rb = e.x2 −b.x1,
+where
+e.x2 = min{g.x2|g.x2 >
+b.x2, g ∈M};
+2) Lb = d.x2 −b.x1,
+where
+d.x2 = max{g.x2|g.x2 <
+b.x2, g ∈M};
+3) Tb = a.y2 −b.y1,
+where
+a.y2 = min{g.y2|g.y2 >
+b.y2, g ∈M};
+4) Bb = c.y2 −b.y1,
+where
+c.y2 = max{g.y2|g.y2 <
+b.y2, g ∈M}.
+After the candidates of the block shapes are determined, we
+may change the shape of a soft block bi by choosing one of the
+following ﬁve choices during SA:
+1) change the width of block bi to Ri;
+2) change the width of block bi to Li;
+3) change the height of block bi to Ti;
+4) change the height of block bi to Bi;
+5) change the aspect ratio of block bi to a random value in
+the range of the given soft aspect-ratio constraint.
+Fig. 17 shows an example of resizing a soft block. Block b3
+has four shape candidates, R3, L3, T3, and b3. If we stretch
+
+
+============================== page 11 ==============================
+648
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 25, NO. 4, APRIL 2006
+Fig. 16.
+GSRC n100 ﬂoorplan results with Γ = 10%, and desired aspect ratios R∗s are (a) 1, (b) 2, (c) 3, and (d) 4. Dead spaces are (a) 5.57%,
+(b) 5.06%, (c) 5.03%, and (d) 4.70%. Dotted line is ﬁxed outline.
+Fig. 17.
+Soft-block resizing example. (a) There are four shape candidates for b3 for resizing. (b) Stretch right boundary of b3 to R3, and resulting ﬂoorplan
+becomes more compact.
+the right boundary of b3 to R3, it can generate a more compact
+ﬂoorplan.
+The block shapes could be changed to obtain a more compact
+ﬂoorplan during SA. Table VI summarizes the BDF results for
+the method used in [26], ours using the classical SA and Fast-
+SA. Ours using classical SA outperforms the method used in
+[26]. Using Fast-SA, we obtained the smallest dead space in
+the shortest average running time. For hard blocks, our average
+dead space (using Fast-SA) is 4.38% while the work in [26] is
+5.51%. We only needed 26 s on average while that in [26]
+required 104 s. For soft blocks, since the previous work [26]
+resizes the blocks from the existing solutions, 2 s are added
+to the average runtime (106 s in total). Our method performs
+resizing and ﬂoorplanning at the same time; therefore, the
+runtimes are longer than hard-block ﬂoorplanning alone (but is
+still much faster than the work in [26]). The average runtime
+is 47 s, and the average dead space is 0.41%, compared to
+0.91% required by the previous work. In short, our algorithm
+can obtain better bus-driven ﬂoorplan solutions for all test cases
+in shorter running times. Figs. 18 and 19 show the resulting
+ﬂoorplans for ami33-2 and ami49-3, respectively.
+VII. CONCLUSION
+We have proposed algorithms for the modern ﬂoorplan-
+ning problems with ﬁxed-outline and bus constraints, based
+on our new Fast-SA scheme and the B∗-tree representation.
+Experimental results have shown that our Fast-SA leads to
+faster and more stable convergence to the desired ﬂoorplan
+solutions. For ﬁxed-outline ﬂoorplanning, the new cost function
+
+
+============================== page 12 ==============================
+CHEN AND CHANG: MODERN FLOORPLANNING BASED ON B∗-TREE AND FAST SIMULATED ANNEALING
+649
+TABLE VI
+BDF RESULTS. RESULTS OF SP ON 2.4-GHZ INTEL XEON PC, WHILE OURS ARE ON 2.8-GHZ INTEL PENTIUM 4 PC
+Fig. 18.
+Resulting packing of ami33-2 with hard blocks. There are 33 blocks
+and 18 buses. Buses are {9, 14, 32}, {14, 32}, {9, 32}, {9, 14}, {12, 19, 21},
+{12, 19}, {19, 21}, {1, 2, 3, 4}, {2, 3}, {3, 4}, {2, 3, 4}, {1, 2, 4}, {7, 18}, {15,
+16, 30}, {15, 16}, {16, 30}, {24, 25}, and {26, 29}.
+considering the aspect-ratio penalty drives SA more efﬁciently
+to ﬁnd ﬂoorplans inside the given chip outline. For BDF, we
+have demonstrated that the dummy blocks can ﬁx the vertical
+block-falling-down problem during the packing of a B∗-tree.
+Thus, the dummy-block inserting technique for B∗-tree can
+be effectively used to solve position constraints, especially for
+modern ﬂoorplanning problems. The experimental results on
+both ﬁxed-outline ﬂoorplanning and the BDF have shown the
+efﬁciency and effectiveness of our ﬂoorplanning algorithms;
+Fig. 19.
+Resulting packing of ami49-3 with soft-block adjustment. There are
+49 blocks and 15 buses. Buses are {0, 5, 9, 12, 18}, {1, 10, 21, 25}, {2, 28,
+33}, {3, 19, 22, 26, 29, 34}, {4, 23, 27}, {5, 35, 30, 6}, {32, 31, 17}, {11,
+14, 15, 32, 33}, {12, 8, 14}, {5, 7, 39}, {2, 8, 9, 10}, {37, 38}, {10, 21, 25},
+{22, 23, 24}, and {32, 33}.
+for those applications, our results outperform the related recent
+works by large margins.
+We should note that the proposed three-stage fast annealing
+scheme readily applies to other optimization problems. Though
+beyond the scope of this paper, we have also implemented the
+scheme to handle the classical two-way bipartitioning problem.
+Our results show signiﬁcant speedups over the classical SA
+scheme and better solution quality. Research along this direc-
+tion is ongoing.
+
+
+============================== page 13 ==============================
+650
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. 25, NO. 4, APRIL 2006
+ACKNOWLEDGMENT
+The authors would like to thank Prof. I. Markov, S. N. Adya,
+Dr. H. Xiang, X. Tang, M. D. F. Wong, Prof. D.-S. Chen,
+C. T. Lin, and Y. W. Wang for providing the authors with
+benchmarks and/or programs for the comparative studies.
+REFERENCES
+[1] E. H. L. Aarts and P. J. M. van Laarhoven, “A new polynomial time cool-
+ing schedule,” in Proc. IEEE/ACM Int. Conf. Computer-Aided Design,
+Santa Clara, CA, Nov. 1985, pp. 206–208.
+[2] S. N. Adya and I. L. Markov, “Fixed-outline ﬂoorplanning through better
+local search,” in Proc. IEEE Int. Conf. Computer Design, Austin, TX,
+2001, pp. 328–334.
+[3] ——, “Fixed-outline ﬂoorplanning: Enabling hierarchical design,” IEEE
+Trans. Very Large Scale Integr. (VLSI) Syst., vol. 11, no. 6, pp. 1120–1135,
+Dec. 2003.
+[4] H. H. Chan, S. N. Adya, and I. L. Markov, “Are ﬂoorplan representations
+important in digital design?,” in Proc. ACM Int. Symp. Physical Design,
+San Francisco, CA, Apr. 2005, pp. 129–136.
+[5] Y.-C. Chang, Y.-W. Chang, G.-M. Wu, and S.-W. Wu, “B∗-trees: A new
+representation for non-slicing ﬂoorplans,” in Proc. ACM/IEEE Design
+Automation Conf., Los Angeles, CA, Jun. 2000, pp. 458–463.
+[6] T.-C. Chen and Y.-W. Chang, “Modern ﬂoorplanning based on fast
+simulated annealing,” in Proc. ACM Int. Symp. Physical Design,
+San Francisco, CA, Apr. 2005, pp. 104–112.
+[7] J.-C. Chi and M. C. Chi, “A block placement algorithm for VLSI circuits,”
+Chung Yuan J., vol. 31, no. 1, pp. 69–75, Mar. 2003.
+[8] GSRC Floorplan Benchmark Suite. [Online]. Available: http://www.cse.
+ucsc.edu/research/surf/GSRC/GSRCbench.html
+[9] P.-N. Guo, C.-K. Cheng, and T. Yoshimura, “An O-tree representation of
+non-slicing ﬂoorplans and its applications,” in Proc. ACM/IEEE Design
+Automation Conf., New Orleans, LA, Jun. 1999, pp. 268–273.
+[10] A. B. Kahng, “Classical ﬂoorplanning harmful?,” in Proc. ACM Int. Symp.
+Physical Design, San Diego, CA, Apr. 2000, pp. 207–213.
+[11] S. Kirpatrick, C. D. Gelatt, and M. P. Vecchi, “Optimization by simulated
+annealing,” Science, vol. 220, no. 4598, pp. 671–680, May 1983.
+[12] J. H. Y. Law and E. F. Y. Young, “Multi-bend bus driven ﬂoorplanning,”
+in Proc. ACM Int. Symp. Physical Design, San Francisco, CA, Apr. 2005,
+pp. 113–120.
+[13] C.-T. Lin, D.-S. Chen, and Y.-W. Wang, “Robust ﬁxed-outline ﬂoor-
+planning through evolutionary search,” in Proc. IEEE/ACM Asia and
+South Paciﬁc Design Automation Conf., Yokohama, Japan, Jan. 2004,
+pp. 42–44.
+[14] H. Murata, K. Fujiyoshi, S. Nakatake, and Y. Kajitani, “Rectangle-
+packing based module placement,” in Proc. IEEE/ACM Int. Conf.
+Computer-Aided Design, San Jose, CA, Nov. 1995, pp. 472–479.
+[15] Parquet:
+Fixed-Outline
+Floorplanner.
+[Online].
+Available:
+http://
+vlsicad.eecs.umich.edu/BK/parquet/
+[16] F. Raﬁq, M. Chrzanowska-Jeske, H. H. Yang, and N. Sherwani, “Bus-
+based integrated ﬂoorplanning,” in Proc. IEEE Int. Symp. Circuits and
+Systems, Phoenix-Scottsdale, AZ, May 2002, pp. 875–878.
+[17] ——, “Integrated ﬂoorplanning with buffer/channel insertion for bus-
+based microprocessor designs,” in Proc. ACM Int. Symp. Physical Design,
+Del Mar, CA, Apr. 2002, pp. 875–878.
+[18] S. M. Sait and H. Youssef, VLSI Physical Design Automation: Theory and
+Practice.
+Singapore: World Scientiﬁc, 1999.
+[19] C. Sechen and A. Sangiovanni-Vincentelli, “The TimberWolf placement
+and routing package,” IEEE J. Solid-State Circuits, vol. SSC-20, no. 2,
+pp. 510–522, Apr. 1985.
+[20] ——, “TimberWolf3.2: A new standard cell placement and global routing
+package,” in Proc. IEEE Design Automation Conf., Las Vegas, NV, 1986,
+pp. 432–439.
+[21] C.
+Sechen,
+“Chip-planning,
+placement,
+and
+global
+routing
+of
+macro/custom cell integrated circuits using simulated annealing,” in
+Proc. IEEE Design Automation Conf., Anaheim, CA, 1988, pp. 73–81.
+[22] W. Swartz, “Automatic layout of analog and digital mixed macro/standard
+cell integrated circuits,” M.S. thesis, Dept. Elect. Eng., Yale Univ.,
+New Haven, CT, 1993. [Online]. Available: http://www.internetcad.
+com/thesis.htm
+[23] X. Tang and D. F. Wong, “Floorplanning with alignment and performance
+constraints,” in Proc. ACM/IEEE Design Automation Conf., New Orleans,
+LA, Jun. 2002, pp. 848–853.
+[24] D. F. Wong, H. W. Leong, and C. L. Liu, Simulated Annealing for VLSI
+Design.
+Boston, MA: Kluwer, 1988.
+[25] M.-C. Wu and Y.-W. Chang, “Placement with alignment and performance
+constraints using the B∗-tree representation,” in Proc. IEEE Int. Conf.
+Computer Design, San Jose, CA, Sep. 2004, pp. 568–571.
+[26] H. Xiang, X. Tang, and M. D. F. Wong, “Bus-driven ﬂoorplanning,”
+in Proc. IEEE/ACM Int. Conf. Computer-Aided Design, San Jose, CA,
+Nov. 2003, pp. 66–73.
+Tung-Chieh Chen (S’04) received the B.S. degree
+in electrical engineering from the National Taiwan
+University, Taipei, Taiwan, R.O.C., in 2003. He is
+currently working toward the Ph.D. degree at the
+Graduate Institute of Electronics Engineering, Na-
+tional Taiwan University, Taiwan, R.O.C.
+His
+current
+research
+interests
+include
+very
+large scale integration (VLSI) ﬂoorplanning and
+placement.
+Yao-Wen Chang (S’94–A’96–M’96) received the
+B.S. degree from National Taiwan University, Taipei,
+Taiwan, R.O.C., in 1988, and the M.S. and Ph.D.
+degrees from the University of Texas, Austin in 1993
+and 1996, respectively, all in computer science.
+Currently, he is a Professor of the Department
+of Electrical Engineering and the Graduate Institute
+of Electronics Engineering, National Taiwan Uni-
+versity. He is currently also a Visiting Professor at
+Waseda University, Japan. He was with IBM T.J.
+Watson Research Center, Yorktown Heights, NY, in
+summer 1994. From 1996 to 2001, he was on the faculty of National Chiao
+Tung University, Taiwan. His current research interests include VLSI physical
+design, design for manufacturing, and FPGA.
+Dr. Chang received the Best Paper Award at ICCD-1995 and six Best
+Paper Nominations from DAC-2005, 2004 ACM TODAES, ASP-DAC-2003,
+ICCAD-2002, ICCD-2001, and DAC-2000. He has received many awards
+for distinguished research, such as the 2005 First-Class Principal Investigator
+Award and the 2004 Mr. Wu Ta You Memorial Award from the National
+Science Council of Taiwan, and for excellent teaching from National Taiwan
+University and National Chiao Tung University. He currently serves on the
+technical program committees of a few important conferences on VLSI design
+automation and circuit design, including APCCAS, ASP-DAC (topic chair),
+DATE, ICCAD, ICCD, ISPD, SOCC, and VLSI-DAT. He is currently the Chair
+of the Electronic Design Automation (EDA) Consortium of the Ministry of
+Education, Taiwan, a member of board of governors of Taiwan IC Design
+Society, and a member of the IEEE Circuits and Systems Society, ACM, and
+ACM/SIGDA.
+
+

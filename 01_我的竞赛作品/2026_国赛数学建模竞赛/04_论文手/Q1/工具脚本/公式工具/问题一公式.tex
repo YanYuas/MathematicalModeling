@@ -1,0 +1,157 @@
+% !TEX program = xelatex
+% 问题一公式清单：无线电干扰源交会定位（定位区域直径计算与覆盖判定）
+% 编译方式：xelatex 问题一公式.tex（需 ctex 宏包，随 TeX Live / MiKTeX 自带）
+% 公式按论文 5.1.0 ~ 5.1.8 小节顺序编号
+\documentclass[11pt]{ctexart}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries 问题一公式清单}\\[6pt]
+{\normalsize 定位区域直径计算与覆盖判定（LaTeX 排版）}
+\end{center}
+
+\section*{5.1.0 数据与坐标约定}
+
+角度差函数（避免角度跨越零点时的环绕错误）：
+\begin{equation}
+\mathrm{angdiff}(\varphi,\theta)
+= \big((\varphi-\theta+180^\circ) \bmod 360^\circ\big) - 180^\circ
+\in (-180^\circ,\; 180^\circ]
+\end{equation}
+
+单位方向向量与误差半角：
+\begin{equation}
+\mathbf{u}(\varphi) = (\cos\varphi,\ \sin\varphi), \qquad
+\varepsilon = 1^\circ
+\end{equation}
+
+1° 误差的横向偏移（表 5-2）：
+\begin{equation}
+\Delta = d \cdot \tan 1^\circ
+\end{equation}
+
+参数对直径的影响（表 5-1）：
+\begin{equation}
+D \propto \varepsilon \ (\text{小角近似}), \qquad
+D \propto \frac{1}{\sin\varphi} \ (\varphi \to 90^\circ \text{ 时最优})
+\end{equation}
+
+\section*{5.1.3 角域与定位区域的表示}
+
+定义 5.1.1（角域）：
+\begin{equation}
+W(S,\theta,\varepsilon)
+= \left\{ S + t\,\mathbf{u}(\varphi) : t \ge 0,\ \bigl|\mathrm{angdiff}(\varphi,\theta)\bigr| \le \varepsilon \right\}
+\end{equation}
+
+角域的边界方向：
+\begin{equation}
+\mathbf{u}_- = \mathbf{u}(\theta-\varepsilon), \qquad
+\mathbf{u}_+ = \mathbf{u}(\theta+\varepsilon)
+\end{equation}
+
+命题 5.1（角域的两半平面形式）：
+\begin{equation}
+W = \left\{ X : \operatorname{cross}(\mathbf{u}_-,\, X-S) \ge 0 \right\}
+\cap \left\{ X : \operatorname{cross}(\mathbf{u}_+,\, X-S) \le 0 \right\}
+\end{equation}
+
+二维叉积：
+\begin{equation}
+\operatorname{cross}(\mathbf{a},\mathbf{b}) = a_x b_y - a_y b_x
+\end{equation}
+
+定义 5.1.2（定位区域）：
+\begin{equation}
+L = \bigcap_{i=1}^{n} W_i
+\end{equation}
+
+\section*{5.1.4 定位区域的三个定理}
+
+定理 5.2（顶点枚举与过滤）：
+\begin{equation}
+P \text{ 是 } L \text{ 的顶点}
+\iff t \ge 0 \ \land\ s \ge 0 \ \land\ \forall k:\ P \in W_k
+\end{equation}
+
+定理 5.3（有界性判据）：
+\begin{equation}
+L \text{ 有界}
+\iff \bigcap_{i=1}^{n} [\theta_i - \varepsilon,\ \theta_i + \varepsilon] = \varnothing
+\end{equation}
+
+定理 5.3 证明中的回收锥：
+\begin{equation}
+\operatorname{rec}(W) = \left\{ \mathbf{d} : W + t\mathbf{d} \subseteq W,\ \forall t \ge 0 \right\}, \qquad
+\operatorname{rec}\!\Big(\bigcap_i W_i\Big) = \bigcap_i \operatorname{rec}(W_i)
+\end{equation}
+
+\section*{5.1.7 覆盖判定与 Jung 界验证}
+
+命题 5.2（等边三角形反例，$D=a$）：
+\begin{equation}
+\lvert CM \rvert = \frac{\sqrt{3}}{2}\,a \approx 0.866\,a > 0.5\,a = \frac{D}{2}
+\end{equation}
+
+定理 5.4（Thales 圆内判据）：
+\begin{equation}
+X \text{ 在以 } PQ \text{ 为直径的圆内（含边界）} \iff \angle PXQ \ge 90^\circ
+\end{equation}
+
+定理 5.4 证明中的恒等式（$M = \tfrac{P+Q}{2}$）：
+\begin{equation}
+\|X-M\|^2 - \Big(\frac{D}{2}\Big)^2
+= (X-P)\cdot(X-Q)
+= \|P-X\|\,\|Q-X\|\cos\angle PXQ
+\end{equation}
+
+推论 5.3（可计算判据，$V(L)$ 为 $L$ 的顶点集）：
+\begin{equation}
+\text{以 } PQ \text{ 为直径的圆覆盖 } L
+\iff \forall X \in V(L):\ \angle PXQ \ge 90^\circ
+\end{equation}
+
+定理 5.5（Jung 定理）：
+\begin{equation}
+R_{\mathrm{MEC}} \le \frac{D}{\sqrt{3}}
+\end{equation}
+
+定理 5.5 证明（正弦定理，$\alpha$ 为内接三角形最大角）：
+\begin{equation}
+D \ge s = 2R\sin\alpha \ge 2R\sin 60^\circ = \sqrt{3}\,R
+\ \Longrightarrow\ R \le \frac{D}{\sqrt{3}}
+\end{equation}
+
+双侧夹逼：
+\begin{equation}
+\frac{D}{2} \ \le\ R_{\mathrm{MEC}}\ \le\ \frac{D}{\sqrt{3}} \approx 0.5774\,D
+\end{equation}
+
+覆盖缺口比：
+\begin{equation}
+\gamma = \frac{R_{\mathrm{MEC}}}{D/2} \in \left[1,\ \frac{2}{\sqrt{3}} \approx 1.1547\right]
+\end{equation}
+
+\section*{5.1.8 与问题二的联系}
+
+Fisher 信息矩阵：
+\begin{equation}
+M = J^{\mathsf{T}}J
+\end{equation}
+
+两站情形的行列式：
+\begin{equation}
+\det M = \frac{\sin^2\varphi}{\sigma^4 d_1^2 d_2^2}
+\end{equation}
+
+均方根位置误差：
+\begin{equation}
+E = \varepsilon\,\sqrt{\operatorname{tr}(M^{-1})}
+\end{equation}
+
+\end{document}

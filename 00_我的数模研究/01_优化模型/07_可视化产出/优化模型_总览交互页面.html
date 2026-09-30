@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>优化模型 · 建模手研究体系总览</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-cream: #FFFBF5;
+  --bg-panel: #FFFFFF;
+  --bg-raised: #FFFFFF;
+  --bg-inset: #FBF1E7;
+  --line: #F2E4D8;
+  --text-hi: #5C4A45;
+  --text-mid: #9B7E72;
+  --text-low: #C0A89B;
+  --primary: #FF8FA3;
+  --mint: #7BD3B2;
+  --butter: #FFD97A;
+  --sky: #8FC1F0;
+  --lilac: #C9AEE8;
+  --strawberry: #FF6B7D;
+  --font-cute: 'ZCOOL KuaiLe', 'PingFang SC', sans-serif;
+  --font-body: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --ease-soft: cubic-bezier(.4,0,.2,1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-cream);
+  color: var(--text-mid);
+  line-height: 1.7;
+  background-image: radial-gradient(circle, rgba(255,143,163,.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  min-height: 100vh;
+}
+
+/* ===== Hero区 ===== */
+.hero {
+  position: relative;
+  padding: 60px 40px 50px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(255,143,163,.15), transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--bg-inset);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 6px 20px;
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-cute);
+  font-size: 42px;
+  color: var(--text-hi);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+.hero .subtitle {
+  font-size: 16px;
+  color: var(--text-mid);
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+/* KPI统计卡 */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.kpi-card {
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  box-shadow: 0 6px 16px rgba(255,143,163,.12);
+  border: 1px solid var(--line);
+  transition: transform .3s var(--ease-spring);
+}
+.kpi-card:hover { transform: translateY(-4px); }
+.kpi-card.highlight {
+  box-shadow: 0 0 20px rgba(255,143,163,.25);
+  border-color: var(--primary);
+}
+.kpi-num {
+  font-family: var(--font-cute);
+  font-size: 36px;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-card.highlight .kpi-num { color: var(--strawberry); }
+.kpi-label {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-top: 4px;
+}
+
+/* ===== 容器 ===== */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 30px 60px;
+}
+
+/* ===== 章节 ===== */
+.section {
+  margin-bottom: 50px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.section-num {
+  font-family: var(--font-cute);
+  background: var(--primary);
+  color: white;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 12px rgba(255,143,163,.3);
+}
+.section-title {
+  font-family: var(--font-cute);
+  font-size: 24px;
+  color: var(--text-hi);
+}
+.section-desc {
+  font-size: 14px;
+  color: var(--text-low);
+  margin-left: auto;
+}
+
+/* ===== 专题卡片 ===== */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.topic-card {
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 12px rgba(255,143,163,.08);
+  cursor: pointer;
+  transition: all .3s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(255,143,163,.18);
+}
+.topic-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.topic-card:nth-child(1)::before { background: var(--primary); }
+.topic-card:nth-child(2)::before { background: var(--mint); }
+.topic-card:nth-child(3)::before { background: var(--sky); }
+.topic-card:nth-child(4)::before { background: var(--lilac); }
+.topic-card:nth-child(5)::before { background: var(--butter); }
+.topic-card:nth-child(6)::before { background: var(--strawberry); }
+.topic-card:nth-child(7)::before { background: var(--mint); }
+
+.topic-icon {
+  font-family: var(--font-cute);
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.topic-name {
+  font-family: var(--font-cute);
+  font-size: 19px;
+  color: var(--text-hi);
+  margin-bottom: 8px;
+}
+.topic-desc {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 14px;
+  min-height: 40px;
+}
+.topic-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.topic-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-inset);
+  color: var(--text-mid);
+}
+.topic-tag.algos { background: rgba(255,143,163,.12); color: var(--primary); }
+.topic-tag.files { background: rgba(123,211,178,.12); color: #4BA887; }
+
+/* 展开详情 */
+.topic-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s var(--ease-soft);
+  margin-top: 0;
+}
+.topic-card.expanded .topic-detail {
+  max-height: 400px;
+  margin-top: 16px;
+}
+.topic-detail-inner {
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 4px 0;
+}
+.detail-row .label { color: var(--text-low); }
+.detail-row .value { color: var(--text-hi); font-family: var(--font-mono); }
+.expand-hint {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-low);
+  margin-top: 10px;
+}
+
+/* ===== 算法选择器 ===== */
+.selector-box {
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 16px rgba(255,143,163,.1);
+}
+.selector-question {
+  font-family: var(--font-cute);
+  font-size: 18px;
+  color: var(--text-hi);
+  margin-bottom: 16px;
+  text-align: center;
+}
+.selector-options {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.selector-btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 10px 24px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--bg-cream);
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all .25s var(--ease-spring);
+}
+.selector-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: scale(1.05);
+}
+.selector-btn.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.selector-result {
+  background: var(--bg-inset);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  display: none;
+  animation: fadeIn .4s var(--ease-spring);
+}
+.selector-result.show { display: block; }
+.result-algo {
+  font-family: var(--font-cute);
+  font-size: 24px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.result-desc {
+  font-size: 13px;
+  color: var(--text-mid);
+}
+.result-complexity {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 4px 12px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-pill);
+  color: var(--text-hi);
+}
+.selector-reset {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--text-low);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 关键发现 ===== */
+.findings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+.finding-card {
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(255,143,163,.08);
+}
+.finding-card:nth-child(2) { border-left-color: var(--mint); }
+.finding-card:nth-child(3) { border-left-color: var(--sky); }
+.finding-card:nth-child(4) { border-left-color: var(--lilac); }
+.finding-card:nth-child(5) { border-left-color: var(--butter); }
+.finding-card:nth-child(6) { border-left-color: var(--strawberry); }
+.finding-title {
+  font-family: var(--font-cute);
+  font-size: 16px;
+  color: var(--text-hi);
+  margin-bottom: 8px;
+}
+.finding-content {
+  font-size: 13px;
+  color: var(--text-mid);
+}
+.finding-num {
+  font-family: var(--font-cute);
+  font-size: 28px;
+  color: var(--primary);
+}
+
+/* ===== 学习路径 ===== */
+.path-timeline {
+  position: relative;
+  padding-left: 40px;
+}
+.path-timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+.path-item {
+  position: relative;
+  margin-bottom: 24px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 10px rgba(255,143,163,.06);
+}
+.path-item::before {
+  content: '';
+  position: absolute;
+  left: -33px; top: 22px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid var(--bg-cream);
+  box-shadow: 0 0 8px rgba(255,143,163,.4);
+}
+.path-item:nth-child(2)::before { background: var(--mint); }
+.path-item:nth-child(3)::before { background: var(--sky); }
+.path-item:nth-child(4)::before { background: var(--lilac); }
+.path-item:nth-child(5)::before { background: var(--butter); }
+.path-phase {
+  font-family: var(--font-cute);
+  font-size: 15px;
+  color: var(--text-hi);
+  margin-bottom: 6px;
+}
+.path-time {
+  font-size: 11px;
+  color: var(--text-low);
+  margin-left: 8px;
+}
+.path-content {
+  font-size: 13px;
+  color: var(--text-mid);
+}
+.path-content code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg-inset);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-hi);
+}
+
+/* ===== 页脚 ===== */
+.footer {
+  text-align: center;
+  padding: 30px;
+  font-size: 12px;
+  color: var(--text-low);
+  border-top: 1px solid var(--line);
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 600px) {
+  .hero { padding: 40px 20px 30px; }
+  .hero h1 { font-size: 30px; }
+  .container { padding: 0 16px 40px; }
+  .topics-grid { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Hero区 ===== -->
+<div class="hero">
+  <div class="hero-badge">🧁 建模手研究体系 · 六层钻研法</div>
+  <h1>优化模型专题总览</h1>
+  <p class="subtitle">从最基础的线性规划到网络流、启发式算法，86个文件构建完整的优化建模知识体系</p>
+  <div class="kpi-grid">
+    <div class="kpi-card highlight">
+      <div class="kpi-num" data-target="86">0</div>
+      <div class="kpi-label">研究文件</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" data-target="7">0</div>
+      <div class="kpi-label">核心专题</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" data-target="15">0</div>
+      <div class="kpi-label">手动实现算法</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" data-target="6">0</div>
+      <div class="kpi-label">对比实验</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 第1章：七大核心专题 ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">七大核心专题</div>
+    <div class="section-desc">点击卡片展开详情</div>
+  </div>
+  <div class="topics-grid" id="topicsGrid">
+    <!-- 由JS生成 -->
+  </div>
+</div>
+
+<!-- ===== 第2章：算法选择器 ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">我该用哪个算法？</div>
+    <div class="section-desc">交互式决策</div>
+  </div>
+  <div class="selector-box">
+    <div class="selector-question" id="selectorQuestion">你的问题是什么类型？</div>
+    <div class="selector-options" id="selectorOptions"></div>
+    <div class="selector-result" id="selectorResult">
+      <div class="result-algo" id="resultAlgo"></div>
+      <div class="result-desc" id="resultDesc"></div>
+      <div class="result-complexity" id="resultComplexity"></div>
+      <div class="selector-reset" onclick="resetSelector()">↺ 重新选择</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 第3章：关键发现 ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">实验关键发现</div>
+    <div class="section-desc">来自6组对比实验</div>
+  </div>
+  <div class="findings-grid">
+    <div class="finding-card">
+      <div class="finding-title">牛顿法 vs 梯度下降</div>
+      <div class="finding-content">
+        Rosenbrock函数上，牛顿法仅需 <span class="finding-num">21</span> 次迭代，
+        而梯度下降需要 <span class="finding-num">32076</span> 次——相差 <strong>1500倍</strong>！
+        条件数是梯度下降的天敌。
+      </div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">NSGA-II vs 加权法</div>
+      <div class="finding-content">
+        ZDT1高维多目标问题上，NSGA-II误差仅 <span class="finding-num">0.0015</span>，
+        加权法误差 <span class="finding-num">0.30</span>——相差 <strong>200倍</strong>！
+        加权法还会漏掉非凸前沿。
+      </div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">DP vs 暴力递归</div>
+      <div class="finding-content">
+        斐波那契n=35时，递归比动态规划慢 <span class="finding-num">18.6万</span> 倍！
+        LIS问题n=10000时，O(n²)比O(nlogn)慢 <strong>1106倍</strong>。
+      </div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">蚁群算法求解TSP</div>
+      <div class="finding-content">
+        n=50的TSP问题，蚁群算法比最近邻启发式改进 <span class="finding-num">20.7%</span>！
+        2-opt局部搜索是性价比最高的优化（ms级，任何TSP都该加）。
+      </div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">割平面法的坑</div>
+      <div class="finding-content">
+        Gomory割平面法在n=8时 <strong>100割未收敛</strong>（数值稳定性问题），
+        但成功时极快（&lt;0.002s）。分支定界法更稳定可靠。
+      </div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">Dijkstra堆优化</div>
+      <div class="finding-content">
+        堆优化版比朴素版快 <span class="finding-num">2.4</span> 倍。
+        稀疏图用Kruskal，稠密图用Prim——选对算法很重要。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 第4章：学习路径 ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">学习路径建议</div>
+    <div class="section-desc">从入门到精通</div>
+  </div>
+  <div class="path-timeline">
+    <div class="path-item">
+      <div class="path-phase">第一阶段：打基础 <span class="path-time">1-2周</span></div>
+      <div class="path-content">
+        读 <code>00_研究导论/建模手研究体系_总纲.md</code> 掌握六层钻研法 →
+        学线性规划（单纯形法+对偶理论）→ 跑通 <code>01_单纯形法_手动实现.py</code>
+      </div>
+    </div>
+    <div class="path-item">
+      <div class="path-phase">第二阶段：扩广度 <span class="path-time">2-4周</span></div>
+      <div class="path-content">
+        整数规划（分支定界+割平面）→ 非线性规划（梯度法+牛顿法+共轭梯度）→
+        多目标规划（Pareto+NSGA-II），每个专题按"笔记→代码→案例→实验"四步走
+      </div>
+    </div>
+    <div class="path-item">
+      <div class="path-phase">第三阶段：攻进阶 <span class="path-time">2-3周</span></div>
+      <div class="path-content">
+        动态规划（基础+进阶：状态压缩/树形/数位/概率DP）→
+        启发式算法（GA/SA/PSO/ACO/DE+TSP求解器）→ 网络优化（最短路/最大流/匹配）
+      </div>
+    </div>
+    <div class="path-item">
+      <div class="path-phase">第四阶段：会工具 <span class="path-time">1周</span></div>
+      <div class="path-content">
+        学 <code>优化求解器使用指南.md</code>（scipy/PuLP/Gurobi）→
+        运输问题与指派问题 → 拉格朗日乘数法深入 → 比赛中用求解器快速建模
+      </div>
+    </div>
+    <div class="path-item">
+      <div class="path-phase">第五阶段：实战练 <span class="path-time">持续</span></div>
+      <div class="path-content">
+        做 <code>05_真题深解集</code> 的真题 → 用 <code>04_算法对比实验室</code> 做实验 →
+        在 <code>06_个人研究笔记</code> 记录心得 → 形成自己的建模直觉
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  优化模型 · 建模手研究体系 | 六层钻研法：起源→思想→推导→实现→应用→对比 | 86个文件 · 约5.5MB
+</div>
+
+<script>
+// ===== 专题数据 =====
+const topics = [
+  {
+    icon: '📐', name: '线性规划', desc: '单纯形法、对偶理论、灵敏度分析，优化建模的基石',
+    algos: '单纯形法/对偶单纯形', files: '12个文件',
+    details: [
+      ['深研笔记', '2篇（线性规划+对偶理论）'],
+      ['手动实现', '3个（单纯形法/逐行详解/对偶单纯形）'],
+      ['应用案例', '5个完整案例'],
+      ['对比实验', 'Dantzig vs Bland'],
+      ['可视化', '奶油糖果风交互页面'],
+      ['关键结论', '检验数推导是核心，Bland规则防循环']
+    ]
+  },
+  {
+    icon: '🔢', name: '整数规划', desc: '分支定界法、Gomory割平面法，处理离散决策变量',
+    algos: '分支定界/割平面', files: '10个文件',
+    details: [
+      ['深研笔记', '1篇（分支定界+割平面推导）'],
+      ['手动实现', '2个（分支定界DFS+BestFirst/割平面法）'],
+      ['应用案例', '4个（背包/指派/选址/TSP）'],
+      ['对比实验', '4算法×6规模对比'],
+      ['关键结论', '割平面法n=8时数值不稳定，分支定界更可靠']
+    ]
+  },
+  {
+    icon: '📈', name: '非线性规划', desc: '凸优化、KKT条件、梯度法、牛顿法、共轭梯度',
+    algos: '梯度/牛顿/CG/BFGS', files: '10个文件',
+    details: [
+      ['深研笔记', '1篇（凸优化/KKT/6种算法）'],
+      ['手动实现', '2个（梯度下降4变体/牛顿法与CG 6方法）'],
+      ['应用案例', '4个（投资组合/曲线拟合/梁设计/最大似然）'],
+      ['对比实验', '8算法×3类问题'],
+      ['关键结论', '牛顿法比梯度下降快1500倍，但需要Hessian']
+    ]
+  },
+  {
+    icon: '🎯', name: '多目标规划', desc: 'Pareto最优、加权法、ε约束、NSGA-II',
+    algos: '加权/ε约束/NSGA-II', files: '10个文件',
+    details: [
+      ['深研笔记', '1篇（Pareto/3种经典方法/NSGA-II）'],
+      ['手动实现', '2个（经典方法/NSGA-II）'],
+      ['应用案例', '4个（投资组合/选址/调度/工程设计）'],
+      ['对比实验', '3算法×3类问题（凸/非凸/高维）'],
+      ['关键结论', 'NSGA-II比加权法准200倍，加权法会漏非凸前沿']
+    ]
+  },
+  {
+    icon: '🔄', name: '动态规划', desc: '最优子结构、状态转移，基础+进阶4种DP',
+    algos: '背包/LCS/状态压缩', files: '12个文件',
+    details: [
+      ['深研笔记', '1篇（7种DP类型）'],
+      ['手动实现', '2个（经典6算法/进阶4种）'],
+      ['应用案例', '2个案例集（基础5个+进阶4个）'],
+      ['对比实验', '2组（基础5组+进阶4组）'],
+      ['关键结论', 'DP比递归快18.6万倍，O(nlogn)比O(n²)快1106倍']
+    ]
+  },
+  {
+    icon: '🧬', name: '启发式算法', desc: 'GA/SA/PSO/ACO/DE，求解大规模复杂问题',
+    algos: 'GA/SA/PSO/ACO/DE', files: '12个文件',
+    details: [
+      ['深研笔记', '1篇（5算法原理对比+调参指南）'],
+      ['手动实现', '2个（统一框架/TSP求解器）'],
+      ['应用案例', '5个（函数优化/TSP/神经网络/黑盒调参/工程设计）'],
+      ['对比实验', '2组（5算法×4函数 + TSP 5算法×3规模）'],
+      ['关键结论', 'ACO综合第一，TSP n=50时蚁群改进20.7%']
+    ]
+  },
+  {
+    icon: '🌐', name: '网络优化', desc: '最短路、最小生成树、最大流、最小费用流、匹配',
+    algos: 'Dijkstra/Dinic/匈牙利', files: '8个文件',
+    details: [
+      ['深研笔记', '1篇（5类图论算法）'],
+      ['手动实现', '1个（7个经典算法统一实现）'],
+      ['应用案例', '6个（导航/村村通/水管/任务分配/运输/项目选择）'],
+      ['对比实验', '4组（Dijkstra/Prim vs Kruskal/Floyd/Dinic）'],
+      ['关键结论', '堆优化Dijkstra快2.4倍，稀疏图Kruskal稠密图Prim']
+    ]
+  }
+];
+
+// 渲染专题卡片
+const grid = document.getElementById('topicsGrid');
+topics.forEach((t, i) => {
+  const card = document.createElement('div');
+  card.className = 'topic-card';
+  card.innerHTML = `
+    <div class="topic-icon">${t.icon}</div>
+    <div class="topic-name">${t.name}</div>
+    <div class="topic-desc">${t.desc}</div>
+    <div class="topic-meta">
+      <span class="topic-tag algos">${t.algos}</span>
+      <span class="topic-tag files">${t.files}</span>
+    </div>
+    <div class="topic-detail">
+      <div class="topic-detail-inner">
+        ${t.details.map(d => `<div class="detail-row"><span class="label">${d[0]}</span><span class="value">${d[1]}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="expand-hint">点击展开详情 ▾</div>
+  `;
+  card.addEventListener('click', () => {
+    card.classList.toggle('expanded');
+    card.querySelector('.expand-hint').textContent = 
+      card.classList.contains('expanded') ? '点击收起 ▴' : '点击展开详情 ▾';
+  });
+  grid.appendChild(card);
+});
+
+// ===== 算法选择器 =====
+const selectorData = {
+  question: '你的问题是什么类型？',
+  options: [
+    { text: '连续变量+线性约束', next: 'linear' },
+    { text: '整数/0-1变量', next: 'integer' },
+    { text: '非线性目标/约束', next: 'nonlinear' },
+    { text: '多个目标函数', next: 'multiobj' },
+    { text: '多阶段决策', next: 'dp' },
+    { text: '图/网络结构', next: 'graph' },
+    { text: '大规模复杂问题', next: 'heuristic' }
+  ],
+  linear: {
+    question: '变量规模？',
+    options: [
+      { text: 'n<1000', result: { algo: '单纯形法 / scipy.linprog', desc: '小规模线性规划，单纯形法或内点法都可以', complexity: 'O(n³) 实际很快' }},
+      { text: 'n>1000', result: { algo: 'Gurobi / CPLEX', desc: '大规模线性规划，用商业求解器', complexity: '内点法 O(n³)' }}
+    ]
+  },
+  integer: {
+    question: '问题类型？',
+    options: [
+      { text: '0-1背包/指派', result: { algo: '分支定界法 / PuLP', desc: '经典整数规划，分支定界法稳定可靠', complexity: 'O(2^n) 实际快很多' }},
+      { text: '一般整数规划', result: { algo: '分支定界 + 割平面', desc: '组合使用效果更好，或直接用Gurobi', complexity: '取决于问题结构' }}
+    ]
+  },
+  nonlinear: {
+    question: '目标函数性质？',
+    options: [
+      { text: '凸函数+光滑', result: { algo: '牛顿法 / BFGS', desc: '凸优化问题，牛顿法收敛极快', complexity: '二次收敛' }},
+      { text: '非凸/多峰', result: { algo: '差分进化 / 模拟退火', desc: '全局优化问题，用启发式算法', complexity: '不保证全局最优' }},
+      { text: '有约束', result: { algo: 'SLSQP / 增广拉格朗日', desc: '约束非线性规划，用scipy.SLSQP', complexity: '迭代法' }}
+    ]
+  },
+  multiobj: {
+    question: '前沿形状？',
+    options: [
+      { text: '凸前沿', result: { algo: '加权法 / ε约束法', desc: '凸前沿可以用加权法，简单高效', complexity: '多次单目标优化' }},
+      { text: '非凸/高维', result: { algo: 'NSGA-II', desc: '非凸高维问题必须用进化算法，NSGA-II是标准选择', complexity: 'O(N²) 每代' }}
+    ]
+  },
+  dp: {
+    question: '状态特征？',
+    options: [
+      { text: '线性状态（背包/LIS）', result: { algo: '线性DP', desc: '经典动态规划，一维或二维状态', complexity: 'O(n²) 或 O(n)' }},
+      { text: '集合状态（TSP）', result: { algo: '状态压缩DP', desc: 'n≤20时用二进制压缩状态', complexity: 'O(n²·2^n)' }},
+      { text: '树结构', result: { algo: '树形DP', desc: '从叶子到根后序遍历', complexity: 'O(n)' }},
+      { text: '数字统计', result: { algo: '数位DP', desc: '按位处理，记忆化搜索', complexity: 'O(位数×状态数)' }}
+    ]
+  },
+  graph: {
+    question: '具体问题？',
+    options: [
+      { text: '最短路径', result: { algo: 'Dijkstra（堆优化）', desc: '非负权单源最短路，堆优化版O(m log n)', complexity: 'O(m log n)' }},
+      { text: '最小生成树', result: { algo: 'Kruskal / Prim', desc: '稀疏图用Kruskal，稠密图用Prim', complexity: 'O(m log m) / O(n²)' }},
+      { text: '最大流', result: { algo: 'Dinic算法', desc: '最常用的最大流算法，BFS分层+DFS增广', complexity: 'O(n²m) 实际很快' }},
+      { text: '二分图匹配', result: { algo: '匈牙利算法', desc: '增广路思想，O(nm)', complexity: 'O(nm)' }}
+    ]
+  },
+  heuristic: {
+    question: '问题类型？',
+    options: [
+      { text: '连续函数优化', result: { algo: '差分进化 / PSO', desc: '连续问题DE和PSO表现好，ACO综合第一', complexity: '取决于迭代次数' }},
+      { text: 'TSP/组合优化', result: { algo: '蚁群算法 + 2-opt', desc: 'TSP问题蚁群算法最适合，最后加2-opt', complexity: 'O(iter·ants·n²)' }},
+      { text: '需要高质量解', result: { algo: '混合Memetic算法', desc: 'GA+局部搜索，质量最高但需要调参', complexity: '较耗时' }}
+    ]
+  }
+};
+
+let selectorState = 'root';
+
+function renderSelector() {
+  const data = selectorState === 'root' ? selectorData : selectorData[selectorState];
+  document.getElementById('selectorQuestion').textContent = data.question;
+  const opts = document.getElementById('selectorOptions');
+  opts.innerHTML = '';
+  document.getElementById('selectorResult').classList.remove('show');
+  
+  data.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'selector-btn';
+    btn.textContent = opt.text;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.selector-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      if (opt.result) {
+        setTimeout(() => showResult(opt.result), 300);
+      } else if (opt.next) {
+        selectorState = opt.next;
+        setTimeout(() => renderSelector(), 300);
+      }
+    });
+    opts.appendChild(btn);
+  });
+}
+
+function showResult(result) {
+  document.getElementById('selectorOptions').innerHTML = '';
+  document.getElementById('resultAlgo').textContent = result.algo;
+  document.getElementById('resultDesc').textContent = result.desc;
+  document.getElementById('resultComplexity').textContent = '复杂度：' + result.complexity;
+  document.getElementById('selectorResult').classList.add('show');
+}
+
+function resetSelector() {
+  selectorState = 'root';
+  renderSelector();
+}
+
+renderSelector();
+
+// ===== 数字滚动动画 =====
+function animateNumbers() {
+  document.querySelectorAll('.kpi-num').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 1200;
+    const start = performance.now();
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target);
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// 页面加载后启动动画
+window.addEventListener('load', () => {
+  setTimeout(animateNumbers, 300);
+});
+
+// 卡片入场动画
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeIn .5s var(--ease-spring) forwards';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.topic-card, .finding-card, .path-item').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.animationDelay = `${i * 50}ms`;
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

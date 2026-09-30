@@ -1,0 +1,145 @@
+{
+  "schema": "q1_gamma_equivalence/v3",
+  "claim": "对有界凸多边形 L:  gamma = R_MEC/(D/2) = 1  <=>  以直径端点 P,Q 为直径的圆覆盖 L。",
+  "proof": [
+    "(<=) 直径圆覆盖 L => R_MEC <= D/2; 恒有 R_MEC >= D/2; 故 gamma = 1。",
+    "(=>) R_MEC = D/2 时, 直径对 P,Q 的距离 D 等于最小覆盖圆盘直径 2*R_MEC, 故 P,Q 为该圆盘的对径点, 圆心 = mid(P,Q), 该圆盘即 PQ 直径圆, 从而覆盖 L。"
+  ],
+  "numerical_test": {
+    "trials": 20000,
+    "N_attempted": 20000,
+    "convex_hull_enforced": true,
+    "gamma_tol": 1e-09,
+    "angle_margin_deg": 0.1,
+    "clear_covered": 9511,
+    "clear_uncovered": 10382,
+    "unresolvable_transition_band": 107,
+    "violation_A_gamma1_but_not_covered": 0,
+    "violation_B_covered_but_gamma_not1": 0,
+    "gamma_observed_range": [
+      1.0,
+      1.146727987
+    ],
+    "verdict": "等价成立(零违约)",
+    "examples_A": [],
+    "examples_B": []
+  },
+  "numerical_sensitivity": {
+    "observation": "过渡点附近 (gamma-1) 与 (90-最小顶点角) 不同阶: gamma-1 ~ 1e-6 可对应 90-min_angle ~ 1e-2 度。",
+    "cause": "最小覆盖圆由 2 点支撑转为 3 点支撑时, 半径对形状是二阶(切触)临界量; 顶点角是一阶量。",
+    "action": "机检验收必须按两端各自的阶选取容差; 过渡带算例应标为'数值不可分辨'而非违约。"
+  },
+  "triangle_family_sample": [
+    {
+      "apex_deg": 60,
+      "gamma": 1.154701
+    },
+    {
+      "apex_deg": 65,
+      "gamma": 1.103378
+    },
+    {
+      "apex_deg": 70,
+      "gamma": 1.064178
+    },
+    {
+      "apex_deg": 75,
+      "gamma": 1.035276
+    },
+    {
+      "apex_deg": 80,
+      "gamma": 1.015427
+    },
+    {
+      "apex_deg": 85,
+      "gamma": 1.00382
+    },
+    {
+      "apex_deg": 90,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 95,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 100,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 105,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 110,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 115,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 120,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 125,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 130,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 135,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 140,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 145,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 150,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 155,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 160,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 165,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 170,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 175,
+      "gamma": 1.0
+    },
+    {
+      "apex_deg": 180,
+      "gamma": 1.0
+    }
+  ],
+  "gamma_reference": {
+    "min": 1.0,
+    "max_2_over_sqrt3": 1.154701,
+    "note": "gamma ∈ [1, 2/sqrt(3)]; gamma=1 <=> 覆盖; 等边三角形取上界 1.154700。"
+  },
+  "implication_for_figure": [
+    "gamma 不是装饰性'缺口比', 而是覆盖判据的充要指标 —— 强于 'D/2 是下界'。",
+    "主图可给出一般判据: 直径圆覆盖 L <=> gamma=1 (等价于 Thales 顶点角判据)。",
+    "两站基准算例 gamma=1 是'覆盖成立'的充要见证, 但只是众多 gamma=1 情形之一, 不构成一般保证; 一般情形 gamma>1 且不覆盖。",
+    "建议图面: gamma 数轴 [1, 2/sqrt(3)] 同轴标出基准例 1.0000 与等边反例 1.154700。"
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "version": "v3.0",
+  "backend": "Python/matplotlib",
+  "exports": [
+    "PNG 600 dpi",
+    "SVG editable text",
+    "PDF editable text"
+  ],
+  "source_data": "source/q1_scan_results.json",
+  "source_data_sha256": "d155feed62dfe2d2b6e664da9273f9de75d47fa4046813e181de066e62be8db0",
+  "assets": [
+    {
+      "file": "02_几何示意/fig5_1_10_geometry_construction.png",
+      "category": "geometry",
+      "pixels": [
+        3938,
+        1919
+      ],
+      "bytes": 352630,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "02_几何示意/fig5_1_1_single_station_wedge.png",
+      "category": "geometry",
+      "pixels": [
+        3984,
+        1817
+      ],
+      "bytes": 259419,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "02_几何示意/fig5_1_2_wedge_evolution.png",
+      "category": "geometry",
+      "pixels": [
+        4739,
+        1470
+      ],
+      "bytes": 415379,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "02_几何示意/fig5_1_3_jung_counterexample.png",
+      "category": "geometry",
+      "pixels": [
+        3630,
+        1895
+      ],
+      "bytes": 260888,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "02_几何示意/fig5_1_4_jung_sandwich.png",
+      "category": "geometry",
+      "pixels": [
+        3981,
+        1793
+      ],
+      "bytes": 283599,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "02_几何示意/fig5_1_5_vertex_filtering.png",
+      "category": "geometry",
+      "pixels": [
+        3703,
+        1884
+      ],
+      "bytes": 387163,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "02_几何示意/fig5_1_9_algorithm_flowchart.png",
+      "category": "geometry",
+      "pixels": [
+        4197,
+        2985
+      ],
+      "bytes": 483049,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "03_参数扫描/fig5_1_11_sensitivity_triplet.png",
+      "category": "parameter",
+      "pixels": [
+        4689,
+        1662
+      ],
+      "bytes": 276953,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "03_参数扫描/fig5_1_12_param_space_partition.png",
+      "category": "parameter",
+      "pixels": [
+        3266,
+        2141
+      ],
+      "bytes": 125814,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "03_参数扫描/fig5_1_13_phi_D_theory.png",
+      "category": "parameter",
+      "pixels": [
+        3314,
+        2049
+      ],
+      "bytes": 200776,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "03_参数扫描/fig5_1_6_param_scan.png",
+      "category": "parameter",
+      "pixels": [
+        4688,
+        1883
+      ],
+      "bytes": 437852,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "03_参数扫描/fig5_1_8_n_and_grid.png",
+      "category": "parameter",
+      "pixels": [
+        4391,
+        2168
+      ],
+      "bytes": 259711,
+      "svg": true,
+      "pdf": true
+    },
+    {
+      "file": "04_统计分布/fig5_1_7_gamma_distribution.png",
+      "category": "statistics",
+      "pixels": [
+        3350,
+        2721
+      ],
+      "bytes": 159395,
+      "svg": true,
+      "pdf": true
+    }
+  ]
+}

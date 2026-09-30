@@ -1,0 +1,175 @@
+{
+  "schema": "q1_main_figure_immutable_facts/v2",
+  "method": "mpmath 40dps, 定义驱动复算 (verify_immutable_facts_v2.py)",
+  "inputs": {
+    "eps_deg": 1.0,
+    "S1": [
+      0,
+      0
+    ],
+    "S2": [
+      600,
+      0
+    ],
+    "G": [
+      300,
+      500
+    ]
+  },
+  "derived": {
+    "theta1_deg": 59.036243,
+    "theta2_deg": 120.963757
+  },
+  "L": {
+    "is_convex_polygon": true,
+    "n_vertices": 4,
+    "vertices": {
+      "P1": [
+        288.1342,
+        499.7929
+      ],
+      "P2": [
+        300.0,
+        480.7768
+      ],
+      "P3": [
+        311.8658,
+        499.7929
+      ],
+      "P4": [
+        300.0,
+        520.3752
+      ]
+    }
+  },
+  "diameter": {
+    "D": 39.5983,
+    "endpoints": [
+      "P2",
+      "P4"
+    ],
+    "endpoints_xy": [
+      [
+        300.0,
+        480.7768
+      ],
+      [
+        300.0,
+        520.3752
+      ]
+    ]
+  },
+  "mec": {
+    "center": [
+      300.0,
+      500.576
+    ],
+    "R_MEC": 19.7992
+  },
+  "jung": {
+    "lower": 19.7992,
+    "upper": 22.8621,
+    "gamma": 1.0,
+    "gamma_is_1": true
+  },
+  "thales": {
+    "criterion": "Pi;Q 直径圆覆盖 L  <=>  L 全部顶点 X 满足 angle PXQ >= 90deg",
+    "vertex_angles_deg": {
+      "P1": 118.0725,
+      "P3": 118.0725
+    },
+    "min_deg": 118.0725,
+    "baseline_is_covered": true
+  },
+  "counterexample_equilateral": {
+    "side": 1,
+    "D": 1.0,
+    "R_MEC": 0.57735,
+    "D_over_2": 0.5,
+    "D_over_sqrt3": 0.57735,
+    "vertex_angles_deg": {
+      "P3": 60.0
+    },
+    "min_deg": 60.0,
+    "diameter_circle_covers_L": false,
+    "role": "证明一般结论: 半径 D/2 的直径圆不保证覆盖 L"
+  },
+  "conclusion": {
+    "general": "以 D 为直径的圆一般不保证覆盖 L; 等边三角形为反例",
+    "baseline_status": "两站基准算例 gamma=1 属于 D/2=R_MEC 的特例验证, 不是一般性质",
+    "bounds": "D/2 <= R_MEC <= D/sqrt(3)"
+  },
+  "doc_crosscheck": {
+    "P1": {
+      "doc": [
+        288.1342,
+        499.7929
+      ],
+      "calc": [
+        288.1342,
+        499.7929
+      ],
+      "match_at_4dp": true
+    },
+    "P2": {
+      "doc": [
+        300.0,
+        480.7768
+      ],
+      "calc": [
+        300.0,
+        480.7768
+      ],
+      "match_at_4dp": true
+    },
+    "P3": {
+      "doc": [
+        311.8658,
+        499.7929
+      ],
+      "calc": [
+        311.8658,
+        499.7929
+      ],
+      "match_at_4dp": true
+    },
+    "P4": {
+      "doc": [
+        300.0,
+        520.3752
+      ],
+      "calc": [
+        300.0,
+        520.3752
+      ],
+      "match_at_4dp": true
+    },
+    "D": {
+      "doc": 39.5983,
+      "calc": 39.5983,
+      "match": true
+    },
+    "R_MEC": {
+      "doc": 19.7992,
+      "calc": 19.7992,
+      "match": true
+    },
+    "center": {
+      "doc": [
+        300.0,
+        500.576
+      ],
+      "calc": [
+        300.0,
+        500.576
+      ],
+      "match": true
+    },
+    "D_over_sqrt3": {
+      "doc": 22.8621,
+      "calc": 22.8621,
+      "match": true
+    },
+    "all_match": true
+  }
+}

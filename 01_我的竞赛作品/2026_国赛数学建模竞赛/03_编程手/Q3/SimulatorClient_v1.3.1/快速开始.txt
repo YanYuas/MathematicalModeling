@@ -1,0 +1,14 @@
+﻿Q3 SimulatorClient 快速开始
+====================================
+
+重要提醒: 代码中不得硬编码参赛队号！
+
+基本使用
+--------
+python test_simulator.py --robot-id YOUR_ROBOT_ID
+
+自动日志记录到 logs/ 目录
+提交前请删除 logs/ 内容
+
+详细文档: README.md
+版本: v1.3.1 (已验证)

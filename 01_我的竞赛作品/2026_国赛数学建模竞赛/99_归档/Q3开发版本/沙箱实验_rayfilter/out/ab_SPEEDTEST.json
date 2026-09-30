@@ -1,0 +1,18 @@
+[
+  {
+    "seed": 2026,
+    "ok": true,
+    "total": 13,
+    "cleared": 13,
+    "vt": 4124.547,
+    "move": 2919.5,
+    "switch": 185.0,
+    "measure": 955.0,
+    "clear": 65.0,
+    "move_m": 14597.7,
+    "uncleared": [],
+    "skips": [
+      36
+    ]
+  }
+]
